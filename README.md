@@ -1,7 +1,7 @@
 # Trivalent Reasoning Engine
-**READ THE FULL PAPER ABOUT P VS NP:** [P vs NP as Epistemic Illusion]
+**READ THE FULL P VS NP PAPER:**
 
-(P_vs_NP_as_Epistemic_Illusion.md)
+[P vs NP as Epistemic Illusion](P_vs_NP_as_Epistemic_Illusion.md)
 
 # ABSTRACT
 The P vs NP problem is one of the most central open questions in theoretical computer science, with implications ranging from cryptography to artificial intelligence. However, this paper argues that the standard formal framing of P vs NP conceals a deeper epistemological contradiction. Within strict formalism, the question reduces to a tautology: verification is necessarily downstream of solving. When generalized beyond formal systems, the problem echoes the halting problem and exhibits equivalent undecidability. As such, P vs NP resides in a paradoxical space—either trivially true or fundamentally unknowable. This paper contends that the widespread treatment of P vs NP as a definitive mathematical challenge stems from a categorical mistake: conflating formal verification, discovery processes, and predictive epistemology.
