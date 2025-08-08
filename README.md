@@ -1,6 +1,15 @@
 # Trivalent Reasoning Engine
 **READ THE FULL PAPER ABOUT P VS NP:** [P vs NP as Epistemic Illusion](P_vs_NP_as_Epistemic_Illusion.md)
 
+# ABSTRACT
+The P vs NP problem is one of the most central open questions in theoretical computer science, with implications ranging from cryptography to artificial intelligence. However, this paper argues that the standard formal framing of P vs NP conceals a deeper epistemological contradiction. Within strict formalism, the question reduces to a tautology: verification is necessarily downstream of solving. When generalized beyond formal systems, the problem echoes the halting problem and exhibits equivalent undecidability. As such, P vs NP resides in a paradoxical space—either trivially true or fundamentally unknowable. This paper contends that the widespread treatment of P vs NP as a definitive mathematical challenge stems from a categorical mistake: conflating formal verification, discovery processes, and predictive epistemology.
+
+- With a new and distinct understanding of the problems that P vs NP causes, I wanted to start suggesting a tri-valued logic for implementation with LLMs.
+- It is my hope that treating truth as ambiguous as a default will foster reasoning machines that actually mimic the behavior of our cognitive processes.
+- We don't think in binary.
+- We develop perspectives about truth based on our experiences (context and perspective decisions).
+- Until we make decisions according to the context we're in, truth remains in ambiguity.
+
 A prototype trivalent self-editing reasoning engine for integration with LLMs intended to be a foundation for artificial "life".
 
 Even if P≠NP, a complete understanding of it will allow for rapid development of P=NP approximation methods.
