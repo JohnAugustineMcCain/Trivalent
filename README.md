@@ -1,5 +1,5 @@
 # Trivalent
-A self-editing, dialetheic-perspectival AI foundation for Artificial Life
+A prototype trivalent self-editing reasoning engine for integration with LLMs intended to be a foundation for artificial "life".
 
 # Tri-Valued Reasoning Engine
 
