@@ -562,39 +562,119 @@ class LLMClient:
                 time.sleep(min(2 ** attempt, 8) + random.random() * 0.25)  # small jitter
         raise last_err
 
+class LLMReflector:
+    """
+    Keeps reflection notes and synthesizes a short guidance string for future prompts.
+    Persists to disk so learning survives runs.
+    """
+    def __init__(self, save_path: str = "llm_reflection.json", max_notes: int = 64):
+        self.save_path = save_path
+        self.max_notes = max_notes
+        self.notes: List[Dict[str, str]] = []
+        try:
+            if os.path.exists(self.save_path):
+                with open(self.save_path) as f:
+                    blob = json.load(f)
+                    self.notes = blob.get("notes", [])
+        except Exception:
+            self.notes = []
+
+    def add_note(self, statement: str, llm_vote: str, consensus: str, rationale: str = ""):
+        self.notes.append({
+            "statement": statement,
+            "llm_vote": llm_vote,
+            "consensus": consensus,
+            "rationale": rationale
+        })
+        if len(self.notes) > self.max_notes:
+            self.notes = self.notes[-self.max_notes:]
+        try:
+            with open(self.save_path, "w") as f:
+                json.dump({"notes": self.notes}, f, indent=2)
+        except Exception:
+            pass
+
+    def guidance(self) -> str:
+        """
+        Distill recent mistakes into 1–3 bullet rules the LLM should follow.
+        Keep it short to avoid prompt bloat.
+        """
+        if not self.notes:
+            return ""
+        # Simple heuristic distillation
+        last = self.notes[-8:]
+        errs_on_paradox = sum(1 for n in last if n["consensus"] == "BOTH" and n["llm_vote"] != "BOTH")
+        errs_overconf = sum(1 for n in last if n["consensus"] in ("TRUE","FALSE") and n["llm_vote"] == "BOTH")
+        errs_wrong_sign = sum(1 for n in last if n["consensus"] in ("TRUE","FALSE") and n["llm_vote"] in ("TRUE","FALSE") and n["llm_vote"] != n["consensus"])
+
+        rules = []
+        if errs_on_paradox:
+            rules.append("If self-reference or contradiction is present, prefer BOTH.")
+        if errs_overconf:
+            rules.append("If mundane factual claims with wide agreement, avoid BOTH; pick TRUE/FALSE.")
+        if errs_wrong_sign:
+            rules.append("When clear empirical knowledge exists, align with that rather than hedging.")
+
+        if not rules:
+            return ""
+        # Return at most 3 rules
+        return "Calibration notes:\n- " + "\n- ".join(rules[:3])
 
 def make_llm_perspective(name: str = "LLM",
                          model: str = None,
-                         protected: bool = False) -> Perspective:
+                         protected: bool = False,
+                         reflector: Optional['LLMReflector'] = None) -> Perspective:
     """
-    LLM returns: {"vote": "TRUE"|"FALSE"|"BOTH", "rationale": "..."} for a proposition.
-    Treated like any other perspective with reliability learning.
+    LLM perspective with reflection: after each consensus, the engine can call
+    `llm_reflect(statement, llm_vote, consensus, rationale)` to update guidance.
+    Future prompts include the distilled guidance.
     """
     client = LLMClient(model=model)
+    _reflector = reflector or LLMReflector()
 
     def eval_stmt(statement: str) -> Tvalue:
+        guidance = _reflector.guidance()
         sys = (
-            "You are a cautious truth evaluator using a tri-valued logic: TRUE, FALSE, BOTH. "
-            "Interpret the user's statement literally. "
-            "Return strict JSON with keys: vote, rationale. No extra keys."
+            "You are a cautious truth evaluator using a tri-valued logic: TRUE, FALSE, BOTH.\n"
+            "Interpret the user's statement literally.\n"
+            "Return strict JSON with keys: vote, rationale. No extra keys.\n"
         )
+        if guidance:
+            sys += "\n" + guidance + "\n"
+
         usr = (
             f"Statement: {statement}\n\n"
             "Rules:\n"
             "- If clearly true in general reality, vote TRUE.\n"
             "- If clearly false in general reality, vote FALSE.\n"
             "- If paradoxical/ambiguous/context-dependent, vote BOTH.\n"
-            "Output JSON ONLY, like: {\"vote\":\"TRUE\", \"rationale\":\"...\"}"
+            'Output JSON ONLY, like: {"vote":"TRUE", "rationale":"..."}'
         )
         try:
             res = client.chat_json(system=sys, user=usr)
             vote = str(res.get("vote", "BOTH")).upper()
+            # stash rationale for reflection
+            eval_stmt._last_rationale = str(res.get("rationale", ""))  # type: ignore[attr-defined]
+            eval_stmt._last_vote = vote  # type: ignore[attr-defined]
             return Tvalue.TRUE if vote == "TRUE" else Tvalue.FALSE if vote == "FALSE" else Tvalue.BOTH
         except Exception:
+            eval_stmt._last_rationale = ""  # type: ignore[attr-defined]
+            eval_stmt._last_vote = "BOTH"   # type: ignore[attr-defined]
             return Tvalue.BOTH
 
-    return Perspective(name=name, evaluate_statement_fn=eval_stmt, evaluate_patch_fn=None, protected=protected)
+    # hook for engine to send feedback after consensus
+    def llm_reflect(statement: str, consensus: Tvalue):
+        try:
+            vote = getattr(eval_stmt, "_last_vote", "BOTH")  # type: ignore[attr-defined]
+            rationale = getattr(eval_stmt, "_last_rationale", "")  # type: ignore[attr-defined]
+        except Exception:
+            vote, rationale = "BOTH", ""
+        _reflector.add_note(statement, vote, consensus.name, rationale)
 
+    # attach reflect method so engine can call it
+    p = Perspective(name=name, evaluate_statement_fn=eval_stmt, evaluate_patch_fn=None, protected=protected)
+    setattr(p, "reflect", llm_reflect)  # type: ignore[attr-defined]
+    return p
 
 class LLMPatchGenerator:
     """
