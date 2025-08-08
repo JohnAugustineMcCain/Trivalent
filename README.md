@@ -1,4 +1,5 @@
-# Trivalent
+# Trivalent Reasoning Engine
+**READ THE FULL PAPER ABOUT P VS NP:** [P vs NP as Epistemic Illusion](P_vs_NP_as_Epistemic_Illusion.md)
 A prototype trivalent self-editing reasoning engine for integration with LLMs intended to be a foundation for artificial "life".
 
 Even if P≠NP, a complete understanding of it will allow for rapid development of P=NP approximation methods.
