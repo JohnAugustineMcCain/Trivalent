@@ -4,19 +4,19 @@ A prototype trivalent self-editing reasoning engine for integration with LLMs in
 > ⚠ **Disclaimer:** This code is **experimental and untested**. It has not been run in a clean environment by the author. Use at your own risk.
 
 # Tri-Valued Reasoning Engine
-
+<!-- Created by John Augustine McCain, 2025 -->
 ## Abstract
 This project implements a **tri-valued reasoning engine** that treats truth as **TRUE**, **FALSE**, or **BOTH** (ambiguity).  
 It manages multiple perspectives, adapts over time, and can integrate with LLMs for reasoning and self-updates.  
 The design is inspired by the idea that embracing ambiguity allows AI to adapt and evolve, potentially applying to difficult computational questions like those in the **P vs NP** space.
-
+<!-- Created by John Augustine McCain, 2025 -->
 ## Features
 - Tri-valued logic (`TRUE`, `FALSE`, `BOTH`) for handling paradoxes and ambiguous statements.
 - Multiple perspectives with dynamic reliability weighting.
 - Self-updating architecture that evaluates, tests, and deploys changes.
 - Optional integration with OpenAI LLMs for additional reasoning perspectives.
 - Example demo included.
-
+<!-- Created by John Augustine McCain, 2025 -->
 ## Installation
 
 1. Clone this repository:  
@@ -57,7 +57,7 @@ If you want LLM integration, set your OpenAI API key:
 export OPENAI_API_KEY="your_api_key_here"      # macOS/Linux
 setx OPENAI_API_KEY "your_api_key_here"        # Windows
 ```
-
+<!-- Created by John Augustine McCain, 2025 -->
 ## Example Output
 ```
 [Propositions]
@@ -69,6 +69,14 @@ Liar -> BOTH stability: 0.45
 ## License
 This project is licensed under the **Creative Commons Attribution–NonCommercial 4.0 International License** (CC BY-NC 4.0).  
 You may share and adapt it for non-commercial purposes with attribution.
+
+---
+
+© 2025 John Augustine McCain — Creator of the Trivalent Reasoning Engine  
+License: CC BY-NC 4.0  
+Repository: https://github.com/JohnAugustineMcCain/Trivalent - Trevalence@myyahoo.com
+
+---
 
 ## Disclaimer
 This software is experimental and is not a guaranteed solver for NP-complete problems.  
