@@ -362,6 +362,15 @@ class Proposition:
 
         self.collapse_history.append((datetime.datetime.now(), self.contextual_value))
 
+        # NEW: reflection feedback to LLM-like perspectives
+        try:
+            for p in perspectives:
+                if hasattr(p, "reflect") and self.contextual_value != Tvalue.BOTH:
+                    # tell the LLM what the consensus was (gold label)
+                    p.reflect(self.statement, self.contextual_value)  # type: ignore[attr-defined]
+        except Exception:
+            pass
+                     
         # Reliability update based on non-BOTH consensus + notify manager if present
         if self.contextual_value != Tvalue.BOTH:
             for p in perspectives:
