@@ -19,8 +19,8 @@ The design is inspired by the idea that embracing ambiguity allows AI to adapt a
 
 1. Clone this repository:  
    ```bash
-   git clone https://github.com/<your-username>/<your-repo>.git
-   cd <your-repo>
+   git clone https://github.com/JohnAugustineMcCain/Trivalent.git
+   cd Trivalent
    ```
 
 2. Create and activate a virtual environment (recommended):  
@@ -70,7 +70,3 @@ You may share and adapt it for non-commercial purposes with attribution.
 ## Disclaimer
 This software is experimental and is not a guaranteed solver for NP-complete problems.  
 Use it at your own risk.
-## License
-This work is licensed under the Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
-You may not use the material for commercial purposes without my permission.
-See the LICENSE file for full legal text.
