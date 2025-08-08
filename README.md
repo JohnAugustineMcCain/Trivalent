@@ -1,6 +1,8 @@
 # Trivalent
 A prototype trivalent self-editing reasoning engine for integration with LLMs intended to be a foundation for artificial "life".
 
+> ⚠ **Disclaimer:** This code is **experimental and untested**. It has not been run in a clean environment by the author. Use at your own risk.
+
 # Tri-Valued Reasoning Engine
 
 ## Abstract
