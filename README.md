@@ -1,40 +1,75 @@
 # Trivalent
 A self-editing, dialetheic-perspectival AI foundation for Artificial Life
 
-# Reasoning Engine
+# Tri-Valued Reasoning Engine
 
-## Abstract  
-This project is a **tri-valued reasoning engine** that treats truth as **TRUE**, **FALSE**, or **BOTH** (ambiguity).  
-It manages multiple perspectives, adapts over time, and can integrate LLMs for reasoning and self-updates.  
-The idea is that embracing ambiguity can make AI more adaptable — even to hard problems like those in the P vs NP space.
+## Abstract
+This project implements a **tri-valued reasoning engine** that treats truth as **TRUE**, **FALSE**, or **BOTH** (ambiguity).  
+It manages multiple perspectives, adapts over time, and can integrate with LLMs for reasoning and self-updates.  
+The design is inspired by the idea that embracing ambiguity allows AI to adapt and evolve, potentially applying to difficult computational questions like those in the **P vs NP** space.
 
-The system:
-- Tracks multiple perspectives with independent reliability.
-- Dynamically prunes or spawns perspectives over time.
-- Collapses consensus toward TRUE, FALSE, or BOTH based on a weighted score.
-- Can integrate LLM-based perspectives for natural language reasoning.
-- Includes a self-updater module to propose, test, and deploy patches.
-- Uses tri-valued logic to handle paradoxes and ambiguity directly.
+## Features
+- Tri-valued logic (`TRUE`, `FALSE`, `BOTH`) for handling paradoxes and ambiguous statements.
+- Multiple perspectives with dynamic reliability weighting.
+- Self-updating architecture that evaluates, tests, and deploys changes.
+- Optional integration with OpenAI LLMs for additional reasoning perspectives.
+- Example demo included.
 
-Potential applications include:
-- Formal problem solving (e.g., P vs NP exploration).
-- Systems where incomplete or conflicting information is common.
-- Self-adaptive AI agents with safety checks.
+## Installation
 
----
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/<your-username>/<your-repo>.git
+   cd <your-repo>
+   ```
 
-## Quick Start  
+2. Create and activate a virtual environment (recommended):  
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # macOS/Linux
+   venv\Scripts\activate      # Windows
+   ```
 
-1. **Save the full code** as `reasoning_engine.py` in your repo.  
-
-2. **Install dependencies:**  
+3. Install dependencies:  
    ```bash
    pip install -r requirements.txt
+   ```
 
-3. **Run the demo:**
-   
-   python reasoning_engine.py
-   
+## Requirements
+See `requirements.txt`:
+```
+openai>=1.0.0,<2.0.0
+```
+
+## Running the Demo
+The demo uses sample statements like `"Sky is blue"`, `"Grass is red"`, and `"This statement is false"`.
+
+Run:
+```bash
+python reasoning_engine.py
+```
+
+If you want LLM integration, set your OpenAI API key:
+```bash
+export OPENAI_API_KEY="your_api_key_here"      # macOS/Linux
+setx OPENAI_API_KEY "your_api_key_here"        # Windows
+```
+
+## Example Output
+```
+[Propositions]
+Sky is blue -> TRUE stability: 0.99
+Grass is red -> FALSE stability: 0.98
+Liar -> BOTH stability: 0.45
+```
+
+## License
+This project is licensed under the **Creative Commons Attribution–NonCommercial 4.0 International License** (CC BY-NC 4.0).  
+You may share and adapt it for non-commercial purposes with attribution.
+
+## Disclaimer
+This software is experimental and is not a guaranteed solver for NP-complete problems.  
+Use it at your own risk.
 ## License
 This work is licensed under the Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
 You may not use the material for commercial purposes without my permission.
