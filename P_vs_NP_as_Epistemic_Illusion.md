@@ -75,10 +75,10 @@ The critique of P vs NP presented here does not seek to dismiss the mathematical
 The framing of P vs NP as a fundamental problem has directed enormous intellectual effort toward formal abstractions of discovery and verification, while sidelining the semantic, interpretive, and heuristic dimensions that characterize real-world cognition. As a result, we have inherited a model of problem-solving that is mathematically tractable but epistemically hollow.
 What might it look like to reverse this distortion?
 Rather than treating all reasoning as reducible to string manipulation, we could begin with the recognition that verification is often ambiguous, discovery is often non-algorithmic, and solvability is often not a binary question. From this perspective, several alternative lines of inquiry become possible:
-• Investigating problem classes where context, ambiguity, and paradox are not artifacts but essential features.
-• Developing models of bounded rationality and resource-sensitive reasoning that reflect cognitive limitations rather than idealized machines.
-• Treating “verifiers” not as deterministic procedures but as semantic agents embedded in interpretive frameworks.
-• Embracing uncertainty, undecidability, and non-closure as natural consequences of working in open-world epistemologies.
+- Investigating problem classes where context, ambiguity, and paradox are not artifacts but essential features.
+- Developing models of bounded rationality and resource-sensitive reasoning that reflect cognitive limitations rather than idealized machines.
+- Treating “verifiers” not as deterministic procedures but as semantic agents embedded in interpretive frameworks.
+- Embracing uncertainty, undecidability, and non-closure as natural consequences of working in open-world epistemologies.
 These directions do not offer the clean closure of a single binary answer to a single binary question. But they may yield something deeper: a theory of problem-solving that honors the richness, ambiguity, and paradox that define both human reasoning and truth.
 
 ## 7 Conclusion
