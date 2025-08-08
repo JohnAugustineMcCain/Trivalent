@@ -1,6 +1,27 @@
 # Trivalent
 A prototype trivalent self-editing reasoning engine for integration with LLMs intended to be a foundation for artificial "life".
 
+Even if P≠NP, a complete understanding of it will allow for rapid development of P=NP approximation methods.
+
+Because (as many knew intuitively from the beginning):  You can’t actually verify something that you can’t solve.
+
+- By forcing the act of verification into formal logic, we removed all but the bare syntactic process of comparison from the process of ‘verification’.
+- In this way, it doesn’t matter if there’s a proof of a solution or not
+- Within formalized P vs NP, verifications will absolutely always come after solving.
+
+- Solving requires there to be a possible solution
+- Verification requires there to be a certificate
+- A certificate is syntactic proof of a possible solution
+- The existence of a certificate makes solving possible
+
+All that we’re actually proving in every P vs NP problem is that a certificate exists that either does or does not get solved within a given time period.
+
+- Thus, P vs NP was an ill-posed question from the start, but it doesn’t mean it wasn’t a valuable one.
+
+- Since P≠NP within formal logic, and formal logic is an abstraction that doesn’t always apply to reality…
+
+…P versus NP in reality.
+
 > ⚠ **Disclaimer:** This code is **experimental and untested**. It has not been run in a clean environment by the author. Use at your own risk.
 
 # Tri-Valued Reasoning Engine
