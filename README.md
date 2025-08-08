@@ -38,6 +38,7 @@ The design is inspired by the idea that embracing ambiguity allows AI to adapt a
 ## Requirements
 See `requirements.txt`:
 ```
+Python 3.9 or higher
 openai>=1.0.0,<2.0.0
 ```
 
