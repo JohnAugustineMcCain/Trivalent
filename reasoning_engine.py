@@ -52,23 +52,30 @@ def parse_logical_expression(expr: str) -> Callable[[Dict[str, Tvalue]], Tvalue]
     Parse pythonic boolean expression over variable names using tri-valued logic.
     Operators: and, or, not
     Unknown vars evaluate to BOTH.
+
+    Fixes:
+    - Supports boolean constants True/False.
+    - Rejects unsupported AST node types early.
     """
-    expr_ast = ast.parse(expr, mode='eval')
+    tree = ast.parse(expr, mode='eval')
 
     def make_eval(node):
         if isinstance(node, ast.BoolOp):
             op = Tvalue.__and__ if isinstance(node.op, ast.And) else Tvalue.__or__
             children = [make_eval(v) for v in node.values]
-            return lambda context: reduce(op, [child(context) for child in children])
+            return lambda context: reduce(op, (child(context) for child in children))
         elif isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
             child = make_eval(node.operand)
             return lambda context: ~child(context)
         elif isinstance(node, ast.Name):
             return lambda context: context.get(node.id, Tvalue.BOTH)
+        elif isinstance(node, ast.Constant) and isinstance(node.value, bool):
+            return (lambda _:
+                    Tvalue.TRUE if node.value else Tvalue.FALSE)
         else:
-            raise ValueError(f"Unsupported AST node: {type(node)}")
+            raise ValueError(f"Unsupported AST node: {type(node).__name__}")
 
-    return make_eval(expr_ast.body)
+    return make_eval(tree.body)
 
 
 # ============================
@@ -191,9 +198,13 @@ class PerspectiveManager:
                 p.reliability = min(self.reliability_ceiling, p.reliability)
 
     def auto_prune(self):
-        """Retire persistently-bad perspectives, but keep a minimum pool."""
+        """
+        Retire persistently-bad perspectives, but only when above capacity.
+        (Fix) Previously retired up to 2 even when under capacity.
+        """
         if len(self._persps) <= self.min_pool:
             return
+
         bad = []
         for name, p in list(self._persps.items()):
             s = self._stats[name]
@@ -202,7 +213,12 @@ class PerspectiveManager:
             if p.reliability < self.reliability_floor:
                 bad.append((p.reliability, name))
         bad.sort()  # lowest first
-        to_retire = min(len(bad), max(0, len(self._persps) - self.max_pool) + 2)
+
+        over = max(0, len(self._persps) - self.max_pool)
+        if over <= 0 or not bad:
+            return
+
+        to_retire = min(len(bad), over)
         for _, name in bad[:to_retire]:
             self.retire(name)
 
@@ -264,12 +280,20 @@ class PerspectiveManager:
 # ============================
 
 class CollapseCache:
-    def __init__(self):
+    """
+    (Fix) Bounded cache to avoid unbounded growth; keeps last N entries per key.
+    """
+    def __init__(self, max_entries_per_key: int = 512):
         # key -> list[(value, weight)]
         self.cache: Dict[str, List[Tuple[Tvalue, float]]] = defaultdict(list)
+        self.max_entries_per_key = max_entries_per_key
 
     def record(self, key: str, value: Tvalue, weight: float = 1.0):
-        self.cache[key].append((value, weight))
+        q = self.cache[key]
+        q.append((value, weight))
+        # Bound size
+        if len(q) > self.max_entries_per_key:
+            del q[: len(q) - self.max_entries_per_key]
 
     def get_weighted_score(self, key: str) -> float:
         entries = self.cache.get(key, [])
@@ -323,8 +347,12 @@ class Proposition:
         threshold = self._compute_dynamic_threshold(perspectives)
         score = cache.get_weighted_score(key)
 
+        # (Fix) Don't let a tiny FALSE/TRUE dissent force BOTH.
         if Tvalue.TRUE in values and Tvalue.FALSE in values:
-            self.contextual_value = Tvalue.BOTH
+            if abs(score) < threshold:
+                self.contextual_value = Tvalue.BOTH
+            else:
+                self.contextual_value = Tvalue.TRUE if score > 0 else Tvalue.FALSE
         elif score > threshold:
             self.contextual_value = Tvalue.TRUE
         elif score < -threshold:
@@ -421,8 +449,12 @@ class SelfUpdater:
 
         stability = self.cache.get_stability(key)
 
+        # (Fix) Distinguish "no signal" (all BOTH) from low stability.
+        saw_signal = any(v in (Tvalue.TRUE, Tvalue.FALSE) for _, v, _ in votes)
         if blocked_by:
             decision = "REJECT"
+        elif not saw_signal:
+            decision = "AMBIGUOUS"
         elif stability >= self.accept_threshold:
             decision = "ACCEPT"
         elif stability <= self.reject_threshold:
@@ -527,7 +559,7 @@ class LLMClient:
                 return json.loads(content)
             except Exception as e:
                 last_err = e
-                time.sleep(min(2 ** attempt, 8))
+                time.sleep(min(2 ** attempt, 8) + random.random() * 0.25)  # small jitter
         raise last_err
 
 
@@ -617,23 +649,35 @@ def make_static_analysis_perspective(strict: bool = True) -> Perspective:
         return Tvalue.TRUE if patch.risk <= 0.3 else Tvalue.BOTH
     return Perspective("StaticAnalysis", eval_stmt, eval_patch_fn=eval_patch, protected=True)
 
-def make_unit_test_perspective(pass_rate: float = 0.9) -> Perspective:
+def make_unit_test_perspective(pass_rate: float = 0.9, flake_rate: float = 0.05) -> Perspective:
     def eval_stmt(_: str) -> Tvalue:
         return Tvalue.BOTH
     def eval_patch(_: Patch) -> Tvalue:
         r = random.random()
         if r < pass_rate:
             return Tvalue.TRUE
-        elif r < (pass_rate + 0.05):
+        elif r < (pass_rate + flake_rate):
             return Tvalue.FALSE
         else:
             return Tvalue.BOTH
     return Perspective("UnitTests", eval_stmt, eval_patch_fn=eval_patch, protected=True)
 
 def make_performance_perspective(latency_budget_ms: int = 200) -> Perspective:
+    """
+    Uses optional 'latency_delta_ms' in patch.diff (positive = slower, negative = faster).
+    Treats big regressions as FALSE, modest improvements as TRUE; otherwise BOTH.
+    """
     def eval_stmt(_: str) -> Tvalue:
         return Tvalue.BOTH
     def eval_patch(patch: Patch) -> Tvalue:
+        delta = patch.diff.get("latency_delta_ms", 0)
+        # Large regression relative to budget? likely bad.
+        if delta > 0.25 * latency_budget_ms:
+            return Tvalue.FALSE
+        # Any improvement or expected small change: lean positive
+        if delta < 0:
+            return Tvalue.TRUE
+        # Fall back to a mild optimism unless risk very high
         if patch.risk > 0.6 and random.random() < 0.6:
             return Tvalue.FALSE
         return random.choice([Tvalue.TRUE, Tvalue.BOTH])
@@ -717,7 +761,7 @@ def demo():
         Patch("Tune search heuristic for planner", diff={"module": "planner", "cost_delta": -0.1}, risk=0.15),
         Patch("Refactor core reasoning loop", diff={"module": "core", "touches": ["safety"]}, risk=0.65),
         Patch("Swap model to larger LLM", diff={"module": "nlp", "cost_delta": 0.4}, risk=0.55),
-        Patch("Improve caching layer", diff={"module": "infra", "cost_delta": -0.2}, risk=0.25),
+        Patch("Improve caching layer", diff={"module": "infra", "cost_delta": -0.2, "latency_delta_ms": -20}, risk=0.25),
         Patch("Experimental self-modifying kernel", diff={"module": "kernel"}, risk=0.9),
     ]
 
@@ -755,4 +799,3 @@ def demo():
 
 if __name__ == "__main__":
     demo()
-    
