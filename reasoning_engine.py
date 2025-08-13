@@ -5,6 +5,7 @@ import uuid
 import random
 import datetime
 import ast
+import numpy as np
 from functools import reduce
 from enum import Enum
 from collections import defaultdict
@@ -719,7 +720,205 @@ class LLMPatchGenerator:
             return Patch(description="Fallback: lower cost, safe tweak",
                          diff={"param.safe_mode": True, "cost_delta": -0.05}, risk=0.15)
 
+# ============================
+#  RIEMANNIAN DYNAMICS MODULE
+# ============================
 
+def softmax_np(x: np.ndarray) -> np.ndarray:
+    x = x - np.max(x)
+    e = np.exp(x)
+    return e / np.sum(e)
+
+def inner_G(x: np.ndarray, y: np.ndarray, G: np.ndarray) -> float:
+    return float(x.T @ G @ y)
+
+def norm_G(x: np.ndarray, G: np.ndarray) -> float:
+    return float(np.sqrt(max(1e-12, x.T @ G @ x)))
+
+def finite_diff_grad(f: Callable[[np.ndarray], float], s: np.ndarray, eps: float = 1e-5) -> np.ndarray:
+    g = np.zeros_like(s, dtype=float)
+    for i in range(s.size):
+        e = np.zeros_like(s); e[i] = 1.0
+        g[i] = (f(s + eps*e) - f(s - eps*e)) / (2*eps)
+    return g
+
+class RiemannianDynamics:
+    """
+    Minimal, practical implementation of the equations you specified.
+    Works in R^n with SPD metric G and SPD covariance Sigma.
+    """
+    def __init__(self,
+                 n: int,
+                 f: Callable[[np.ndarray], float],
+                 grad_f: Optional[Callable[[np.ndarray], np.ndarray]] = None,
+                 G: Optional[np.ndarray] = None,
+                 mu: Optional[np.ndarray] = None,
+                 mu_prime: Optional[np.ndarray] = None,
+                 Sigma: Optional[np.ndarray] = None,
+                 W: Optional[np.ndarray] = None,
+                 b: Optional[np.ndarray] = None,
+                 theta: float = 0.0,
+                 beta: float = 1.0,
+                 lambd: float = 0.0,
+                 sigma_func: Optional[Callable[[float], float]] = None,
+                 rng: Optional[np.random.Generator] = None):
+        self.n = n
+        self.f = f
+        self.grad_f = grad_f or (lambda s: finite_diff_grad(f, s))
+        self.G = G if G is not None else np.eye(n)
+        self.G_inv = np.linalg.inv(self.G)
+        self.mu = mu if mu is not None else np.zeros(n)
+        self.mu_prime = mu_prime if mu_prime is not None else np.zeros(n)
+        self.Sigma = Sigma if Sigma is not None else np.eye(n)
+        self.Sigma_inv = np.linalg.inv(self.Sigma)
+        self.theta = float(theta)
+        self.beta = float(beta)
+        self.lambd = float(lambd)
+        self.W = W if W is not None else np.zeros((n, n))
+        self.b = b if b is not None else np.zeros(n)
+        self.sigma_func = sigma_func or (lambda t: 0.0)  # no noise unless provided
+        self.rng = rng or np.random.default_rng()
+
+        # sanity for SPD
+        assert np.allclose(self.G, self.G.T) and np.all(np.linalg.eigvalsh(self.G) > 0), "G must be SPD"
+        assert np.allclose(self.Sigma, self.Sigma.T) and np.all(np.linalg.eigvalsh(self.Sigma) > 0), "Sigma must be SPD"
+
+    # ∇_G f(s) = G^{-1} ∂f/∂s
+    def grad_G_f(self, s: np.ndarray) -> np.ndarray:
+        ge = self.grad_f(s)  # Euclidean gradient
+        return self.G_inv @ ge
+
+    # ||∇_G f(s)||_G
+    def grad_G_norm(self, s: np.ndarray) -> float:
+        gG = self.grad_G_f(s)
+        return float(np.sqrt(max(1e-12, gG.T @ self.G @ gG)))  # = sqrt(ge^T G^{-1} ge)
+
+    # s1 ⊕ s2
+    def combine(self, s1: np.ndarray, s2: np.ndarray,
+                alpha1: float, alpha2: float, beta: float, v: np.ndarray) -> np.ndarray:
+        ip = inner_G(s1, s2, self.G)
+        numer = alpha1*s1 + alpha2*s2 + beta*ip*v
+        # Practical normalization: keep scale positive and bounded
+        Z = max(1e-6, abs(alpha1) + abs(alpha2) + abs(beta*ip))
+        return numer / Z
+
+    # Ψ_θ(s) = R_θ (s - μ) + μ'
+    def Psi(self, s: np.ndarray) -> np.ndarray:
+        R = self._rotation_matrix(self.theta, self.n)
+        return R @ (s - self.mu) + self.mu_prime
+
+    # Ω(s,t) = s + σ(t)·ε(t)·exp(-β ||∇_G f(s)||_G)
+    def Omega(self, s: np.ndarray, t: float) -> np.ndarray:
+        sigma_t = self.sigma_func(t)
+        if sigma_t == 0.0:
+            return s
+        eps = self.rng.normal(size=self.n)
+        factor = np.exp(-self.beta * self.grad_G_norm(s))
+        return s + sigma_t * eps * factor
+
+    # C(s): Gaussian pdf
+    def C(self, s: np.ndarray) -> float:
+        d = s - self.mu
+        quad = float(d.T @ self.Sigma_inv @ d)
+        Z = np.power(2*np.pi, -self.n/2) * np.power(np.linalg.det(self.Sigma), -0.5)
+        return float(Z * np.exp(-0.5 * quad))
+
+    # ∇_G C(s) = G^{-1} ∂C/∂s, where ∂C/∂s = C(s) * ( -Σ^{-1}(s-μ) )
+    def grad_G_C(self, s: np.ndarray) -> np.ndarray:
+        Cs = self.C(s)
+        d = s - self.mu
+        ge = -Cs * (self.Sigma_inv @ d)
+        return self.G_inv @ ge
+
+    # A_w(s) = s ⊙ softmax(Ws + b)
+    def A(self, s: np.ndarray) -> np.ndarray:
+        logits = self.W @ s + self.b
+        w = softmax_np(logits)
+        return s * w
+
+    # One Euler–Maruyama step for ds/dt = -∇_G f + λ∇_G C + Ω(s,t) - s   (Ω adds an offset, so subtract s to keep drift form)
+    def step(self, s: np.ndarray, t: float, dt: float) -> np.ndarray:
+        drift = -self.grad_G_f(s) + self.lambd * self.grad_G_C(s)
+        noisy_target = self.Omega(s, t)       # equals s + noise_term
+        noise_term = noisy_target - s         # isolate the stochastic increment
+        return s + drift * dt + noise_term * np.sqrt(max(dt, 0.0))
+
+    def simulate(self, s0: np.ndarray, t0: float, t1: float, dt: float) -> np.ndarray:
+        steps = max(1, int(np.ceil((t1 - t0) / dt)))
+        s = s0.copy().astype(float)
+        t = t0
+        for _ in range(steps):
+            s = self.step(s, t, dt)
+            t += dt
+        return s
+
+    # --- helpers ---
+    @staticmethod
+    def _rotation_matrix(theta: float, n: int) -> np.ndarray:
+        if n == 2:
+            c, s = np.cos(theta), np.sin(theta)
+            return np.array([[c, -s], [s, c]])
+        if n == 3:
+            # rotate around z for simplicity
+            c, s = np.cos(theta), np.sin(theta)
+            Rz = np.array([[c, -s, 0.0],[s, c, 0.0],[0.0, 0.0, 1.0]])
+            return Rz
+        return np.eye(n)  # pragmatic fallback for n>3
+
+def make_dynamics_health_perspective(rd: RiemannianDynamics,
+                                     trials: int = 3,
+                                     steps: int = 100,
+                                     dt: float = 0.01,
+                                     energy_tol: float = 1e-3) -> Perspective:
+    """
+    Votes TRUE if short simulations generally decrease f(s) and remain bounded,
+    FALSE if energy frequently explodes/norm blows up, BOTH otherwise.
+    Patch evaluation reads typical keys from patch.diff to retune rd.* params.
+    """
+    def eval_stmt(_: str) -> Tvalue:
+        # sample around mu
+        ok, bad = 0, 0
+        for _ in range(trials):
+            s0 = rd.mu + rd.rng.normal(scale=0.5, size=rd.n)
+            f0 = rd.f(s0)
+            s = s0.copy()
+            t = 0.0
+            exploded = False
+            for _ in range(steps):
+                s = rd.step(s, t, dt)
+                if not np.isfinite(s).all() or np.linalg.norm(s) > 1e6:
+                    exploded = True; break
+                t += dt
+            f1 = rd.f(s) if not exploded else +np.inf
+            if exploded or (np.isfinite(f1) and f1 > f0 + energy_tol):
+                bad += 1
+            else:
+                ok += 1
+        if bad == 0 and ok > 0:
+            return Tvalue.TRUE
+        if bad > ok:
+            return Tvalue.FALSE
+        return Tvalue.BOTH
+
+    def eval_patch(patch: Patch) -> Tvalue:
+        # light-touch retuning from patch.diff
+        diff = patch.diff
+        rd.beta   = float(diff.get("beta", rd.beta))
+        rd.lambd  = float(diff.get("lambda", rd.lambd))
+        if "theta" in diff: rd.theta = float(diff["theta"])
+        if "mu" in diff:    rd.mu = np.array(diff["mu"], dtype=float)
+        if "mu_prime" in diff: rd.mu_prime = np.array(diff["mu_prime"], dtype=float)
+        if "G" in diff:
+            rd.G = np.array(diff["G"], dtype=float); rd.G_inv = np.linalg.inv(rd.G)
+        if "Sigma" in diff:
+            rd.Sigma = np.array(diff["Sigma"], dtype=float); rd.Sigma_inv = np.linalg.inv(rd.Sigma)
+        if "W" in diff: rd.W = np.array(diff["W"], dtype=float)
+        if "b" in diff: rd.b = np.array(diff["b"], dtype=float)
+        # re-evaluate health once after change
+        return eval_stmt("")
+
+    return Perspective("DynamicsHealth", eval_stmt, eval_patch_fn=eval_patch, protected=False)
+                                         
 # ============================
 #  DEFAULT PERSPECTIVES (stubs)
 # ============================
