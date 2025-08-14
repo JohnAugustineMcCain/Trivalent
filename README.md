@@ -6,9 +6,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 When referencing, adapting, or building upon this work, please cite as:
 
-John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine.*  
-> Creative Commons BY-NC 4.0.  
-> Available at: https://github.com/<JohnAugustineMcCain>/<Trivalent>
+John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine.*
 
 > **TL;DR**: A production-ready reasoning engine that **actually implements a modified idea of Priest’s LP** (paraconsistent logic) and uses it to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
 
