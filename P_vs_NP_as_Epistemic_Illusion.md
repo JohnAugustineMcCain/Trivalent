@@ -29,7 +29,7 @@ The P vs NP problem is one of the most central open questions in theoretical com
 ## 1 Introduction: Problem of Unquestioned Significance
 The question of whether P = NP is widely regarded as a cornerstone of computational complexity theory. Formally, it asks whether every problem whose solution can be verified in polynomial time can also be solved in polynomial time. In practical terms, resolving this question would determine whether a wide class of seemingly intractable problems might, in fact, be efficiently solvable.
 
-Yet despite its prominence, the P vs NP problem carries hidden assumptions that warrant philosophical scrutiny. What does it mean to “verify” a solution? What does it mean to “solve” a problem? Is the distinction between these acts as logically robust and compu- tationally meaningful as the theory assumes?
+Yet despite its prominence, the P vs NP problem carries hidden assumptions that warrant philosophical scrutiny. What does it mean to “verify” a solution? What does it mean to “solve” a problem? Is the distinction between these acts as logically robust and computationally meaningful as the theory assumes?
 
 This paper argues that the P vs NP problem, when examined philosophically, collapses into one of two states: either it is trivially true under formalism, or it becomes undecidable under a generalized epistemological interpretation. In neither case does it justify its elevated status as a meaningful, answerable question.
 
@@ -58,7 +58,7 @@ Alan Turing demonstrated that there exists no general algorithm to decide, for a
 
 In both cases, the inquiry demands a kind of predictive knowledge that is only available after the fact. Just as the halting status of a program is known definitively only by running it (or proving its halting through specific means), the solvability of a given NP problem in polynomial time is only demonstrable through the discovery of an actual algorithm.
 
-Thus, with much-needed generalization, P vs NP becomes decidable in the epistemolog- ical domain of undecidable problems. The question becomes one not about computational speed, but about the limits of knowability itself. It asks for a method of determining, in general, the outcome of a search without performing the search. This is a request known from computability theory to be impossible.
+Thus, with much-needed generalization, P vs NP becomes decidable as being in the epistemological domain of undecidable problems. The question becomes one not about computational speed, but about the limits of knowability itself. It asks for a method of determining, in general, the outcome of a search without performing the search. This is a request known from computability theory to be impossible.
 
 ## 4 The Erasure of Semantics
 The formal framing of P vs NP hinges on the assumption that problems, solutions, and verifiers can be fully encoded within a formal system. This assumption is necessary to bring the problem into the domain of computational complexity theory—but it imposes a distortion with significant philosophical consequences.
