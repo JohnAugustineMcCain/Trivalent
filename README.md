@@ -1,4 +1,24 @@
-# PPC+ — Perspectivistic Paraconsistent Contextualism (LP-first, Safety-first)
+# PPC — Perspectivistic Paraconsistent Contextualism
+
+## Attribution & Citation
+
+This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
+
+When referencing, adapting, or building upon this work, please cite as:
+
+> John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine.*  
+> Creative Commons BY-NC 4.0.  
+> Available at: https://github.com/<your-username>/<repo-name>
+
+**BibTeX:**
+```bibtex
+@software{mccain_ppcplus_2025,
+  author = {McCain, John A.},
+  title = {PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine},
+  year = {2025},
+  url = {https://github.com/<JohnAugustineMcCain>/<trivalent>},
+  license = {CC BY-NC 4.0}
+}
 
 > **TL;DR**: A production-ready reasoning engine that **actually implements a modified idea of Priest’s LP** (paraconsistent logic) and uses it to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
 
@@ -9,10 +29,10 @@
 
 ---
 
-## Why This Version Is Revolutionary
+## Why This Could Be Revolutionary
 
-### 1) Actually Implements Priest’s LP
-Not “three values.” **Genuine paraconsistent semantics** with proper truth pairs `(t,f)` and truth-functional connectives:
+### 1) Actually Implements Concepts from Priest’s LP in a New Way
+**Working paraconsistent semantics** with proper truth pairs `(t,f)` and truth-functional connectives:
 - `AND`: `(min t, max f)`  
 - `OR`: `(max t, min f)`  
 - `NOT`: `(f, t)`  
@@ -30,7 +50,7 @@ Not “three values.” **Genuine paraconsistent semantics** with proper truth p
 - **Graceful degradation** (never “NEITHER”; fall back to **BOTH**)
 - **Reliability learning** (bounded weights, down-weight poor sources)
 
-**Bottom line:** This moves from what was once an “interesting prototype” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
+**Bottom line:** This moves from what was once an “interesting idea” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
 
 ---
 
