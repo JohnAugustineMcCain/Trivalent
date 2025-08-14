@@ -1,9 +1,9 @@
 # PPC+ — Perspectivistic Paraconsistent Contextualism (LP-first, Safety-first)
 
-> **TL;DR**: A production-ready reasoning engine that **actually implements Priest’s LP** (paraconsistent logic) and uses it to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
+> **TL;DR**: A production-ready reasoning engine that **actually implements a modified idea of Priest’s LP** (paraconsistent logic) and uses it to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
 
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](#)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CCBYNC-blue.svg)](#)
 [![LP](https://img.shields.io/badge/logic-Priest's%20LP-purple)](#)
 [![Safety](https://img.shields.io/badge/focus-AI%20Safety-orange)](#)
 
@@ -30,12 +30,12 @@ Not “three values.” **Genuine paraconsistent semantics** with proper truth p
 - **Graceful degradation** (never “NEITHER”; fall back to **BOTH**)
 - **Reliability learning** (bounded weights, down-weight poor sources)
 
-**Bottom line:** This moves from “interesting prototype” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
+**Bottom line:** This moves from what was once an “interesting prototype” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
 
 ---
 
 ## Core Idea (Meta-Dialetheism)
-Reality may present as jointly true/false. This engine **preserves contradiction** as a first-class feature (**BOTH**), and only collapses to classical bivalence (TRUE or FALSE) with sufficient **perspectival/contextual** warrant (high consensus + high confidence).
+Reality presents by default as jointly true and/or false. This engine **preserves contradiction** as a first-class feature (**BOTH**), and only collapses to classical bivalence (TRUE or FALSE) with sufficient **perspectival/contextual** warrant (high consensus + high confidence).
 
 ---
 
