@@ -55,6 +55,13 @@ When referencing, adapting, or building upon this work, please cite as:
 
 ---
 
+## Requirements
+- Python **3.7+** (recommended **3.10+**)
+- No runtime dependencies (standard library only)
+
+### Optional (dev)
+- pytest, ruff, black, mypy, hypothesis
+
 ## Core Idea (Meta-Dialetheism)
 Reality presents by default as jointly true and/or false. This engine **preserves contradiction** as a first-class feature (**BOTH**), and only collapses to classical bivalence (TRUE or FALSE) with sufficient **perspectival/contextual** warrant (high consensus + high confidence).
 
