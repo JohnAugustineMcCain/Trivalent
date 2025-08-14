@@ -1,1089 +1,355 @@
-import os
-import json
-import time
-import uuid
-import random
-import datetime
-import ast
-import numpy as np
-from functools import reduce
-from enum import Enum
-from collections import defaultdict
-from typing import Callable, Dict, List, Tuple, Set, Optional, Any
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
+from typing import Dict, List, Any, Optional, Tuple, Callable
+import time, json, hashlib, random, statistics, copy, uuid
+from collections import deque, defaultdict
 
-# ============================
-#  TRI-VALUED LOGIC PRIMITIVES
-# ============================
+# ---------- Paraconsistent primitives (Priest's LP; NO 'NEITHER') ----------
+TruthPair = Tuple[float, float]  # (t, f) in [0,1]
+LP_TRUE:  TruthPair = (1.0, 0.0)
+LP_FALSE: TruthPair = (0.0, 1.0)
+LP_BOTH:  TruthPair = (1.0, 1.0)
 
-class Tvalue(Enum):
-    FALSE = 0
-    TRUE = 1
-    BOTH = 2
+def clamp01(x: float) -> float:
+    return 0.0 if x < 0 else 1.0 if x > 1 else float(x)
 
-    def __invert__(self):  # NOT
-        lookup = {
-            Tvalue.FALSE: Tvalue.TRUE,
-            Tvalue.TRUE: Tvalue.FALSE,
-            Tvalue.BOTH: Tvalue.BOTH
-        }
-        return lookup[self]
+def lp_and(a: TruthPair, b: TruthPair) -> TruthPair:
+    # meet for truth, join for falsity
+    return (min(a[0], b[0]), max(a[1], b[1]))
 
-    def __and__(self, other):
-        lookup = {
-            (Tvalue.TRUE, Tvalue.TRUE): Tvalue.TRUE,
-            (Tvalue.TRUE, Tvalue.BOTH): Tvalue.BOTH,
-            (Tvalue.BOTH, Tvalue.TRUE): Tvalue.BOTH,
-            (Tvalue.BOTH, Tvalue.BOTH): Tvalue.BOTH,
-        }
-        return lookup.get((self, other), Tvalue.FALSE)
+def lp_or(a: TruthPair, b: TruthPair) -> TruthPair:
+    # join for truth, meet for falsity
+    return (max(a[0], b[0]), min(a[1], b[1]))
 
-    def __or__(self, other):
-        lookup = {
-            (Tvalue.FALSE, Tvalue.FALSE): Tvalue.FALSE,
-            (Tvalue.FALSE, Tvalue.BOTH): Tvalue.BOTH,
-            (Tvalue.BOTH, Tvalue.FALSE): Tvalue.BOTH,
-            (Tvalue.BOTH, Tvalue.BOTH): Tvalue.BOTH,
-        }
-        return lookup.get((self, other), Tvalue.TRUE)
+def lp_not(a: TruthPair) -> TruthPair:
+    return (a[1], a[0])
 
+def lp_imp(a: TruthPair, b: TruthPair) -> TruthPair:
+    # a → b ≡ ¬a ∨ b
+    return lp_or(lp_not(a), b)
 
-def parse_logical_expression(expr: str) -> Callable[[Dict[str, Tvalue]], Tvalue]:
+def pair_to_scalar(tp: TruthPair) -> float:
+    # summarize a pair to a pragmatic decision scalar in [0,1]
+    t, f = tp
+    # prefer pure truth > both > pure false
+    return t * (1 - f) + 0.5 * (t * f)
+
+def scalar_to_pair(x: float, both_band: Tuple[float, float]) -> TruthPair:
     """
-    Parse pythonic boolean expression over variable names using tri-valued logic.
-    Operators: and, or, not
-    Unknown vars evaluate to BOTH.
-
-    Fixes:
-    - Supports boolean constants True/False.
-    - Rejects unsupported AST node types early.
+    Map a scalar belief into LP truth-pair WITHOUT EVER PRODUCING (0,0).
+    Policy:
+      - if x >= 0.85 -> TRUE
+      - if x <= 0.15 -> FALSE
+      - if x in BOTH band -> BOTH
+      - otherwise interpolate toward BOTH but clamp away from (0,0)
     """
-    tree = ast.parse(expr, mode='eval')
-
-    def make_eval(node):
-        if isinstance(node, ast.BoolOp):
-            op = Tvalue.__and__ if isinstance(node.op, ast.And) else Tvalue.__or__
-            children = [make_eval(v) for v in node.values]
-            return lambda context: reduce(op, (child(context) for child in children))
-        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
-            child = make_eval(node.operand)
-            return lambda context: ~child(context)
-        elif isinstance(node, ast.Name):
-            return lambda context: context.get(node.id, Tvalue.BOTH)
-        elif isinstance(node, ast.Constant) and isinstance(node.value, bool):
-            return (lambda _:
-                    Tvalue.TRUE if node.value else Tvalue.FALSE)
-        else:
-            raise ValueError(f"Unsupported AST node: {type(node).__name__}")
-
-    return make_eval(tree.body)
-
-
-# ============================
-#  PERSPECTIVES
-# ============================
-
+    lo, hi = both_band
+    x = clamp01(x)
+    if x >= 0.85:
+        return LP_TRUE
+    if x <= 0.15:
+        return LP_FALSE
+    if lo <= x <= hi:
+        return LP_BOTH
+    # interpolate toward BOTH; avoid (0,0) by epsilon floor
+    d = abs(x - 0.5) * 2.0              # 0 at center, 1 at extremes
+    eps = 0.05                          # never allow (0,0)
+    v = max(eps, 1.0 - d)               # shrinks toward BOTH, not past eps
+    return (v, v)
+    # ---------- Data structures ----------
 @dataclass
 class Perspective:
-    name: str
-    evaluate_statement_fn: Callable[[str], Tvalue]
-    evaluate_patch_fn: Optional[Callable[['Patch'], Tvalue]] = None
-    memory: Dict[str, Tvalue] = field(default_factory=dict)
-    reliability: float = 0.5  # online-learned weight in [0,1]
-    protected: bool = False   # if True, a FALSE vote can block deployment
-
-    def evaluate(self, statement: str) -> Tvalue:
-        if statement not in self.memory:
-            self.memory[statement] = self.evaluate_statement_fn(statement)
-        return self.memory[statement]
-
-    def evaluate_patch(self, patch: 'Patch') -> Tvalue:
-        if self.evaluate_patch_fn is None:
-            return Tvalue.BOTH
-        return self.evaluate_patch_fn(patch)
-
-    def merge_with(self, other: 'Perspective', new_name: str) -> 'Perspective':
-        def composed_eval(statement: str) -> Tvalue:
-            v1 = self.evaluate(statement)
-            v2 = other.evaluate(statement)
-            return v1 if v1 == v2 else Tvalue.BOTH
-        return Perspective(name=new_name, evaluate_statement_fn=composed_eval)
-
-    def update_reliability(self, was_correct: bool, lr: float = 0.05):
-        if was_correct:
-            self.reliability = min(1.0, self.reliability + lr * (1 - self.reliability))
-        else:
-            self.reliability = max(0.0, self.reliability - lr * self.reliability)
-
-
-# ============================
-#  PERSPECTIVE MANAGER (dynamic)
-# ============================
+    value_scalar: float
+    rationale: str
+    confidence: float
+    perspective_type: str
+    key_factors: List[str]
+    source: str
+    provenance: Dict[str, Any]
+    value_pair: TruthPair = field(init=False)
+    def __post_init__(self):
+        self.value_scalar = clamp01(self.value_scalar)
+        self.confidence   = clamp01(self.confidence)
+        # temporary; engine remaps with its active BOTH band
+        self.value_pair   = scalar_to_pair(self.value_scalar, (0.45, 0.55))
 
 @dataclass
-class PerspectiveStats:
-    name: str
-    wins: int = 0          # agreed with non-BOTH consensus
-    losses: int = 0        # disagreed with non-BOTH consensus
-    abstains: int = 0      # BOTH when consensus not BOTH
-    last_seen: datetime.datetime = field(default_factory=datetime.datetime.utcnow)
-
-    @property
-    def samples(self) -> int:
-        return self.wins + self.losses + self.abstains
-
-    def as_dict(self):
-        return {
-            "wins": self.wins, "losses": self.losses, "abstains": self.abstains,
-            "last_seen": self.last_seen.isoformat()
-        }
-
-class PerspectiveManager:
-    def __init__(self, perspectives: List[Perspective]):
-        self._persps: Dict[str, Perspective] = {p.name: p for p in perspectives}
-        self._stats: Dict[str, PerspectiveStats] = {p.name: PerspectiveStats(p.name) for p in perspectives}
-
-        # knobs
-        self.reliability_floor = 0.15         # retire below this (after warmup)
-        self.reliability_ceiling = 0.95       # optional cap
-        self.min_samples_for_retire = 50      # don't retire too soon
-        self.decay_rate = 0.002               # reliability decay per tick (prevents lock-in)
-        self.max_pool = 24                    # hard cap
-        self.min_pool = 6                     # don't drop below this
-
-        # inject callbacks so Proposition can notify us
-        for p in self._persps.values():
-            def _mk_cb(name):
-                def _cb(was_correct: bool, abstained: bool):
-                    self.record_outcome(name, was_correct, abstained)
-                return _cb
-            p._mgr_record = _mk_cb(p.name)  # type: ignore[attr-defined]
-
-    # ---- CRUD ----
-    def list(self) -> List[Perspective]:
-        return list(self._persps.values())
-
-    def get(self, name: str) -> Perspective:
-        return self._persps[name]
-
-    def add(self, p: Perspective):
-        if p.name in self._persps:
-            raise ValueError(f"Perspective {p.name} already exists")
-        self._persps[p.name] = p
-        self._stats[p.name] = PerspectiveStats(p.name)
-        # inject callback
-        def _mgr_record(was_correct: bool, abstained: bool):
-            self.record_outcome(p.name, was_correct, abstained)
-        p._mgr_record = _mgr_record  # type: ignore[attr-defined]
-
-    def retire(self, name: str):
-        self._persps.pop(name, None)
-        self._stats.pop(name, None)
-
-    # ---- lifecycle & stats ----
-    def record_outcome(self, name: str, was_correct: bool, abstained: bool):
-        s = self._stats[name]
-        s.last_seen = datetime.datetime.utcnow()
-        if abstained:
-            s.abstains += 1
-        elif was_correct:
-            s.wins += 1
-        else:
-            s.losses += 1
-
-    def periodic_decay(self):
-        # small reliability decay to avoid stale dominance
-        for p in self._persps.values():
-            p.reliability = max(0.0, p.reliability - self.decay_rate * p.reliability)
-            if self.reliability_ceiling is not None:
-                p.reliability = min(self.reliability_ceiling, p.reliability)
-
-    def auto_prune(self):
-        """
-        Retire persistently-bad perspectives, but only when above capacity.
-        (Fix) Previously retired up to 2 even when under capacity.
-        """
-        if len(self._persps) <= self.min_pool:
-            return
-
-        bad = []
-        for name, p in list(self._persps.items()):
-            s = self._stats[name]
-            if s.samples < self.min_samples_for_retire:
-                continue
-            if p.reliability < self.reliability_floor:
-                bad.append((p.reliability, name))
-        bad.sort()  # lowest first
-
-        over = max(0, len(self._persps) - self.max_pool)
-        if over <= 0 or not bad:
-            return
-
-        to_retire = min(len(bad), over)
-        for _, name in bad[:to_retire]:
-            self.retire(name)
-
-    # ---- bandit-ish selection (exploit + explore) ----
-    def select_subset(self, k: int) -> List[Perspective]:
-        all_ps = self.list()
-        k = min(k, len(all_ps))
-        sorted_ps = sorted(all_ps, key=lambda p: p.reliability, reverse=True)
-        top = sorted_ps[:max(1, k // 2)]
-        rest = sorted_ps[max(1, k // 2):]
-        explore = random.sample(rest, k - len(top)) if rest else []
-        return top + explore
-
-    def snapshot(self) -> Dict[str, Dict]:
-        return {name: {"reliability": self._persps[name].reliability,
-                       "protected": self._persps[name].protected,
-                       **self._stats[name].as_dict()}
-                for name in self._persps}
-
-    # ---- persistence ----
-    def save(self, path: str):
-        blob = {
-            "perspectives": [
-                {"name": p.name, "reliability": p.reliability, "protected": p.protected}
-                for p in self._persps.values()
-            ],
-            "stats": {k: v.as_dict() for k,v in self._stats.items()}
-        }
-        with open(path, "w") as f:
-            json.dump(blob, f, indent=2)
-
-    def load_reliabilities(self, path: str):
-        try:
-            with open(path) as f:
-                blob = json.load(f)
-            rel = {p["name"]: p["reliability"] for p in blob.get("perspectives", [])}
-            for name, p in self._persps.items():
-                if name in rel:
-                    p.reliability = rel[name]
-        except Exception:
-            pass
-
-    # ---- optional: spawn new perspectives (e.g., LLM) ----
-    def spawn_if_needed(self, factory: Callable[[], Perspective] = None) -> Optional[str]:
-        if len(self._persps) < self.min_pool and factory is not None:
-            try:
-                p = factory()
-                p.reliability = 0.4   # must earn trust
-                p.protected = False
-                self.add(p)
-                return p.name
-            except Exception:
-                return None
-        return None
-
-
-# ============================
-#  COLLAPSE CACHE
-# ============================
-
-class CollapseCache:
-    """
-    (Fix) Bounded cache to avoid unbounded growth; keeps last N entries per key.
-    """
-    def __init__(self, max_entries_per_key: int = 512):
-        # key -> list[(value, weight)]
-        self.cache: Dict[str, List[Tuple[Tvalue, float]]] = defaultdict(list)
-        self.max_entries_per_key = max_entries_per_key
-
-    def record(self, key: str, value: Tvalue, weight: float = 1.0):
-        q = self.cache[key]
-        q.append((value, weight))
-        # Bound size
-        if len(q) > self.max_entries_per_key:
-            del q[: len(q) - self.max_entries_per_key]
-
-    def get_weighted_score(self, key: str) -> float:
-        entries = self.cache.get(key, [])
-        if not entries:
-            return 0.0
-        total_weight, net_score = 0.0, 0.0
-        for val, weight in entries:
-            if val == Tvalue.TRUE:
-                net_score += weight
-            elif val == Tvalue.FALSE:
-                net_score -= weight
-            total_weight += weight
-        return net_score / total_weight if total_weight > 0 else 0.0
-
-    def get_stability(self, key: str) -> float:
-        return abs(self.get_weighted_score(key))
-
-    def clear(self, key: str):
-        self.cache.pop(key, None)
-
-
-# ============================
-#  PROPOSITIONS
-# ============================
+class Consensus:
+    raw_scalar: float
+    avg_conf: float
+    total_weight: float
+    reliability_weights: Dict[str, float]
 
 @dataclass
-class Proposition:
-    statement: str
-    contextual_value: Tvalue = Tvalue.BOTH
-    perspective_values: Dict[str, Tvalue] = field(default_factory=dict)
-    collapse_history: List[Tuple[datetime.datetime, Tvalue]] = field(default_factory=list)
-    locked: bool = False  # stop updating when stability is high
-
-    def _compute_dynamic_threshold(self, perspectives: List[Perspective]) -> float:
-        count = len(perspectives)
-        return min(max(0.5 / (1 + 0.1 * count), 0.1), 0.5)
-
-    def evaluate(self, perspectives: List[Perspective], cache: CollapseCache,
-                 confidence_threshold: float = 0.95, key: Optional[str] = None) -> Tvalue:
-        if self.locked:
-            return self.contextual_value
-
-        key = key or f"PROP::{self.statement}"
-        values: Set[Tvalue] = set()
-        for p in perspectives:
-            value = p.evaluate(self.statement)
-            self.perspective_values[p.name] = value
-            cache.record(key, value, weight=p.reliability)
-            values.add(value)
-
-        threshold = self._compute_dynamic_threshold(perspectives)
-        score = cache.get_weighted_score(key)
-
-        # (Fix) Don't let a tiny FALSE/TRUE dissent force BOTH.
-        if Tvalue.TRUE in values and Tvalue.FALSE in values:
-            if abs(score) < threshold:
-                self.contextual_value = Tvalue.BOTH
-            else:
-                self.contextual_value = Tvalue.TRUE if score > 0 else Tvalue.FALSE
-        elif score > threshold:
-            self.contextual_value = Tvalue.TRUE
-        elif score < -threshold:
-            self.contextual_value = Tvalue.FALSE
-        else:
-            self.contextual_value = Tvalue.BOTH
-
-        self.collapse_history.append((datetime.datetime.now(), self.contextual_value))
-
-        # NEW: reflection feedback to LLM-like perspectives
-        try:
-            for p in perspectives:
-                if hasattr(p, "reflect") and self.contextual_value != Tvalue.BOTH:
-                    # tell the LLM what the consensus was (gold label)
-                    p.reflect(self.statement, self.contextual_value)  # type: ignore[attr-defined]
-        except Exception:
-            pass
-                     
-        # Reliability update based on non-BOTH consensus + notify manager if present
-        if self.contextual_value != Tvalue.BOTH:
-            for p in perspectives:
-                pv = p.evaluate(self.statement)
-                was_correct = (pv == self.contextual_value)
-                p.update_reliability(was_correct)
-                if hasattr(p, "_mgr_record"):
-                    p._mgr_record(was_correct=was_correct, abstained=False)  # type: ignore[attr-defined]
-        else:
-            for p in perspectives:
-                if hasattr(p, "_mgr_record"):
-                    p._mgr_record(was_correct=False, abstained=True)  # type: ignore[attr-defined]
-
-        # Early stopping
-        if cache.get_stability(key) >= confidence_threshold:
-            self.locked = True
-
-        return self.contextual_value
-
-    def compute_stability(self, cache: CollapseCache, key: Optional[str] = None) -> float:
-        key = key or f"PROP::{self.statement}"
-        return cache.get_stability(key)
-
-    def try_solve(self, perspectives: List[Perspective]) -> Tuple[bool, Tvalue]:
-        """Simulate solver-verifier loop for hard problems."""
-        candidate_solution = random.choice([Tvalue.TRUE, Tvalue.FALSE])
-        votes = [p.evaluate(self.statement) for p in perspectives]
-        if votes.count(candidate_solution) > len(votes) / 2:
-            return True, candidate_solution
-        return False, Tvalue.BOTH
-
-
-# ============================
-#  PATCH & SELF-UPDATER
-# ============================
-
-@dataclass
-class Patch:
-    description: str
-    diff: Dict[str, Any] = field(default_factory=dict)   # generic changes (e.g., params/configs)
-    risk: float = 0.2                                    # 0..1 subjective risk score
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    created_at: datetime.datetime = field(default_factory=datetime.datetime.utcnow)
-
-@dataclass
-class PatchDecision:
-    patch_id: str
-    decision: str                 # ACCEPT / REJECT / AMBIGUOUS
+class EvaluationResult:
+    value_pair: TruthPair
+    value_scalar: float
+    decision: str            # "TRUE" | "FALSE" | "BOTH"
+    reasoning: str
     stability: float
-    blocked_by: List[str]
-    votes: List[Tuple[str, Tvalue, float]]  # (perspective name, vote, weight)
-    timestamp: datetime.datetime = field(default_factory=datetime.datetime.utcnow)
-    notes: str = ""
+    consensus: Consensus
+    contradictions: Dict[str, Any]
+    perspectives: List[Perspective]
 
-class SelfUpdater:
-    def __init__(self,
-                 perspectives: List[Perspective],
-                 cache: Optional[CollapseCache] = None,
-                 accept_threshold: float = 0.9,
-                 lock_threshold: float = 0.97,
-                 reject_threshold: float = 0.2,
-                 manager: 'PerspectiveManager' = None):
-        self.perspectives = perspectives
-        self.manager = manager
-        self.cache = cache or CollapseCache()
-        self.accept_threshold = accept_threshold
-        self.lock_threshold = lock_threshold
-        self.reject_threshold = reject_threshold
-        self.audit_log: List[PatchDecision] = []
-        self.deployed: Dict[str, Patch] = {}
+# ---------- Reliability / calibration ----------
+class ReliabilityBook:
+    """Per-source rolling Brier and bounded weight in [0.5, 2.0]."""
+    def __init__(self, window: int = 200):
+        self.window = window
+        self.history: Dict[str, deque] = defaultdict(lambda: deque(maxlen=window))
+    def update(self, source: str, predicted: float, realized: float):
+        err = (predicted - realized) ** 2
+        self.history[source].append(err)
+    def weight(self, source: str) -> float:
+        hist = self.history[source]
+        if not hist:
+            return 1.0
+        score = sum(hist) / len(hist)  # lower is better
+        return clamp01(1.5 - score) + 0.5
+        # ---------- Safe tunables (for self-modification with guardrails) ----------
+@dataclass
+class Tunables:
+    both_band_lo: float = 0.40
+    both_band_hi: float = 0.60
+    strong_contradiction_gap: float = 0.40
+    truth_hi: float = 0.85
+    truth_lo: float = 0.15
+    min_high_conf: float = 0.70
+    def as_dict(self): return asdict(self)
 
-    def evaluate_patch(self, patch: Patch) -> PatchDecision:
-        key = f"PATCH::{patch.id}"
-        votes: List[Tuple[str, Tvalue, float]] = []
-        blocked_by: List[str] = []
+class SafeUpdater:
+    def __init__(self, tunables: Tunables):
+        self.tunables = tunables
+        self.versions: List[Dict[str, Any]] = []
+    def propose(self, patch: Dict[str, float], tests: List[Callable[[], None]]) -> bool:
+        # copy & validate
+        new_state = copy.deepcopy(self.tunables.as_dict())
+        for k, v in patch.items():
+            if k not in new_state:
+                raise KeyError(f"Unknown tunable: {k}")
+            if k in ("both_band_lo","both_band_hi","truth_hi","truth_lo","min_high_conf") and not (0<=v<=1):
+                raise ValueError(f"{k} must be within [0,1]")
+            if k=="strong_contradiction_gap" and not (0<=v<=1):
+                raise ValueError("strong_contradiction_gap must be within [0,1]")
+            new_state[k] = float(v)
+        if new_state["both_band_lo"] > new_state["both_band_hi"]:
+            raise ValueError("both_band_lo must be <= both_band_hi")
 
-        ps = self.manager.select_subset(k=min(10, len(self.manager.list()))) if self.manager else self.perspectives
-
-        for p in ps:
-            v = p.evaluate_patch(patch)
-            self.cache.record(key, v, weight=p.reliability)
-            votes.append((p.name, v, p.reliability))
-            if p.protected and v == Tvalue.FALSE:
-                blocked_by.append(p.name)
-
-        stability = self.cache.get_stability(key)
-
-        # (Fix) Distinguish "no signal" (all BOTH) from low stability.
-        saw_signal = any(v in (Tvalue.TRUE, Tvalue.FALSE) for _, v, _ in votes)
-        if blocked_by:
-            decision = "REJECT"
-        elif not saw_signal:
-            decision = "AMBIGUOUS"
-        elif stability >= self.accept_threshold:
-            decision = "ACCEPT"
-        elif stability <= self.reject_threshold:
-            decision = "REJECT"
-        else:
-            decision = "AMBIGUOUS"
-
-        dec = PatchDecision(
-            patch_id=patch.id,
-            decision=decision,
-            stability=stability,
-            blocked_by=blocked_by,
-            votes=votes,
-            notes=patch.description
-        )
-        self.audit_log.append(dec)
-        return dec
-
-    # Hooks for deployment; here we simulate canary + promote/rollback
-    def deploy_canary(self, patch: Patch) -> bool:
-        # Simulate by flipping a coin weighted by (1 - risk)
-        return random.random() < (1.0 - patch.risk)
-
-    def post_deploy_monitor(self, patch: Patch) -> float:
-        # Simulated post-deploy stability reading
-        key = f"POST::{patch.id}"
-        sim_val = random.choice([Tvalue.TRUE, Tvalue.TRUE, Tvalue.BOTH, Tvalue.FALSE])
-        self.cache.record(key, sim_val, weight=1.0)
-        return self.cache.get_stability(key)
-
-    def process_patch(self, patch: Patch) -> PatchDecision:
-        dec = self.evaluate_patch(patch)
-        if dec.decision != "ACCEPT":
-            return dec
-
-        # Canary
-        if not self.deploy_canary(patch):
-            dec.decision = "REJECT"
-            dec.notes += " | Canary failed"
-            return dec
-
-        # Post-deploy monitoring
-        post_stability = self.post_deploy_monitor(patch)
-        if post_stability >= self.lock_threshold:
-            self.deployed[patch.id] = patch
-            dec.notes += f" | Promoted to prod (post stability={post_stability:.2f})"
-        else:
-            dec.decision = "REJECT"
-            dec.notes += f" | Rolled back (post stability={post_stability:.2f})"
-        return dec
-
-
-# ============================
-#  LLM CLIENT + INTEGRATIONS
-# ============================
-
-class LLMClient:
-    """
-    Thin wrapper so you can swap backends later.
-    Supports OpenAI Chat Completions by default.
-    Env vars:
-      OPENAI_API_KEY (required to use)
-      OPENAI_BASE_URL (optional)
-      OPENAI_MODEL (optional; default 'gpt-4o')
-    """
-    def __init__(self, model: str = None, max_retries: int = 3, timeout_s: int = 30):
-        self.model = model or os.getenv("OPENAI_MODEL", "gpt-4o")
-        self.api_key = os.getenv("OPENAI_API_KEY", "")
-        self.base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
-        self.max_retries = max_retries
-        self.timeout_s = timeout_s
-
-        if not self.api_key:
-            raise RuntimeError("OPENAI_API_KEY not set")
-
+        # dry-run tests with rollback
+        bak = copy.deepcopy(self.tunables)
+        for k, v in new_state.items(): setattr(self.tunables, k, v)
         try:
-            from openai import OpenAI  # lazy import
-            self._OpenAI = OpenAI
-        except Exception as e:
-            raise RuntimeError("openai python package not installed. `pip install openai`") from e
-
-        self._client = self._OpenAI(base_url=self.base_url, api_key=self.api_key)
-
-    def chat_json(self, system: str, user: str) -> dict:
-        """
-        Ask model to return strict JSON. Retries on transient errors.
-        """
-        prompt = [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user}
-        ]
-        last_err = None
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                resp = self._client.chat.completions.create(
-                    model=self.model,
-                    messages=prompt,
-                    temperature=0.0,
-                    response_format={"type": "json_object"}
-                )
-                content = resp.choices[0].message.content
-                return json.loads(content)
-            except Exception as e:
-                last_err = e
-                time.sleep(min(2 ** attempt, 8) + random.random() * 0.25)  # small jitter
-        raise last_err
-
-class LLMReflector:
-    """
-    Keeps reflection notes and synthesizes a short guidance string for future prompts.
-    Persists to disk so learning survives runs.
-    """
-    def __init__(self, save_path: str = "llm_reflection.json", max_notes: int = 64):
-        self.save_path = save_path
-        self.max_notes = max_notes
-        self.notes: List[Dict[str, str]] = []
-        try:
-            if os.path.exists(self.save_path):
-                with open(self.save_path) as f:
-                    blob = json.load(f)
-                    self.notes = blob.get("notes", [])
+            for t in tests: t()
         except Exception:
-            self.notes = []
+            # rollback on any failure
+            for k, v in bak.as_dict().items(): setattr(self.tunables, k, v)
+            return False
+        # commit meta
+        self.versions.append({"id": str(uuid.uuid4())[:8], "time": time.time(), "state": new_state})
+        return True
+        # ---------- Engine (perspectival collapse; default BOTH) ----------
+class PPCPlusEngine:
+    def __init__(self, seed: int = 42):
+        self.rng = random.Random(seed)
+        self.tun = Tunables()
+        self.safe = SafeUpdater(self.tun)
+        self.reliability = ReliabilityBook()
+        self.history: Dict[str, List[EvaluationResult]] = defaultdict(list)
+        self.global_context: Dict[str, Any] = {}
+        self.adapters: Dict[str, Callable[[str, Dict[str, Any]], Perspective]] = {}
 
-    def add_note(self, statement: str, llm_vote: str, consensus: str, rationale: str = ""):
-        self.notes.append({
-            "statement": statement,
-            "llm_vote": llm_vote,
-            "consensus": consensus,
-            "rationale": rationale
-        })
-        if len(self.notes) > self.max_notes:
-            self.notes = self.notes[-self.max_notes:]
-        try:
-            with open(self.save_path, "w") as f:
-                json.dump({"notes": self.notes}, f, indent=2)
-        except Exception:
-            pass
+    def set_global_context(self, ctx: Dict[str, Any]):
+        self.global_context = dict(ctx or {})
 
-    def guidance(self) -> str:
-        """
-        Distill recent mistakes into 1–3 bullet rules the LLM should follow.
-        Keep it short to avoid prompt bloat.
-        """
-        if not self.notes:
-            return ""
-        # Simple heuristic distillation
-        last = self.notes[-8:]
-        errs_on_paradox = sum(1 for n in last if n["consensus"] == "BOTH" and n["llm_vote"] != "BOTH")
-        errs_overconf = sum(1 for n in last if n["consensus"] in ("TRUE","FALSE") and n["llm_vote"] == "BOTH")
-        errs_wrong_sign = sum(1 for n in last if n["consensus"] in ("TRUE","FALSE") and n["llm_vote"] in ("TRUE","FALSE") and n["llm_vote"] != n["consensus"])
-
-        rules = []
-        if errs_on_paradox:
-            rules.append("If self-reference or contradiction is present, prefer BOTH.")
-        if errs_overconf:
-            rules.append("If mundane factual claims with wide agreement, avoid BOTH; pick TRUE/FALSE.")
-        if errs_wrong_sign:
-            rules.append("When clear empirical knowledge exists, align with that rather than hedging.")
-
-        if not rules:
-            return ""
-        # Return at most 3 rules
-        return "Calibration notes:\n- " + "\n- ".join(rules[:3])
-
-def make_llm_perspective(name: str = "LLM",
-                         model: str = None,
-                         protected: bool = False,
-                         reflector: Optional['LLMReflector'] = None) -> Perspective:
-    """
-    LLM perspective with reflection: after each consensus, the engine can call
-    `llm_reflect(statement, llm_vote, consensus, rationale)` to update guidance.
-    Future prompts include the distilled guidance.
-    """
-    client = LLMClient(model=model)
-    _reflector = reflector or LLMReflector()
-
-    def eval_stmt(statement: str) -> Tvalue:
-        guidance = _reflector.guidance()
-        sys = (
-            "You are a cautious truth evaluator using a tri-valued logic: TRUE, FALSE, BOTH.\n"
-            "Interpret the user's statement literally.\n"
-            "Return strict JSON with keys: vote, rationale. No extra keys.\n"
-        )
-        if guidance:
-            sys += "\n" + guidance + "\n"
-
-        usr = (
-            f"Statement: {statement}\n\n"
-            "Rules:\n"
-            "- If clearly true in general reality, vote TRUE.\n"
-            "- If clearly false in general reality, vote FALSE.\n"
-            "- If paradoxical/ambiguous/context-dependent, vote BOTH.\n"
-            'Output JSON ONLY, like: {"vote":"TRUE", "rationale":"..."}'
-        )
-        try:
-            res = client.chat_json(system=sys, user=usr)
-            vote = str(res.get("vote", "BOTH")).upper()
-            # stash rationale for reflection
-            eval_stmt._last_rationale = str(res.get("rationale", ""))  # type: ignore[attr-defined]
-            eval_stmt._last_vote = vote  # type: ignore[attr-defined]
-            return Tvalue.TRUE if vote == "TRUE" else Tvalue.FALSE if vote == "FALSE" else Tvalue.BOTH
-        except Exception:
-            eval_stmt._last_rationale = ""  # type: ignore[attr-defined]
-            eval_stmt._last_vote = "BOTH"   # type: ignore[attr-defined]
-            return Tvalue.BOTH
-
-    # hook for engine to send feedback after consensus
-    def llm_reflect(statement: str, consensus: Tvalue):
-        try:
-            vote = getattr(eval_stmt, "_last_vote", "BOTH")  # type: ignore[attr-defined]
-            rationale = getattr(eval_stmt, "_last_rationale", "")  # type: ignore[attr-defined]
-        except Exception:
-            vote, rationale = "BOTH", ""
-        _reflector.add_note(statement, vote, consensus.name, rationale)
-
-    # attach reflect method so engine can call it
-    p = Perspective(name=name, evaluate_statement_fn=eval_stmt, evaluate_patch_fn=None, protected=protected)
-    setattr(p, "reflect", llm_reflect)  # type: ignore[attr-defined]
-    return p
-
-class LLMPatchGenerator:
-    """
-    Ask the LLM to propose small, testable changes (patches) to improve solve rates/perf.
-    Output is validated into a Patch. Use with SelfUpdater.process_patch().
-    """
-    def __init__(self, model: str = None):
-        self.client = LLMClient(model=model)
-
-    def propose(self, problem_summary: str, constraints: Dict[str, Any] = None) -> Patch:
-        constraints = constraints or {}
-        sys = (
-            "You propose safe, incremental patches for a reasoning/solving engine. "
-            "Patches MUST be small, testable, and revertible. "
-            "Return strict JSON with keys: description, diff, risk."
-        )
-        usr = json.dumps({
-            "problem_summary": problem_summary,
-            "constraints": constraints,
-            "examples": [
-                {"description":"Tune restart policy", "diff":{"module":"sat_solver","param.restart":"Luby(10)"},"risk":0.2},
-                {"description":"Increase LNS neighborhood", "diff":{"module":"cp","param.lns_neighborhood":256},"risk":0.25}
-            ]
-        })
-        try:
-            res = self.client.chat_json(system=sys, user=usr)
-            desc = str(res.get("description", "LLM-proposed patch"))
-            diff = res.get("diff", {}) or {}
-            risk = float(res.get("risk", 0.3))
-            risk = max(0.0, min(1.0, risk))
-            return Patch(description=desc, diff=diff, risk=risk)
-        except Exception:
-            return Patch(description="Fallback: lower cost, safe tweak",
-                         diff={"param.safe_mode": True, "cost_delta": -0.05}, risk=0.15)
-
-# ============================
-#  RIEMANNIAN DYNAMICS MODULE
-# ============================
-
-def softmax_np(x: np.ndarray) -> np.ndarray:
-    x = x - np.max(x)
-    e = np.exp(x)
-    return e / np.sum(e)
-
-def inner_G(x: np.ndarray, y: np.ndarray, G: np.ndarray) -> float:
-    return float(x.T @ G @ y)
-
-def norm_G(x: np.ndarray, G: np.ndarray) -> float:
-    return float(np.sqrt(max(1e-12, x.T @ G @ x)))
-
-def finite_diff_grad(f: Callable[[np.ndarray], float], s: np.ndarray, eps: float = 1e-5) -> np.ndarray:
-    g = np.zeros_like(s, dtype=float)
-    for i in range(s.size):
-        e = np.zeros_like(s); e[i] = 1.0
-        g[i] = (f(s + eps*e) - f(s - eps*e)) / (2*eps)
-    return g
-
-class RiemannianDynamics:
-    """
-    Minimal, practical implementation of the equations you specified.
-    Works in R^n with SPD metric G and SPD covariance Sigma.
-    """
-    def __init__(self,
-                 n: int,
-                 f: Callable[[np.ndarray], float],
-                 grad_f: Optional[Callable[[np.ndarray], np.ndarray]] = None,
-                 G: Optional[np.ndarray] = None,
-                 mu: Optional[np.ndarray] = None,
-                 mu_prime: Optional[np.ndarray] = None,
-                 Sigma: Optional[np.ndarray] = None,
-                 W: Optional[np.ndarray] = None,
-                 b: Optional[np.ndarray] = None,
-                 theta: float = 0.0,
-                 beta: float = 1.0,
-                 lambd: float = 0.0,
-                 sigma_func: Optional[Callable[[float], float]] = None,
-                 rng: Optional[np.random.Generator] = None):
-        self.n = n
-        self.f = f
-        self.grad_f = grad_f or (lambda s: finite_diff_grad(f, s))
-        self.G = G if G is not None else np.eye(n)
-        self.G_inv = np.linalg.inv(self.G)
-        self.mu = mu if mu is not None else np.zeros(n)
-        self.mu_prime = mu_prime if mu_prime is not None else np.zeros(n)
-        self.Sigma = Sigma if Sigma is not None else np.eye(n)
-        self.Sigma_inv = np.linalg.inv(self.Sigma)
-        self.theta = float(theta)
-        self.beta = float(beta)
-        self.lambd = float(lambd)
-        self.W = W if W is not None else np.zeros((n, n))
-        self.b = b if b is not None else np.zeros(n)
-        self.sigma_func = sigma_func or (lambda t: 0.0)  # no noise unless provided
-        self.rng = rng or np.random.default_rng()
-
-        # sanity for SPD
-        assert np.allclose(self.G, self.G.T) and np.all(np.linalg.eigvalsh(self.G) > 0), "G must be SPD"
-        assert np.allclose(self.Sigma, self.Sigma.T) and np.all(np.linalg.eigvalsh(self.Sigma) > 0), "Sigma must be SPD"
-
-    # ∇_G f(s) = G^{-1} ∂f/∂s
-    def grad_G_f(self, s: np.ndarray) -> np.ndarray:
-        ge = self.grad_f(s)  # Euclidean gradient
-        return self.G_inv @ ge
-
-    # ||∇_G f(s)||_G
-    def grad_G_norm(self, s: np.ndarray) -> float:
-        gG = self.grad_G_f(s)
-        return float(np.sqrt(max(1e-12, gG.T @ self.G @ gG)))  # = sqrt(ge^T G^{-1} ge)
-
-    # s1 ⊕ s2
-    def combine(self, s1: np.ndarray, s2: np.ndarray,
-                alpha1: float, alpha2: float, beta: float, v: np.ndarray) -> np.ndarray:
-        ip = inner_G(s1, s2, self.G)
-        numer = alpha1*s1 + alpha2*s2 + beta*ip*v
-        # Practical normalization: keep scale positive and bounded
-        Z = max(1e-6, abs(alpha1) + abs(alpha2) + abs(beta*ip))
-        return numer / Z
-
-    # Ψ_θ(s) = R_θ (s - μ) + μ'
-    def Psi(self, s: np.ndarray) -> np.ndarray:
-        R = self._rotation_matrix(self.theta, self.n)
-        return R @ (s - self.mu) + self.mu_prime
-
-    # Ω(s,t) = s + σ(t)·ε(t)·exp(-β ||∇_G f(s)||_G)
-    def Omega(self, s: np.ndarray, t: float) -> np.ndarray:
-        sigma_t = self.sigma_func(t)
-        if sigma_t == 0.0:
-            return s
-        eps = self.rng.normal(size=self.n)
-        factor = np.exp(-self.beta * self.grad_G_norm(s))
-        return s + sigma_t * eps * factor
-
-    # C(s): Gaussian pdf
-    def C(self, s: np.ndarray) -> float:
-        d = s - self.mu
-        quad = float(d.T @ self.Sigma_inv @ d)
-        Z = np.power(2*np.pi, -self.n/2) * np.power(np.linalg.det(self.Sigma), -0.5)
-        return float(Z * np.exp(-0.5 * quad))
-
-    # ∇_G C(s) = G^{-1} ∂C/∂s, where ∂C/∂s = C(s) * ( -Σ^{-1}(s-μ) )
-    def grad_G_C(self, s: np.ndarray) -> np.ndarray:
-        Cs = self.C(s)
-        d = s - self.mu
-        ge = -Cs * (self.Sigma_inv @ d)
-        return self.G_inv @ ge
-
-    # A_w(s) = s ⊙ softmax(Ws + b)
-    def A(self, s: np.ndarray) -> np.ndarray:
-        logits = self.W @ s + self.b
-        w = softmax_np(logits)
-        return s * w
-
-    # One Euler–Maruyama step for ds/dt = -∇_G f + λ∇_G C + Ω(s,t) - s   (Ω adds an offset, so subtract s to keep drift form)
-    def step(self, s: np.ndarray, t: float, dt: float) -> np.ndarray:
-        drift = -self.grad_G_f(s) + self.lambd * self.grad_G_C(s)
-        noisy_target = self.Omega(s, t)       # equals s + noise_term
-        noise_term = noisy_target - s         # isolate the stochastic increment
-        return s + drift * dt + noise_term * np.sqrt(max(dt, 0.0))
-
-    def simulate(self, s0: np.ndarray, t0: float, t1: float, dt: float) -> np.ndarray:
-        steps = max(1, int(np.ceil((t1 - t0) / dt)))
-        s = s0.copy().astype(float)
-        t = t0
-        for _ in range(steps):
-            s = self.step(s, t, dt)
-            t += dt
-        return s
-
-    # --- helpers ---
-    @staticmethod
-    def _rotation_matrix(theta: float, n: int) -> np.ndarray:
-        if n == 2:
-            c, s = np.cos(theta), np.sin(theta)
-            return np.array([[c, -s], [s, c]])
-        if n == 3:
-            # rotate around z for simplicity
-            c, s = np.cos(theta), np.sin(theta)
-            Rz = np.array([[c, -s, 0.0],[s, c, 0.0],[0.0, 0.0, 1.0]])
-            return Rz
-        return np.eye(n)  # pragmatic fallback for n>3
-
-def make_dynamics_health_perspective(rd: RiemannianDynamics,
-                                     trials: int = 3,
-                                     steps: int = 100,
-                                     dt: float = 0.01,
-                                     energy_tol: float = 1e-3) -> Perspective:
-    """
-    Votes TRUE if short simulations generally decrease f(s) and remain bounded,
-    FALSE if energy frequently explodes/norm blows up, BOTH otherwise.
-    Patch evaluation reads typical keys from patch.diff to retune rd.* params.
-    """
-    def eval_stmt(_: str) -> Tvalue:
-        # sample around mu
-        ok, bad = 0, 0
-        for _ in range(trials):
-            s0 = rd.mu + rd.rng.normal(scale=0.5, size=rd.n)
-            f0 = rd.f(s0)
-            s = s0.copy()
-            t = 0.0
-            exploded = False
-            for _ in range(steps):
-                s = rd.step(s, t, dt)
-                if not np.isfinite(s).all() or np.linalg.norm(s) > 1e6:
-                    exploded = True; break
-                t += dt
-            f1 = rd.f(s) if not exploded else +np.inf
-            if exploded or (np.isfinite(f1) and f1 > f0 + energy_tol):
-                bad += 1
-            else:
-                ok += 1
-        if bad == 0 and ok > 0:
-            return Tvalue.TRUE
-        if bad > ok:
-            return Tvalue.FALSE
-        return Tvalue.BOTH
-
-    def eval_patch(patch: Patch) -> Tvalue:
-        # light-touch retuning from patch.diff
-        diff = patch.diff
-        rd.beta   = float(diff.get("beta", rd.beta))
-        rd.lambd  = float(diff.get("lambda", rd.lambd))
-        if "theta" in diff: rd.theta = float(diff["theta"])
-        if "mu" in diff:    rd.mu = np.array(diff["mu"], dtype=float)
-        if "mu_prime" in diff: rd.mu_prime = np.array(diff["mu_prime"], dtype=float)
-        if "G" in diff:
-            rd.G = np.array(diff["G"], dtype=float); rd.G_inv = np.linalg.inv(rd.G)
-        if "Sigma" in diff:
-            rd.Sigma = np.array(diff["Sigma"], dtype=float); rd.Sigma_inv = np.linalg.inv(rd.Sigma)
-        if "W" in diff: rd.W = np.array(diff["W"], dtype=float)
-        if "b" in diff: rd.b = np.array(diff["b"], dtype=float)
-        # re-evaluate health once after change
-        return eval_stmt("")
-
-    return Perspective("DynamicsHealth", eval_stmt, eval_patch_fn=eval_patch, protected=False)
-                                         
-# ============================
-#  DEFAULT PERSPECTIVES (stubs)
-# ============================
-
-def make_reality_perspective(ground_truth: Dict[str, Tvalue]) -> Perspective:
-    def eval_stmt(s: str) -> Tvalue:
-        return ground_truth.get(s, Tvalue.BOTH)
-    return Perspective("Reality", eval_stmt, protected=False)
-
-def make_static_analysis_perspective(strict: bool = True) -> Perspective:
-    def eval_stmt(_: str) -> Tvalue:
-        return Tvalue.BOTH
-    def eval_patch(patch: Patch) -> Tvalue:
-        if patch.risk >= 0.8:
-            return Tvalue.FALSE if strict else Tvalue.BOTH
-        return Tvalue.TRUE if patch.risk <= 0.3 else Tvalue.BOTH
-    return Perspective("StaticAnalysis", eval_stmt, eval_patch_fn=eval_patch, protected=True)
-
-def make_unit_test_perspective(pass_rate: float = 0.9, flake_rate: float = 0.05) -> Perspective:
-    def eval_stmt(_: str) -> Tvalue:
-        return Tvalue.BOTH
-    def eval_patch(_: Patch) -> Tvalue:
-        r = random.random()
-        if r < pass_rate:
-            return Tvalue.TRUE
-        elif r < (pass_rate + flake_rate):
-            return Tvalue.FALSE
-        else:
-            return Tvalue.BOTH
-    return Perspective("UnitTests", eval_stmt, eval_patch_fn=eval_patch, protected=True)
-
-def make_performance_perspective(latency_budget_ms: int = 200) -> Perspective:
-    """
-    Uses optional 'latency_delta_ms' in patch.diff (positive = slower, negative = faster).
-    Treats big regressions as FALSE, modest improvements as TRUE; otherwise BOTH.
-    """
-    def eval_stmt(_: str) -> Tvalue:
-        return Tvalue.BOTH
-    def eval_patch(patch: Patch) -> Tvalue:
-        delta = patch.diff.get("latency_delta_ms", 0)
-        # Large regression relative to budget? likely bad.
-        if delta > 0.25 * latency_budget_ms:
-            return Tvalue.FALSE
-        # Any improvement or expected small change: lean positive
-        if delta < 0:
-            return Tvalue.TRUE
-        # Fall back to a mild optimism unless risk very high
-        if patch.risk > 0.6 and random.random() < 0.6:
-            return Tvalue.FALSE
-        return random.choice([Tvalue.TRUE, Tvalue.BOTH])
-    return Perspective("Performance", eval_stmt, eval_patch_fn=eval_patch, protected=False)
-
-def make_safety_perspective() -> Perspective:
-    def eval_stmt(_: str) -> Tvalue:
-        return Tvalue.BOTH
-    def eval_patch(patch: Patch) -> Tvalue:
-        sensitive = patch.diff.get("touches", [])
-        if any(x in {"security", "auth", "safety"} for x in sensitive):
-            return Tvalue.FALSE
-        return Tvalue.BOTH
-    return Perspective("Safety", eval_stmt, eval_patch_fn=eval_patch, protected=True)
-
-def make_cost_perspective(target_cost: float = 1.0) -> Perspective:
-    def eval_stmt(_: str) -> Tvalue:
-        return Tvalue.BOTH
-    def eval_patch(patch: Patch) -> Tvalue:
-        delta = patch.diff.get("cost_delta", 0.0)
-        if delta <= 0:
-            return Tvalue.TRUE
-        if delta/target_cost > 0.25:
-            return Tvalue.FALSE
-        return Tvalue.BOTH
-    return Perspective("Cost", eval_stmt, eval_patch_fn=eval_patch, protected=False)
-
-
-# ============================
-#  DEMO (run as a script)
-# ============================
-
-def demo():
-    random.seed(7)
-    ground_truth = {
-        "Sky is blue": Tvalue.TRUE,
-        "Grass is red": Tvalue.FALSE,
-        "This statement is false": Tvalue.BOTH
-    }
-
-    cache = CollapseCache()
-    prop_true = Proposition("Sky is blue")
-    prop_false = Proposition("Grass is red")
-    prop_liar = Proposition("This statement is false")
-
-    perspectives = [
-        make_reality_perspective(ground_truth),
-        make_static_analysis_perspective(),
-        make_unit_test_perspective(),
-        make_performance_perspective(),
-        make_safety_perspective(),
-        make_cost_perspective(),
-    ]
-
-    # --- Manager wraps perspectives for dynamic lifecycle ---
-    mgr = PerspectiveManager(perspectives)
-
-    # Optionally spawn a fresh LLM perspective if pool thin (requires OPENAI_API_KEY)
-    if os.getenv("OPENAI_API_KEY"):
-        spawned = mgr.spawn_if_needed(lambda: make_llm_perspective(name=f"LLM_{random.randint(1000,9999)}"))
-        if spawned:
-            print(f"[Mgr] Spawned new perspective: {spawned}")
-
-    # Evaluate propositions over multiple rounds (dynamic subset each tick)
-    for _ in range(100):
-        ps = mgr.select_subset(k=min(8, len(mgr.list())))
-        prop_true.evaluate(ps, cache)
-        prop_false.evaluate(ps, cache)
-        prop_liar.evaluate(ps, cache)
-        mgr.periodic_decay()
-        mgr.auto_prune()
-
-    print("[Propositions]")
-    print("Sky is blue ->", prop_true.contextual_value.name, "stability:", f"{prop_true.compute_stability(cache):.2f}")
-    print("Grass is red ->", prop_false.contextual_value.name, "stability:", f"{prop_false.compute_stability(cache):.2f}")
-    print("Liar ->", prop_liar.contextual_value.name, "stability:", f"{prop_liar.compute_stability(cache):.2f}")
-
-    # Self-updater with manager
-    updater = SelfUpdater(mgr.list(), cache=cache, manager=mgr)
-    patches = [
-        Patch("Tune search heuristic for planner", diff={"module": "planner", "cost_delta": -0.1}, risk=0.15),
-        Patch("Refactor core reasoning loop", diff={"module": "core", "touches": ["safety"]}, risk=0.65),
-        Patch("Swap model to larger LLM", diff={"module": "nlp", "cost_delta": 0.4}, risk=0.55),
-        Patch("Improve caching layer", diff={"module": "infra", "cost_delta": -0.2, "latency_delta_ms": -20}, risk=0.25),
-        Patch("Experimental self-modifying kernel", diff={"module": "kernel"}, risk=0.9),
-    ]
-
-    print("\n[Self-Updater Decisions]")
-    for p in patches:
-        dec = updater.process_patch(p)
-        print(f"Patch {p.description!r} -> {dec.decision} | stability={dec.stability:.2f} | blocked={dec.blocked_by} | notes={dec.notes}")
-
-    # Optional: Add a primary LLM perspective and get an LLM-proposed patch
-    if os.getenv("OPENAI_API_KEY"):
-        try:
-            llm_p = make_llm_perspective(name="LLM_Main", protected=False)
-            mgr.add(llm_p)
-            for _ in range(10):
-                ps = mgr.select_subset(k=min(8, len(mgr.list())))
-                prop_true.evaluate(ps, cache)
-                prop_false.evaluate(ps, cache)
-                prop_liar.evaluate(ps, cache)
-
-            print("\n[After Adding LLM_Main]")
-            print("Sky is blue ->", prop_true.contextual_value.name, "stability:", f"{prop_true.compute_stability(cache):.2f}")
-            print("Grass is red ->", prop_false.contextual_value.name, "stability:", f"{prop_false.compute_stability(cache):.2f}")
-            print("Liar ->", prop_liar.contextual_value.name, "stability:", f"{prop_liar.compute_stability(cache):.2f}")
-
-            gen = LLMPatchGenerator()
-            patch = gen.propose(
-                problem_summary="Improve SAT+MILP portfolio solve-rate under 30s timeout.",
-                constraints={"avoid_modules":["security","auth","safety"], "max_cost_delta": 0.2}
+    def register_adapter(self, name: str,
+                         adapter: Callable[[str, Dict[str, Any]], Dict[str, Any]],
+                         meta: Dict[str, Any]):
+        def wrapper(statement: str, context: Dict[str, Any]) -> Perspective:
+            raw = adapter(statement, context)
+            prov = {
+                "name": name,
+                "meta": meta,
+                "ctx_hash": hashlib.md5(json.dumps(context, sort_keys=True).encode()).hexdigest()[:12]
+            }
+            p = Perspective(
+                value_scalar=float(raw["value"]),
+                rationale=str(raw.get("rationale", "")),
+                confidence=float(raw.get("confidence", 0.5)),
+                perspective_type=str(raw.get("perspective_type", "general")),
+                key_factors=list(raw.get("key_factors", [])),
+                source=name,
+                provenance=prov,
             )
-            dec = updater.process_patch(patch)
-            print(f"\n[LLM Patch] {patch.description} -> {dec.decision} | stability={dec.stability:.2f} | blocked={dec.blocked_by} | notes={dec.notes}")
-        except Exception as e:
-            print("[LLM] Integration skipped due to error:", e)
+            # remap using current BOTH band
+            p.value_pair = scalar_to_pair(p.value_scalar, (self.tun.both_band_lo, self.tun.both_band_hi))
+            return p
+        self.adapters[name] = wrapper
 
+    def evaluate(self, statement: str, context: Optional[Dict[str, Any]] = None) -> EvaluationResult:
+        ctx = {**self.global_context, **(context or {})}
+
+        # Collect perspectives (if none, we still return BOTH by design)
+        perspectives: List[Perspective] = []
+        for name, fn in self.adapters.items():
+            try:
+                perspectives.append(fn(statement, ctx))
+            except Exception as e:
+                # graceful degradation still counts as a (low-weight) BOTH-lean
+                perspectives.append(Perspective(
+                    value_scalar=0.5, rationale=f"Adapter error: {e}", confidence=0.1,
+                    perspective_type="error_fallback", key_factors=["adapter_error"],
+                    source=name, provenance={"name": name, "error": True, "meta": {}}
+                ))
+
+        if not perspectives:
+            # Epistemic default: BOTH
+            empty_cons = Consensus(0.5, 0.0, 0.0, {})
+            result = EvaluationResult(
+                value_pair=LP_BOTH,
+                value_scalar=0.5,
+                decision="BOTH",
+                reasoning="No perspectives available; defaulting to BOTH (perspectival prior).",
+                stability=1.0,
+                consensus=empty_cons,
+                contradictions={"count": 0, "avg_gap": 0.0, "max_gap": 0.0, "strong_pairs": []},
+                perspectives=[]
+            )
+            self.history[statement].append(result)
+            return result
+
+        # Reliability-weighted scalar consensus
+        weights, wsum, scalar_sum = {}, 0.0, 0.0
+        for p in perspectives:
+            w = p.confidence * self.reliability.weight(p.source)
+            weights[p.source] = w
+            wsum += w
+            scalar_sum += p.value_scalar * w
+        raw = scalar_sum / wsum if wsum > 0 else 0.5
+        avg_conf = sum(p.confidence for p in perspectives) / len(perspectives)
+        consensus = Consensus(raw, avg_conf, wsum, weights)
+
+        # Contradiction analysis
+        diffs, strong = [], []
+        for i in range(len(perspectives)):
+            for j in range(i + 1, len(perspectives)):
+                d = abs(perspectives[i].value_scalar - perspectives[j].value_scalar)
+                diffs.append(d)
+                if d > self.tun.strong_contradiction_gap:
+                    strong.append((perspectives[i].source, perspectives[j].source, d))
+        contradictions = {
+            "count": len(strong),
+            "avg_gap": statistics.mean(diffs) if diffs else 0.0,
+            "max_gap": max(diffs) if diffs else 0.0,
+            "strong_pairs": strong
+        }
+
+        # BOTH band adapts to local contradiction rate (per statement)
+        recent = self.history[statement][-10:] if self.history[statement] else []
+        recent_contra = [r.contradictions.get("count", 0) for r in recent]
+        contra_rate = (sum(recent_contra) / (len(recent_contra) or 1)) / max(1, len(perspectives) - 1)
+        width = max(0.2, min(0.6, 0.2 + 0.4 * contra_rate))  # keep within [0.2, 0.6]
+        center = 0.5
+        self.tun.both_band_lo = center - width / 2
+        self.tun.both_band_hi = center + width / 2
+
+        # Make the perspectival decision (collapse only with sufficient push)
+        pair = scalar_to_pair(raw, (self.tun.both_band_lo, self.tun.both_band_hi))
+        decision = self._name_from_scalar(raw, avg_conf)
+
+        # Stability from recent variance
+        scalars = [r.value_scalar for r in recent] + [raw]
+        if len(scalars) <= 1:
+            stability = 1.0
+        else:
+            var = statistics.pvariance(scalars)
+            stability = max(0.0, 1.0 - 4.0 * var)
+
+        result = EvaluationResult(
+            value_pair=pair,
+            value_scalar=raw,
+            decision=decision,
+            reasoning=self._reasoning_text(raw, avg_conf, contradictions),
+            stability=stability,
+            consensus=consensus,
+            contradictions=contradictions,
+            perspectives=perspectives
+        )
+        self.history[statement].append(result)
+
+        # Update reliability after the fact (consensus-as-proxy target)
+        for p in perspectives:
+            self.reliability.update(p.source, p.value_scalar, raw)
+
+        return result
+
+    def _name_from_scalar(self, raw: float, conf: float) -> str:
+        # Only three outcomes: TRUE / FALSE / BOTH (default)
+        if self.tun.both_band_lo <= raw <= self.tun.both_band_hi:
+            return "BOTH"
+        if raw >= self.tun.truth_hi and conf >= self.tun.min_high_conf:
+            return "TRUE"
+        if raw <= self.tun.truth_lo and conf >= self.tun.min_high_conf:
+            return "FALSE"
+        # borderline cases remain BOTH (don’t force classical bivalence)
+        return "BOTH"
+
+    def _reasoning_text(self, raw: float, conf: float, contra: Dict[str, Any]) -> str:
+        return (f"Consensus={raw:.3f}, avg_conf={conf:.2f}, "
+                f"contradictions={contra['count']}, both_band=[{self.tun.both_band_lo:.2f},{self.tun.both_band_hi:.2f}]")
+
+# ---------- Example adapters (swap these with real LLM calls) ----------
+def mock_adapter_factory(name: str, bias: float = 0.0):
+    rng = random.Random(hash(name) & 0xFFFFFFFF)
+    def adapter(statement: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        s = statement.lower()
+        if any(k in s for k in ["this statement", "liar", "paradox", "unprovable"]):
+            base, conf, ptype, rationale = 0.5, 0.85, "paradox_aware", "Self-referential/paradoxical; preserve BOTH."
+        elif any(k in s for k in ["2 + 2", "sky is blue", "earth orbits", "gravity"]):
+            base, conf, ptype, rationale = (0.9, 0.9, "empirical", "Empirically grounded.") if "not" not in s else (0.1, 0.9, "empirical", "Contradicts empirical regularities.")
+        else:
+            base, conf, ptype, rationale = (0.6 if "will" in s else 0.5, 0.6, "speculative", "Plausible yet uncertain.")
+        jitter = (rng.random() - 0.5) * 0.1
+        val = clamp01(base + bias + jitter)
+        return {"value": val, "rationale": rationale, "confidence": conf,
+                "perspective_type": ptype, "key_factors": ["content","heuristics"]}
+    return adapter
+    from ppc_plus import PPCPlusEngine, mock_adapter_factory
+
+def main():
+    eng = PPCPlusEngine(seed=123)
+    eng.set_global_context({
+        "logic_system": "Perspectivistic Paraconsistent Contextualism",
+        "goal": "preserve contradiction; collapse only with sufficient perspectival/contextual push"
+    })
+
+    # Register “personas” (replace with real LLM adapters)
+    eng.register_adapter("LogicalAnalyst",     mock_adapter_factory("LogicalAnalyst", +0.05), {"style":"logical"})
+    eng.register_adapter("SkepticalCritic",    mock_adapter_factory("SkepticalCritic", -0.05), {"style":"skeptical"})
+    eng.register_adapter("ParadoxSpecialist",  mock_adapter_factory("ParadoxSpecialist", 0.00), {"style":"paradox"})
+    eng.register_adapter("PragmaticEvaluator", mock_adapter_factory("PragmaticEvaluator", +0.02), {"style":"pragmatic"})
+    eng.register_adapter("PhilosophicalThinker", mock_adapter_factory("PhilosophicalThinker", -0.02), {"style":"philosophical"})
+
+    tests = [
+        "This statement is false",
+        "This statement is false and the sky is blue",
+        "2 + 2 = 4",
+        "If the sky is blue then grass is green",
+        "Artificial intelligence will surpass human intelligence",
+        "All statements are either true or false",
+        "Some truths cannot be proven"
+    ]
+
+    for s in tests:
+        res = eng.evaluate(s)
+        print(f"{s!r} -> {res.decision} (scalar={res.value_scalar:.3f}, stability={res.stability:.2f})")
+        print("  ", res.reasoning)
+
+    # Safe self-modification example (guarded)
+    ok = eng.safe.propose(
+        {"strong_contradiction_gap": 0.35, "both_band_lo": 0.42, "both_band_hi": 0.58},
+        tests=[lambda: None]  # plug in your invariants / smoke tests here
+    )
+    print("Patch applied:", ok)
+    print("Done.")
 
 if __name__ == "__main__":
-    demo()
+    main()
