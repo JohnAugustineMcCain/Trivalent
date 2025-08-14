@@ -50,6 +50,16 @@ The result is an AI reasoning system that degrades gracefully, adapts safely, an
 
 ---
 
+About the Author
+
+I'm John A. McCain. I am not a professional programmer or AI researcher; I work at Walgreens. Three weeks ago I first learned about the P vs NP problem.
+
+Using only my phone I began developing a reasoning framework that blends my own philosophical work with ideas from paraconsistent logic, AI safety, computational theory, and other sources. PPC+ works in a way similar to Graham Priest’s LP, but it is not just LP. It comes from my own synthesis of many different ideas, built to preserve my philosophy of the reality of ambiguous contradiction when needed and collapse to classical truth values only when the context and perspectives justify it.
+
+I have not implemented real LLM adapters yet because I do not have access to large compute resources or APIs. My focus has been on creating the conceptual and logical foundation so others can plug in real models later.
+
+This project is unusual. It is an AI safety–oriented reasoning system designed on a phone, built without formal coding training, and shaped entirely by philosophical insight combined with persistence and curiosity.
+
 ## Requirements
 - Python **3.7+** (recommended **3.10+**)
 - No runtime dependencies (standard library only)
