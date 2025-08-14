@@ -58,4 +58,4 @@ Reality presents by default as jointly true and/or false. This engine **preserve
 ## Install
 ```bash
 pip install -e .
-# or just vendor `ppc_plus.py` into your project
+# or just vendor `reasoning_engine.py` into your project
