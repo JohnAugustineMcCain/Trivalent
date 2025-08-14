@@ -50,6 +50,7 @@ When referencing, adapting, or building upon this work, please cite as:
 - **Graceful degradation** (never “NEITHER”; fall back to **BOTH**)
 - **Reliability learning** (bounded weights, down-weight poor sources)
 
+### 4) Based on functional conclusions about P vs NP (see P vs NP as Epistemic Illusion)
 **Bottom line:** This moves from what was once an “interesting idea” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
 
 ---
