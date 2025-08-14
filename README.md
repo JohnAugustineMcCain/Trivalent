@@ -19,6 +19,13 @@ John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first
 
 ## Why This Could Be Revolutionary
 
+PPC+ is a contradiction-resilient reasoning engine that brings Priest’s Logic of Paradox (LP) out of theory and into production.
+Unlike typical AI pipelines that collapse contradictions into errors or discard them, PPC+ preserves and reasons with “both true and false” states as first-class citizens — enabling stable, meaningful inference even under paradox, uncertainty, or conflicting data.
+
+It combines a formal LP truth-pair core with an adapter-based architecture for LLM or data source integration, reliability-weighted consensus via rolling Brier scores, adaptive contradiction thresholds, and a SafeUpdater for guarded self-modification.
+
+The result is an AI reasoning system that degrades gracefully, adapts safely, and remains epistemically aware — making it a practical foundation for high-stakes, safety-critical AI applications.
+
 ### 1) Actually Implements Concepts from Priest’s LP in a New Way
 **Working paraconsistent semantics** with proper truth pairs `(t,f)` and truth-functional connectives:
 - `AND`: `(min t, max f)`  
