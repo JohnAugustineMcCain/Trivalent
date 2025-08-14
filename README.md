@@ -8,15 +8,13 @@ When referencing, adapting, or building upon this work, please cite as:
 
 > John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine.*  
 > Creative Commons BY-NC 4.0.  
-> Available at: https://github.com/<your-username>/<repo-name>
+> Available at: https://github.com/<JohnAugustineMcCain>/<Trivalent>
 
-**BibTeX:**
-```bibtex
 @software{mccain_ppcplus_2025,
   author = {McCain, John A.},
   title = {PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine},
   year = {2025},
-  url = {https://github.com/<JohnAugustineMcCain>/<trivalent>},
+  url = {https://github.com/JohnAugustineMcCain/trivalent},
   license = {CC BY-NC 4.0}
 }
 
