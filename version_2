@@ -1,0 +1,357 @@
+# section1_core.py
+# Section 1/3 — Core primitives, data model, and cache w/ decay & pruning
+# Stdlib-only. Python 3.10+
+
+from __future__ import annotations
+from dataclasses import dataclass, field
+from typing import Dict, List, Tuple, Iterable, Optional, Any
+from datetime import datetime, timezone, timedelta
+import math
+import uuid
+
+# =========================
+# 0) Time helpers
+# =========================
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+def days_between(a: datetime, b: datetime) -> float:
+    return abs((b - a).total_seconds()) / 86400.0
+
+# =========================
+# 1) Truth scalar & centered ops
+# =========================
+FALSE: float = 0.0
+BOTH:  float = 0.5  # default substrate
+TRUE:  float = 1.0
+
+def clamp01(x: float) -> float:
+    return max(0.0, min(1.0, x))
+
+def delta(v: float) -> float:
+    """Centered deviation from BOTH=0.5."""
+    return v - 0.5
+
+def neg(v: float) -> float:
+    """Negation: fixed point at 0.5, symmetric."""
+    return 1.0 - v
+
+def conj(v: float, u: float) -> float:
+    """AND: centered min (keeps 0.5 neutral)."""
+    return 0.5 + min(delta(v), delta(u))
+
+def disj(v: float, u: float) -> float:
+    """OR: centered max (keeps 0.5 neutral)."""
+    return 0.5 + max(delta(v), delta(u))
+
+def impl(v: float, u: float) -> float:
+    """Implication: max(¬v, u) lifted to the scalar domain."""
+    return max(neg(v), u)
+
+# =========================
+# 2) IDs & basic types
+# =========================
+
+def new_id(prefix: str) -> str:
+    return f"{prefix}:{uuid.uuid4().hex[:10]}"
+
+@dataclass(frozen=True)
+class Claim:
+    claim_id: str
+    canonical_text: str
+    tags: Tuple[str, ...] = ()
+
+@dataclass(frozen=True)
+class PerspectiveHeader:
+    perspective_id: str
+    kind: str                 # {"cognitive","affective","preference","social","meta"}
+    owner: str                # {"system","session","community","user:<uid>"}
+    traits: Tuple[str, ...] = ()
+    authority_hint: float = 1.0  # used as a default weight
+
+# One time-stamped reading for a (perspective, claim)
+@dataclass
+class PerspectiveValuePoint:
+    value: float                  # 0.0=F, 0.5=BOTH, 1.0=T
+    event_time: datetime
+    context_tags: Tuple[str, ...] = ()
+    justification: str = ""
+
+# Collection of readings for one claim under a given perspective
+@dataclass
+class ClaimSeries:
+    claim_id: str
+    points: List[PerspectiveValuePoint] = field(default_factory=list)
+    last_updated: Optional[datetime] = None
+    status: str = "active"        # {"active","inactive","evicted","new"}
+
+    def append(self, p: PerspectiveValuePoint) -> None:
+        self.points.append(p)
+        self.last_updated = p.event_time
+        self.status = "active"
+
+    def latest(self) -> Optional[PerspectiveValuePoint]:
+        return self.points[-1] if self.points else None
+
+# A perspective with its per-claim time series
+@dataclass
+class PerspectiveRecord:
+    header: PerspectiveHeader
+    claims: Dict[str, ClaimSeries] = field(default_factory=dict)
+    last_active: Optional[datetime] = None
+
+    def touch(self, t: Optional[datetime] = None) -> None:
+        self.last_active = t or utcnow()
+
+# =========================
+# 3) Decay, snap-to-both, eviction
+# =========================
+
+@dataclass
+class DecayPolicy:
+    # Your defaults
+    half_life_true_days: float = 7.0
+    half_life_false_days: float = 1.0
+    snap_to_both_band: Tuple[float, float] = (0.4, 0.6)
+    evict_after_days_at_exact_both: float = 14.0
+
+    # Optional: category-specific half-lives (affect/preference), can be None to ignore
+    half_life_affective_true_days: Optional[float] = 3.0
+    half_life_preference_true_days: Optional[float] = 21.0
+
+    def _half_life_for(self, header: PerspectiveHeader, last_v: float) -> float:
+        """Pick half-life by perspective kind + which side of center it's on."""
+        if header.kind == "affective" and last_v > 0.5 and self.half_life_affective_true_days:
+            return self.half_life_affective_true_days
+        if header.kind == "preference" and last_v > 0.5 and self.half_life_preference_true_days:
+            return self.half_life_preference_true_days
+        if last_v > 0.5:
+            return self.half_life_true_days
+        elif last_v < 0.5:
+            return self.half_life_false_days
+        else:
+            # already at 0.5
+            return 0.0
+
+    def apply_decay(self, header: PerspectiveHeader, v0: float, t0: datetime, now: datetime) -> float:
+        """Exponential pull toward 0.5 with asymmetric half-lives (True slower, False faster)."""
+        if v0 == 0.5:
+            return 0.5
+        hl = self._half_life_for(header, v0)
+        if hl <= 0:
+            return 0.5
+        dt_days = days_between(t0, now)
+        # v(t) = 0.5 + (v0 - 0.5) * 2^{-dt/HL}
+        vt = 0.5 + (v0 - 0.5) * math.pow(0.5, dt_days / hl)
+        return clamp01(vt)
+
+    def snap_or_status(self, v: float, last_update: datetime, now: datetime) -> Tuple[float, str]:
+        """Snap to exact 0.5 inside the snap band when unreinforced; evict after N days at 0.5."""
+        lo, hi = self.snap_to_both_band
+        status = "active"
+        vv = v
+        if lo <= v <= hi:
+            vv = 0.5
+            # After snap, mark inactive (eligible for eviction clock)
+            status = "inactive"
+            if days_between(last_update, now) >= self.evict_after_days_at_exact_both:
+                status = "evicted"
+        return vv, status
+
+# =========================
+# 4) In-memory cache (perspectives only)
+# =========================
+
+class PerspectiveCache:
+    """
+    Stores only perspectives and their per-claim time series. Prompts are NOT stored.
+    Provides decay, snap-to-both, and eviction logic on read/maintenance.
+    """
+
+    def __init__(self, policy: Optional[DecayPolicy] = None):
+        self._perspectives: Dict[str, PerspectiveRecord] = {}
+        self.policy = policy or DecayPolicy()
+
+    # -- Perspective management --
+
+    def upsert_perspective(self, header: PerspectiveHeader) -> PerspectiveRecord:
+        rec = self._perspectives.get(header.perspective_id)
+        if rec is None:
+            rec = PerspectiveRecord(header=header)
+            self._perspectives[header.perspective_id] = rec
+        else:
+            # allow kind/owner/traits/authority_hint updates
+            rec.header = header
+        rec.touch()
+        return rec
+
+    def get_perspective(self, perspective_id: str) -> Optional[PerspectiveRecord]:
+        return self._perspectives.get(perspective_id)
+
+    def list_perspectives(self) -> List[PerspectiveRecord]:
+        return list(self._perspectives.values())
+
+    # -- Read/Write points --
+
+    def write_point(
+        self,
+        header: PerspectiveHeader,
+        claim: Claim,
+        value: float,
+        event_time: Optional[datetime] = None,
+        context_tags: Iterable[str] = (),
+        justification: str = "",
+    ) -> None:
+        """Append a new reading; resets decay clock for that perspective+claim."""
+        rec = self.upsert_perspective(header)
+        series = rec.claims.get(claim.claim_id)
+        if series is None:
+            series = ClaimSeries(claim_id=claim.claim_id, status="new")
+            rec.claims[claim.claim_id] = series
+        point = PerspectiveValuePoint(
+            value=clamp01(value),
+            event_time=event_time or utcnow(),
+            context_tags=tuple(sorted(set(context_tags))),
+            justification=justification,
+        )
+        series.append(point)
+        rec.touch(point.event_time)
+
+    def read_current_value(
+        self, header: PerspectiveHeader, claim_id: str, now: Optional[datetime] = None
+    ) -> Tuple[float, str, Optional[datetime]]:
+        """
+        Return the decayed/snapshotted value and status for this (perspective, claim).
+        If no series exists, return (0.5, "new", None).
+        """
+        now = now or utcnow()
+        rec = self._perspectives.get(header.perspective_id)
+        if rec is None:
+            return BOTH, "new", None
+        series = rec.claims.get(claim_id)
+        if series is None or not series.points:
+            return BOTH, "new", None
+
+        last = series.latest()
+        assert last is not None
+        v = self.policy.apply_decay(rec.header, last.value, last.event_time, now)
+        v, status = self.policy.snap_or_status(v, last.event_time, now)
+        return v, status, series.last_updated
+
+    # -- Maintenance (batch decay/snap/evict) --
+
+    def maintenance(self, now: Optional[datetime] = None) -> None:
+        now = now or utcnow()
+        to_evict: List[Tuple[str, str]] = []  # (perspective_id, claim_id)
+        for pid, rec in list(self._perspectives.items()):
+            rec.touch(now)
+            for cid, series in list(rec.claims.items()):
+                if not series.points:
+                    continue
+                last = series.latest()
+                if last is None:
+                    continue
+                v = self.policy.apply_decay(rec.header, last.value, last.event_time, now)
+                v2, status = self.policy.snap_or_status(v, last.event_time, now)
+
+                # If snapped to exact 0.5 and evicted, mark for deletion
+                if status == "evicted":
+                    to_evict.append((pid, cid))
+                else:
+                    # If we snapped (0.4-0.6) to 0.5, append a synthetic point to reflect the snap
+                    if v2 == 0.5 and (series.status != "inactive" or last.value != 0.5):
+                        series.points.append(
+                            PerspectiveValuePoint(value=0.5, event_time=now, justification="snap-to-both")
+                        )
+                        series.last_updated = now
+                    series.status = status
+
+        # Perform evictions
+        for pid, cid in to_evict:
+            rec = self._perspectives.get(pid)
+            if rec and cid in rec.claims:
+                del rec.claims[cid]
+            # If perspective becomes empty, keep it (identity) but could also GC if desired
+
+# =========================
+# 5) Fusion & dissent helpers
+# =========================
+
+@dataclass
+class DissentProfile:
+    mass_above: float
+    mass_below: float
+    n_perspectives: int
+    notes: str = ""
+
+def fuse_centered(values_and_weights: Iterable[Tuple[float, float]]) -> Tuple[float, DissentProfile]:
+    """
+    Paraconsistent fusion:
+    V = 0.5 + sum_i w_i*(v_i-0.5) / (sum_i |w_i| + eps)
+    Also compute a dissent profile: weighted mass above/below 0.5.
+    """
+    eps = 1e-9
+    num = 0.0
+    den = 0.0
+    mass_above = 0.0
+    mass_below = 0.0
+    n = 0
+    for v, w in values_and_weights:
+        dv = delta(v)
+        num += w * dv
+        den += abs(w)
+        if v > 0.5:
+            mass_above += w
+        elif v < 0.5:
+            mass_below += w
+        n += 1
+    V = 0.5 + (num / (den + eps)) if n > 0 else 0.5
+    profile = DissentProfile(
+        mass_above=mass_above,
+        mass_below=mass_below,
+        n_perspectives=n,
+        notes="Opposition exists" if (mass_above > 0 and mass_below > 0) else "Unanimous or empty"
+    )
+    return clamp01(V), profile
+
+# =========================
+# 6) Verdict bands & stability skeleton
+# =========================
+
+@dataclass
+class VerdictPolicy:
+    both_band: Tuple[float, float] = (0.2, 0.8)  # Both if V ∈ [0.2, 0.8]
+    # Optional hysteresis for de-asserting:
+    deassert_band: Tuple[float, float] = (0.25, 0.75)
+    stability_k: int = 2            # consecutive evaluations to assert T/F
+    dissent_cap: float = 0.20       # opposite-side mass cap to allow assertion
+
+    def verdict_from_scalar(self, V: float) -> str:
+        lo, hi = self.both_band
+        if V <= lo:
+            return "FALSE"
+        if V >= hi:
+            return "TRUE"
+        return "BOTH"
+
+def humility_from_scalar(V: float) -> float:
+    """h = 1 - 2*|V-0.5| (near 0.5 => humble)"""
+    return clamp01(1.0 - 2.0 * abs(delta(V)))
+
+@dataclass
+class StabilityTrack:
+    """Tracks per-claim stability across turns."""
+    last_verdict: Optional[str] = None
+    streak: int = 0
+
+    def update(self, verdict: str) -> None:
+        if verdict == self.last_verdict and verdict in ("TRUE", "FALSE"):
+            self.streak += 1
+        else:
+            self.streak = 1 if verdict in ("TRUE", "FALSE") else 0
+        self.last_verdict = verdict
+
+    def is_stable(self, required_k: int) -> bool:
+        return self.streak >= required_k if self.last_verdict in ("TRUE", "FALSE") else False
+
