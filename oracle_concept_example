@@ -1,0 +1,35 @@
+# sketch: SAT with structure checks; if oracle says 'bounded treewidth' -> use FPT algorithm
+from peace_oracle import PeaceOracle, ExistsRanking, HasTreewidthAtMost
+from peace import Context
+from halting_analyzer import StaticAnalysisPerspective, LLMInvariantPerspective, EmpiricalBoundedPerspective, DummyLLM
+
+# Build the oracle
+ctx = Context(
+    name="PEACE-Oracle",
+    relevance_order=["static","llm-invariant","empirical","meta","figurative","pragmatic"],
+    C_c=0.8, meta={}
+)
+oracle = PeaceOracle(
+    context=ctx,
+    perspectives=[StaticAnalysisPerspective(), LLMInvariantPerspective(DummyLLM()), EmpiricalBoundedPerspective()]
+)
+
+# Query 1: ask for a ranking function (used by your termination solver)
+ans1 = oracle.query(ExistsRanking(code_snippet="""
+while n > 0:
+    n -= 1
+"""))
+# ans1.value ∈ {TV.T, TV.F, TV.B}; if T, you may proceed with a proof; if B, abstain safely.
+
+# Query 2: ask structural property before choosing an algorithm
+G = [(1,2),(2,3),(3,4)] # your graph encoding
+ans2 = oracle.query(HasTreewidthAtMost(G=G, k=2))
+if ans2.value.name == "T":
+    # route to bounded-treewidth solver (poly/FPT)
+    ...
+elif ans2.value.name == "B":
+    # fall back to heuristic or report 'unknown' per policy
+    ...
+else:
+    # run general solver; do not assume structure
+    ...
