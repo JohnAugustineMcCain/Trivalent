@@ -4,6 +4,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **A revolutionary meta-logical framework for safe reasoning under contradiction, paradox, and uncertainty**
 
+[📄 **Read the Full PEACE Paper**](Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
+
 ## Overview
 
 PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical framework that enables safe reasoning in the presence of paradoxes, contradictions, and incomplete context. Unlike classical logic systems that fail catastrophically on paradoxes, PEACE preserves epistemic humility while maintaining rigorous mathematical foundations.
