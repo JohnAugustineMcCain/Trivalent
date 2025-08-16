@@ -1,0 +1,1000 @@
+1. **Optimistic** _(Emotional, Cognitive)_
+2. **Hopeful** _(Emotional)_
+3. **Encouraging** _(Emotional, Social)_
+4. **Reassuring** _(Emotional, Social)_
+5. **Pessimistic** _(Emotional, Cognitive, Existential)_
+6. **Fatalistic** _(Emotional, Existential)_
+7. **Cynical** _(Emotional, Cognitive, Ethical)_
+8. **Defeatist** _(Emotional, Existential)_
+9. **Humorous** _(Emotional, Humor)_
+10. **Witty** _(Humor, Rhetorical)_
+11. **Playful** _(Emotional, Humor, Social)_
+12. **Cheeky** _(Humor, Emotional)_
+13. **Jokey** _(Humor)_
+14. **Satirical** _(Humor, Stylistic, Political)_
+15. **Ironic** _(Humor, Rhetorical, Emotional)_
+16. **Sarcastic** _(Humor, Emotional, Rhetorical)_
+17. **Sardonic** _(Humor, Emotional)_
+18. **Mocking** _(Humor, Emotional)_
+19. **Parodic** _(Humor, Stylistic)_
+20. **Joyful** _(Emotional)_
+21. **Jubilant** _(Emotional)_
+22. **Celebratory** _(Emotional, Social)_
+23. **Ecstatic** _(Emotional, Religious)_
+24. **Sad** _(Emotional)_
+25. **Melancholic** _(Emotional, Temporal)_
+26. **Nostalgic** _(Emotional, Temporal)_
+27. **Mourning** _(Emotional, Ethical)_
+28. **Elegiac** _(Emotional, Stylistic)_
+29. **Angry** _(Emotional)_
+30. **Outraged** _(Emotional, Ethical)_
+31. **Indignant** _(Emotional, Ethical)_
+32. **Frustrated** _(Emotional)_
+33. **Irritated** _(Emotional)_
+34. **Calm** _(Emotional, Cognitive)_
+35. **Tranquil** _(Emotional)_
+36. **Serene** _(Emotional, Spiritual)_
+37. **Peaceful** _(Emotional, Ethical)_
+38. **Rational** _(Cognitive, Philosophical)_
+39. **Logical** _(Cognitive, Stylistic)_
+40. **Analytical** _(Cognitive, Scientific)_
+41. **Skeptical** _(Cognitive, Epistemic)_
+42. **Doubtful** _(Cognitive)_
+43. **Inquisitive** _(Cognitive)_
+44. **Curious** _(Cognitive, Emotional)_
+45. **Empirical** _(Cognitive, Scientific)_
+46. **Scientific** _(Cognitive, Worldview, Stylistic)_
+47. **Mathematical** _(Cognitive, Stylistic)_
+48. **Systematic** _(Cognitive)_
+49. **Philosophical** _(Cognitive, Worldview)_
+50. **Existential** _(Philosophical, Emotional)_
+51. **Nihilistic** _(Philosophical, Ethical, Emotional)_
+52. **Absurdist** _(Philosophical, Stylistic, Humor)_
+53. **Pragmatic** _(Cognitive, Ethical)_
+54. **Utilitarian** _(Philosophical, Ethical)_
+55. **Deontological** _(Philosophical, Ethical)_
+56. **Virtue-Ethical** _(Philosophical, Ethical)_
+57. **Stoic** _(Philosophical, Emotional, Ethical)_
+58. **Epicurean** _(Philosophical, Emotional)_
+59. **Romantic** _(Cultural, Emotional, Stylistic)_
+60. **Tragic** _(Emotional, Stylistic, Existential)_
+61. **Heroic** _(Cultural, Ethical, Stylistic)_
+62. **Martyr-like** _(Religious, Ethical, Cultural)_
+63. **Spiritual** _(Religious, Emotional)_
+64. **Mystical** _(Religious, Worldview, Stylistic)_
+65. **Theological** _(Religious, Worldview, Ethical)_
+66. **Doctrinal** _(Religious, Worldview)_
+67. **Dogmatic** _(Religious, Cognitive, Ethical)_
+68. **Faithful** _(Religious, Emotional)_
+69. **Skeptical-Theological** _(Religious, Cognitive)_
+70. **Agnostic** _(Religious, Epistemic, Worldview)_
+71. **Atheistic** _(Religious, Epistemic, Worldview)_
+72. **Humanistic** _(Philosophical, Ethical, Cultural)_
+73. **Secular** _(Worldview, Cultural)_
+74. **Materialist** _(Philosophical, Cognitive)_
+75. **Idealist** _(Philosophical, Cognitive)_
+76. **Realist** _(Philosophical, Cognitive)_
+77. **Nominalist** _(Philosophical, Cognitive)_
+78. **Essentialist** _(Philosophical, Cognitive)_
+79. **Constructivist** _(Philosophical, Cognitive, Social)_
+80. **Relativist** _(Philosophical, Cognitive, Ethical)_
+81. **Absolutist** _(Philosophical, Cognitive, Ethical)_
+82. **Pluralist** _(Philosophical, Social, Ethical)_
+83. **Monist** _(Philosophical, Cognitive)_
+84. **Dualist** _(Philosophical, Cognitive)_
+85. **Dialectical** _(Philosophical, Cognitive)_
+86. **Marxist** _(Worldview, Political, Philosophical)_
+87. **Communitarian** _(Worldview, Political, Ethical)_
+88. **Liberal** _(Worldview, Political, Ethical)_
+89. **Conservative** _(Worldview, Political, Ethical)_
+90. **Libertarian** _(Worldview, Political, Ethical)_
+91. **Anarchist** _(Worldview, Political, Philosophical)_
+92. **Fascist** _(Worldview, Political, Cultural)_
+93. **Nationalist** _(Worldview, Political, Cultural)_
+94. **Cosmopolitan** _(Worldview, Cultural, Ethical)_
+95. **Postmodernist** _(Philosophical, Cultural, Stylistic)_
+96. **Structuralist** _(Philosophical, Cognitive, Cultural)_
+97. **Post-Structuralist** _(Philosophical, Cultural, Stylistic)_
+98. **Deconstructionist** _(Philosophical, Stylistic)_
+99. **Existential-Humanist** _(Philosophical, Ethical, Emotional)_
+100. **Transcendental** _(Philosophical, Religious, Stylistic)_
+101. **Practical** _(Cognitive, Ethical)_
+102. **Instrumental** _(Cognitive, Ethical)_
+103. **Technical** _(Cognitive, Scientific, Stylistic)_
+104. **Medical** _(Scientific, Worldview)_
+105. **Legal** _(Institutional, Ethical, Worldview)_
+106. **Judicial** _(Institutional, Ethical)_
+107. **Forensic** _(Scientific, Institutional, Stylistic)_
+108. **Political** _(Worldview, Cultural, Ethical)_
+109. **Diplomatic** _(Institutional, Social, Ethical)_
+110. **Bureaucratic** _(Institutional, Cultural)_
+111. **Managerial** _(Institutional, Social)_
+112. **Corporate** _(Institutional, Cultural)_
+113. **Entrepreneurial** _(Institutional, Cultural, Cognitive)_
+114. **Capitalist** _(Worldview, Political, Economic)_
+115. **Communist** _(Worldview, Political, Economic)_
+116. **Socialist** _(Worldview, Political, Economic)_
+117. **Collectivist** _(Worldview, Political, Ethical)_
+118. **Individualist** _(Worldview, Political, Ethical)_
+119. **Technocratic** _(Worldview, Political, Scientific)_
+120. **Futurist** _(Cultural, Stylistic, Philosophical)_
+121. **Utopian** _(Cultural, Philosophical, Stylistic)_
+122. **Dystopian** _(Cultural, Philosophical, Stylistic)_
+123. **Apocalyptic** _(Religious, Cultural, Stylistic)_
+124. **Millenarian** _(Religious, Cultural)_
+125. **Messianic** _(Religious, Cultural)_
+126. **Prophetic** _(Religious, Stylistic)_
+127. **Scriptural** _(Religious, Worldview)_
+128. **Fundamentalist** _(Religious, Worldview)_
+129. **Reformist** _(Religious, Political, Ethical)_
+130. **Progressive** _(Political, Cultural)_
+131. **Radical** _(Political, Cultural, Ethical)_
+132. **Revolutionary** _(Political, Cultural, Ethical)_
+133. **Reactionary** _(Political, Cultural, Ethical)_
+134. **Traditionalist** _(Cultural, Religious, Ethical)_
+135. **Modernist** _(Cultural, Stylistic, Philosophical)_
+136. **Classicist** _(Cultural, Stylistic)_
+137. **Romantic-Idealist** _(Cultural, Stylistic, Philosophical)_
+138. **Baroque** _(Stylistic, Cultural)_
+139. **Rococo** _(Stylistic, Cultural)_
+140. **Gothic** _(Stylistic, Cultural)_
+141. **Renaissance** _(Stylistic, Cultural)_
+142. **Enlightenment** _(Philosophical, Cultural, Stylistic)_
+143. **Victorian** _(Cultural, Stylistic, Historical)_
+144. **Modern** _(Cultural, Stylistic, Historical)_
+145. **Postmodern** _(Cultural, Stylistic, Historical)_
+146. **Avant-Garde** _(Stylistic, Cultural)_
+147. **Minimalist** _(Stylistic, Cognitive)_
+148. **Maximalist** _(Stylistic, Cognitive)_
+149. **Ornamental** _(Stylistic, Cultural)_
+150. **Grotesque** _(Humor, Stylistic, Emotional)_
+151. **Absurd** _(Humor, Philosophical, Stylistic)_
+152. **Slapstick** _(Humor, Stylistic)_
+153. **Deadpan** _(Humor, Rhetorical)_
+154. **Dry** _(Humor, Rhetorical)_
+155. **Camp** _(Humor, Stylistic, Cultural)_
+156. **Blue Humor** _(Humor, Stylistic, Cultural)_
+157. **Toilet Humor** _(Humor, Stylistic, Cultural)_
+158. **Juvenile Humor** _(Humor, Stylistic, Social)_
+159. **Parody** _(Humor, Stylistic, Cultural)_
+160. **Spoof** _(Humor, Stylistic, Cultural)_
+161. **Caricature** _(Humor, Stylistic, Cultural)_
+162. **Burlesque** _(Humor, Stylistic, Cultural)_
+163. **Farce** _(Humor, Stylistic, Cultural)_
+164. **Gallows Humor** _(Humor, Emotional, Existential)_
+165. **Saturnine Humor** _(Humor, Emotional, Stylistic)_
+166. **Play-on-Words** _(Humor, Rhetorical, Stylistic)_
+167. **Pun-Based** _(Humor, Rhetorical)_
+168. **Quirky** _(Humor, Stylistic, Emotional)_
+169. **Bizarre** _(Humor, Stylistic, Emotional)_
+170. **Surrealist** _(Humor, Stylistic, Cultural)_
+171. **Post-Ironic** _(Humor, Stylistic, Cultural)_
+172. **Meta-Humor** _(Humor, Stylistic, Rhetorical)_
+173. **Self-Deprecating** _(Humor, Emotional, Rhetorical)_
+174. **Wry** _(Humor, Rhetorical, Emotional)_
+175. **Tongue-in-Cheek** _(Humor, Stylistic, Rhetorical)_
+176. **Colloquial** _(Stylistic, Social)_
+177. **Slangy** _(Stylistic, Social)_
+178. **Jargonistic** _(Stylistic, Institutional)_
+179. **Technical-Jargon** _(Stylistic, Institutional, Scientific)_
+180. **Poetic** _(Stylistic, Cultural)_
+181. **Metaphorical** _(Stylistic, Cognitive)_
+182. **Allegorical** _(Stylistic, Cognitive, Cultural)_
+183. **Symbolic** _(Stylistic, Cognitive, Cultural)_
+184. **Literalist** _(Cognitive, Stylistic)_
+185. **Figurative** _(Cognitive, Stylistic)_
+186. **Didactic** _(Stylistic, Ethical)_
+187. **Pedagogical** _(Institutional, Ethical, Cognitive)_
+188. **Instructional** _(Institutional, Cognitive)_
+189. **Explanatory** _(Cognitive, Stylistic)_
+190. **Descriptive** _(Stylistic, Cognitive)_
+191. **Expository** _(Stylistic, Cognitive)_
+192. **Narrative** _(Stylistic, Cultural)_
+193. **Dramatic** _(Stylistic, Emotional, Cultural)_
+194. **Epic** _(Stylistic, Cultural, Historical)_
+195. **Lyric** _(Stylistic, Cultural)_
+196. **Elegiac-Poetic** _(Stylistic, Emotional, Cultural)_
+197. **Satirical-Poetic** _(Stylistic, Humor, Cultural)_
+198. **Oracular** _(Religious, Stylistic, Cultural)_
+199. **Visionary** _(Religious, Stylistic, Cultural)_
+200. **Revelatory** _(Religious, Stylistic, Cultural)_
+201. **Mystical** _(Religious, Philosophical, Emotional)_
+202. **Esoteric** _(Religious, Philosophical, Stylistic)_
+203. **Occult** _(Religious, Cultural, Stylistic)_
+204. **Hermetic** _(Religious, Philosophical, Stylistic)_
+205. **Alchemical** _(Religious, Philosophical, Stylistic)_
+206. **Astrological** _(Religious, Cultural, Stylistic)_
+207. **Mythological** _(Religious, Cultural, Stylistic)_
+208. **Folkloric** _(Cultural, Stylistic, Historical)_
+209. **Legendary** _(Cultural, Stylistic, Historical)_
+210. **Epic-Mythic** _(Cultural, Stylistic, Religious)_
+211. **Heroic** _(Cultural, Stylistic, Ethical)_
+212. **Chivalric** _(Cultural, Stylistic, Ethical)_
+213. **Knightly** _(Cultural, Stylistic, Ethical)_
+214. **Martial** _(Cultural, Stylistic, Ethical)_
+215. **Militaristic** _(Cultural, Political, Ethical)_
+216. **Strategic** _(Cognitive, Institutional, Ethical)_
+217. **Tactical** _(Cognitive, Institutional, Ethical)_
+218. **Operational** _(Cognitive, Institutional)_
+219. **Survivalist** _(Cultural, Ethical, Philosophical)_
+220. **Nomadic** _(Cultural, Worldview, Historical)_
+221. **Pastoral** _(Cultural, Stylistic, Historical)_
+222. **Agrarian** _(Cultural, Worldview, Historical)_
+223. **Industrial** _(Cultural, Historical, Economic)_
+224. **Technological** _(Scientific, Cultural, Economic)_
+225. **Cybernetic** _(Scientific, Cultural, Philosophical)_
+226. **Digital** _(Scientific, Cultural, Stylistic)_
+227. **Virtual** _(Scientific, Cultural, Stylistic)_
+228. **Post-Human** _(Philosophical, Cultural, Scientific)_
+229. **Transhumanist** _(Philosophical, Cultural, Scientific)_
+230. **Singularitarian** _(Philosophical, Scientific, Cultural)_
+231. **AI-Centric** _(Scientific, Cultural, Philosophical)_
+232. **Machine-Learning** _(Scientific, Cognitive, Stylistic)_
+233. **Data-Driven** _(Scientific, Cognitive, Institutional)_
+234. **Quantitative** _(Scientific, Cognitive)_
+235. **Qualitative** _(Scientific, Cognitive)_
+236. **Statistical** _(Scientific, Cognitive)_
+237. **Empirical** _(Scientific, Philosophical)_
+238. **Experimental** _(Scientific, Philosophical)_
+239. **Observational** _(Scientific, Philosophical)_
+240. **Phenomenological** _(Philosophical, Cognitive)_
+241. **Existentialist** _(Philosophical, Emotional)_
+242. **Absurdist** _(Philosophical, Humor, Emotional)_
+243. **Nihilist** _(Philosophical, Emotional)_
+244. **Stoic** _(Philosophical, Emotional, Ethical)_
+245. **Epicurean** _(Philosophical, Emotional, Ethical)_
+246. **Skeptical-Philosophical** _(Philosophical, Cognitive)_
+247. **Pragmatist** _(Philosophical, Cognitive)_
+248. **Idealist** _(Philosophical, Cognitive, Cultural)_
+249. **Realist** _(Philosophical, Cognitive, Cultural)_
+250. **Materialist** _(Philosophical, Scientific, Cultural)_
+251. **Physicalist** _(Philosophical, Scientific)_
+252. **Naturalist** _(Philosophical, Scientific)_
+253. **Vitalist** _(Philosophical, Scientific)_
+254. **Determinist** _(Philosophical, Cognitive, Scientific)_
+255. **Compatibilist** _(Philosophical, Cognitive)_
+256. **Libertarian-Free-Will** _(Philosophical, Ethical, Cognitive)_
+257. **Fatalist** _(Philosophical, Ethical, Emotional)_
+258. **Theistic** _(Religious, Philosophical)_
+259. **Deistic** _(Religious, Philosophical)_
+260. **Pantheistic** _(Religious, Philosophical)_
+261. **Panentheistic** _(Religious, Philosophical)_
+262. **Polytheistic** _(Religious, Philosophical)_
+263. **Monotheistic** _(Religious, Philosophical)_
+264. **Animistic** _(Religious, Philosophical, Cultural)_
+265. **Shamanic** _(Religious, Cultural, Stylistic)_
+266. **Mystic-Christian** _(Religious, Philosophical)_
+267. **Mystic-Sufi** _(Religious, Philosophical)_
+268. **Mystic-Hindu** _(Religious, Philosophical)_
+269. **Mystic-Buddhist** _(Religious, Philosophical)_
+270. **Mystic-Taoist** _(Religious, Philosophical)_
+271. **Zen** _(Religious, Philosophical, Stylistic)_
+272. **Advaita** _(Religious, Philosophical)_
+273. **Vedantic** _(Religious, Philosophical)_
+274. **Scholastic** _(Religious, Philosophical, Historical)_
+275. **Patristic** _(Religious, Philosophical, Historical)_
+276. **Reformed** _(Religious, Philosophical, Historical)_
+277. **Catholic** _(Religious, Philosophical, Historical)_
+278. **Protestant** _(Religious, Philosophical, Historical)_
+279. **Orthodox** _(Religious, Philosophical, Historical)_
+280. **Jewish-Rabbinic** _(Religious, Philosophical, Historical)_
+281. **Jewish-Mystical** _(Religious, Philosophical, Historical)_
+282. **Islamic-Philosophical** _(Religious, Philosophical, Historical)_
+283. **Islamic-Fundamentalist** _(Religious, Philosophical, Historical)_
+284. **Hindu-Philosophical** _(Religious, Philosophical, Historical)_
+285. **Hindu-Devotional** _(Religious, Philosophical, Historical)_
+286. **Buddhist-Theravada** _(Religious, Philosophical, Historical)_
+287. **Buddhist-Mahayana** _(Religious, Philosophical, Historical)_
+288. **Buddhist-Vajrayana** _(Religious, Philosophical, Historical)_
+289. **Taoist-Philosophical** _(Religious, Philosophical, Historical)_
+290. **Confucian** _(Religious, Philosophical, Historical)_
+291. **Shinto** _(Religious, Philosophical, Historical)_
+292. **Indigenous-North-American** _(Religious, Cultural, Philosophical)_
+293. **Indigenous-South-American** _(Religious, Cultural, Philosophical)_
+294. **Indigenous-African** _(Religious, Cultural, Philosophical)_
+295. **Indigenous-Australian** _(Religious, Cultural, Philosophical)_
+296. **Indigenous-Polynesian** _(Religious, Cultural, Philosophical)_
+297. **Syncretic-Religious** _(Religious, Cultural, Philosophical)_
+298. **New-Age** _(Religious, Cultural, Philosophical)_
+299. **Occultural** _(Religious, Cultural, Stylistic)_
+300. **Esoteric-Western-Tradition** _(Religious, Cultural, Philosophical)_
+301. **Postmodernist** _(Philosophical, Stylistic, Cultural)_
+302. **Deconstructionist** _(Philosophical, Stylistic, Critical)_
+303. **Structuralist** _(Philosophical, Cognitive, Critical)_
+304. **Post-Structuralist** _(Philosophical, Cognitive, Critical)_
+305. **Semiotic** _(Philosophical, Cognitive, Stylistic)_
+306. **Hermeneutic** _(Philosophical, Cognitive, Stylistic)_
+307. **Critical-Theory** _(Philosophical, Cultural, Political)_
+308. **Frankfurt-School** _(Philosophical, Political, Cultural)_
+309. **Marxist** _(Philosophical, Political, Economic)_
+310. **Neo-Marxist** _(Philosophical, Political, Economic)_
+311. **Communist** _(Philosophical, Political, Economic)_
+312. **Socialist** _(Philosophical, Political, Economic)_
+313. **Anarchist** _(Philosophical, Political, Cultural)_
+314. **Collectivist** _(Philosophical, Political, Ethical)_
+315. **Individualist** _(Philosophical, Political, Ethical)_
+316. **Libertarian** _(Philosophical, Political, Ethical)_
+317. **Egalitarian** _(Philosophical, Political, Ethical)_
+318. **Meritocratic** _(Philosophical, Political, Ethical)_
+319. **Technocratic** _(Philosophical, Political, Scientific)_
+320. **Democratic** _(Philosophical, Political, Ethical)_
+321. **Republican-Governance** _(Philosophical, Political, Ethical)_
+322. **Monarchist** _(Philosophical, Political, Cultural)_
+323. **Imperialist** _(Political, Historical, Cultural)_
+324. **Colonialist** _(Political, Historical, Cultural)_
+325. **Nationalist** _(Political, Cultural, Ethical)_
+326. **Globalist** _(Political, Cultural, Ethical)_
+327. **Cosmopolitan** _(Philosophical, Cultural, Ethical)_
+328. **Patriotic** _(Political, Cultural, Emotional)_
+329. **Xenophobic** _(Political, Cultural, Emotional)_
+330. **Xenophilic** _(Political, Cultural, Emotional)_
+331. **Traditionalist** _(Cultural, Philosophical, Ethical)_
+332. **Conservative** _(Political, Cultural, Ethical)_
+333. **Progressive** _(Political, Cultural, Ethical)_
+334. **Radical** _(Political, Cultural, Ethical)_
+335. **Revolutionary** _(Political, Historical, Ethical)_
+336. **Reformist** _(Political, Cultural, Ethical)_
+337. **Reactionary** _(Political, Cultural, Ethical)_
+338. **Populist** _(Political, Cultural, Emotional)_
+339. **Elitist** _(Political, Cultural, Ethical)_
+340. **Authoritarian** _(Political, Cultural, Ethical)_
+341. **Totalitarian** _(Political, Cultural, Ethical)_
+342. **Demagogue** _(Political, Cultural, Stylistic)_
+343. **Civic-Humanist** _(Philosophical, Political, Ethical)_
+344. **Utilitarian** _(Philosophical, Ethical, Cognitive)_
+345. **Consequentialist** _(Philosophical, Ethical, Cognitive)_
+346. **Deontological** _(Philosophical, Ethical, Cognitive)_
+347. **Virtue-Ethical** _(Philosophical, Ethical, Cognitive)_
+348. **Care-Ethical** _(Philosophical, Ethical, Emotional)_
+349. **Narrative-Ethical** _(Philosophical, Ethical, Stylistic)_
+350. **Relativist** _(Philosophical, Ethical, Cognitive)_
+351. **Universalist** _(Philosophical, Ethical, Cognitive)_
+352. **Absolutist** _(Philosophical, Ethical, Cognitive)_
+353. **Contextualist** _(Philosophical, Ethical, Cognitive)_
+354. **Situationalist** _(Philosophical, Ethical, Cognitive)_
+355. **Cynical** _(Philosophical, Emotional, Stylistic)_
+356. **Optimistic** _(Emotional, Philosophical, Stylistic)_
+357. **Pessimistic** _(Emotional, Philosophical, Stylistic)_
+358. **Realpolitik** _(Political, Philosophical, Historical)_
+359. **Machiavellian** _(Political, Philosophical, Stylistic)_
+360. **Utopian** _(Philosophical, Cultural, Emotional)_
+361. **Dystopian** _(Philosophical, Cultural, Emotional)_
+362. **Apocalyptic** _(Religious, Cultural, Emotional)_
+363. **Millenarian** _(Religious, Cultural, Philosophical)_
+364. **Messianic** _(Religious, Cultural, Emotional)_
+365. **Prophetic** _(Religious, Cultural, Stylistic)_
+366. **Visionary** _(Philosophical, Cultural, Emotional)_
+367. **Dreamlike** _(Stylistic, Emotional, Cultural)_
+368. **Surrealist** _(Stylistic, Philosophical, Artistic)_
+369. **Expressionist** _(Stylistic, Philosophical, Artistic)_
+370. **Impressionist** _(Stylistic, Philosophical, Artistic)_
+371. **Minimalist** _(Stylistic, Philosophical, Artistic)_
+372. **Maximalist** _(Stylistic, Philosophical, Artistic)_
+373. **Baroque** _(Stylistic, Artistic, Cultural)_
+374. **Gothic** _(Stylistic, Artistic, Cultural)_
+375. **Romantic** _(Stylistic, Artistic, Emotional)_
+376. **Classicist** _(Stylistic, Artistic, Cultural)_
+377. **Renaissance-Humanist** _(Stylistic, Philosophical, Cultural)_
+378. **Modernist** _(Stylistic, Philosophical, Cultural)_
+379. **Avant-Garde** _(Stylistic, Artistic, Cultural)_
+380. **Absurdist-Humor** _(Humor, Stylistic, Philosophical)_
+381. **Slapstick-Humor** _(Humor, Stylistic, Physical)_
+382. **Satirical-Humor** _(Humor, Stylistic, Political)_
+383. **Parodic-Humor** _(Humor, Stylistic, Artistic)_
+384. **Spoof-Humor** _(Humor, Stylistic, Artistic)_
+385. **Caricature-Humor** _(Humor, Stylistic, Artistic)_
+386. **Grotesque-Humor** _(Humor, Stylistic, Emotional)_
+387. **Blue-Humor** _(Humor, Stylistic, Cultural)_
+388. **Dark-Humor** _(Humor, Stylistic, Emotional)_
+389. **Dry-Humor** _(Humor, Stylistic, Cognitive)_
+390. **Deadpan-Humor** _(Humor, Stylistic, Cognitive)_
+391. **Witty-Humor** _(Humor, Stylistic, Cognitive)_
+392. **Sarcastic-Humor** _(Humor, Stylistic, Cognitive)_
+393. **Sardonic-Humor** _(Humor, Stylistic, Emotional)_
+394. **Camp-Humor** _(Humor, Stylistic, Cultural)_
+395. **Quirky-Humor** _(Humor, Stylistic, Cultural)_
+396. **Ironical-Humor** _(Humor, Stylistic, Philosophical)_
+397. **Gallows-Humor** _(Humor, Stylistic, Emotional)_
+398. **Self-Deprecating-Humor** _(Humor, Stylistic, Emotional)_
+399. **Meta-Humor** _(Humor, Stylistic, Philosophical)_
+400. **Absurd-Wordplay-Humor** _(Humor, Stylistic, Cognitive)_
+401. **Pun-Based-Humor** _(Humor, Stylistic, Linguistic)_
+402. **Wordplay-Humor** _(Humor, Stylistic, Linguistic)_
+403. **Nonsensical-Humor** _(Humor, Stylistic, Philosophical)_
+404. **Juvenile-Humor** _(Humor, Stylistic, Cultural)_
+405. **Toilet-Humor** _(Humor, Stylistic, Cultural)_
+406. **Physical-Comedy** _(Humor, Stylistic, Physical)_
+407. **Improvisational-Humor** _(Humor, Stylistic, Performative)_
+408. **Stand-Up-Humor** _(Humor, Stylistic, Performative)_
+409. **Sketch-Humor** _(Humor, Stylistic, Performative)_
+410. **Musical-Parody-Humor** _(Humor, Stylistic, Artistic)_
+411. **Meme-Humor** _(Humor, Stylistic, Digital)_
+412. **Surreal-Humor** _(Humor, Stylistic, Philosophical)_
+413. **Anti-Humor** _(Humor, Stylistic, Philosophical)_
+414. **Inside-Joke-Humor** _(Humor, Stylistic, Social)_
+415. **Topical-Humor** _(Humor, Stylistic, Political)_
+416. **Observational-Humor** _(Humor, Stylistic, Social)_
+417. **Exaggerative-Humor** _(Humor, Stylistic, Artistic)_
+418. **Mock-Epic-Humor** _(Humor, Stylistic, Literary)_
+419. **Groan-Worthy-Humor** _(Humor, Stylistic, Linguistic)_
+420. **Camp-Parody-Humor** _(Humor, Stylistic, Cultural)_
+421. **Philosophical-Humor** _(Humor, Stylistic, Cognitive)_
+422. **Scientific-Humor** _(Humor, Stylistic, Intellectual)_
+423. **Political-Humor** _(Humor, Stylistic, Critical)_
+424. **Saturnalian-Humor** _(Humor, Stylistic, Cultural)_
+425. **Carnival-Humor** _(Humor, Stylistic, Cultural)_
+426. **Internet-Ironic-Humor** _(Humor, Stylistic, Digital)_
+427. **Shitposting-Humor** _(Humor, Stylistic, Digital)_
+428. **Meta-Meme-Humor** _(Humor, Stylistic, Digital)_
+429. **Visual-Gag-Humor** _(Humor, Stylistic, Artistic)_
+430. **Silent-Comedy-Humor** _(Humor, Stylistic, Performative)_
+431. **Legalistic** _(Professional, Analytical, Critical)_
+432. **Judicial** _(Professional, Analytical, Ethical)_
+433. **Legislative** _(Professional, Political, Ethical)_
+434. **Contractual** _(Professional, Analytical, Formal)_
+435. **Forensic** _(Professional, Scientific, Investigative)_
+436. **Medical** _(Professional, Scientific, Ethical)_
+437. **Clinical** _(Professional, Scientific, Analytical)_
+438. **Surgical** _(Professional, Scientific, Technical)_
+439. **Diagnostic** _(Professional, Scientific, Analytical)_
+440. **Therapeutic** _(Professional, Scientific, Emotional)_
+441. **Pharmaceutical** _(Professional, Scientific, Economic)_
+442. **Nursing** _(Professional, Scientific, Ethical)_
+443. **Psychiatric** _(Professional, Scientific, Psychological)_
+444. **Psychological** _(Professional, Scientific, Cognitive)_
+445. **Psychoanalytic** _(Professional, Scientific, Philosophical)_
+446. **Behaviorist** _(Scientific, Philosophical, Psychological)_
+447. **Cognitive-Science** _(Scientific, Philosophical, Analytical)_
+448. **Neuroscientific** _(Scientific, Analytical, Biological)_
+449. **Evolutionary-Biology** _(Scientific, Philosophical, Biological)_
+450. **Genetic** _(Scientific, Biological, Analytical)_
+451. **Ecological** _(Scientific, Environmental, Analytical)_
+452. **Environmental** _(Scientific, Cultural, Ethical)_
+453. **Climate-Science** _(Scientific, Environmental, Political)_
+454. **Astronomical** _(Scientific, Analytical, Cosmological)_
+455. **Astrophysical** _(Scientific, Analytical, Cosmological)_
+456. **Cosmological** _(Scientific, Philosophical, Cosmological)_
+457. **Geological** _(Scientific, Environmental, Historical)_
+458. **Geographical** _(Scientific, Analytical, Cultural)_
+459. **Meteorological** _(Scientific, Environmental, Predictive)_
+460. **Oceanographic** _(Scientific, Environmental, Analytical)_
+461. **Chemical** _(Scientific, Analytical, Experimental)_
+462. **Physical** _(Scientific, Analytical, Mathematical)_
+463. **Mathematical** _(Scientific, Analytical, Logical)_
+464. **Statistical** _(Scientific, Analytical, Probabilistic)_
+465. **Computational** _(Scientific, Analytical, Technological)_
+466. **Algorithmic** _(Scientific, Analytical, Technological)_
+467. **Machine-Learning** _(Scientific, Analytical, Technological)_
+468. **AI-Ethical** _(Scientific, Ethical, Technological)_
+469. **Engineering** _(Professional, Analytical, Technical)_
+470. **Mechanical-Engineering** _(Professional, Analytical, Technical)_
+471. **Electrical-Engineering** _(Professional, Analytical, Technical)_
+472. **Civil-Engineering** _(Professional, Analytical, Technical)_
+473. **Aerospace-Engineering** _(Professional, Analytical, Technical)_
+474. **Software-Engineering** _(Professional, Analytical, Technical)_
+475. **Systems-Engineering** _(Professional, Analytical, Technical)_
+476. **Design-Thinking** _(Professional, Creative, Analytical)_
+477. **Architectural** _(Professional, Artistic, Analytical)_
+478. **Industrial-Design** _(Professional, Artistic, Technical)_
+479. **Urban-Planning** _(Professional, Political, Environmental)_
+480. **Educational** _(Professional, Cultural, Ethical)_
+481. **Pedagogical** _(Professional, Cultural, Analytical)_
+482. **Andragogical** _(Professional, Cultural, Analytical)_
+483. **Socratic** _(Philosophical, Pedagogical, Dialogical)_
+484. **Didactic** _(Professional, Pedagogical, Stylistic)_
+485. **Rhetorical** _(Professional, Stylistic, Persuasive)_
+486. **Dialectical** _(Philosophical, Stylistic, Cognitive)_
+487. **Dialogical** _(Philosophical, Stylistic, Interpersonal)_
+488. **Debate-Oriented** _(Professional, Stylistic, Persuasive)_
+489. **Negotiative** _(Professional, Stylistic, Political)_
+490. **Diplomatic** _(Professional, Stylistic, Political)_
+491. **Mediative** _(Professional, Stylistic, Ethical)_
+492. **Arbitrational** _(Professional, Stylistic, Legal)_
+493. **Consensus-Oriented** _(Professional, Stylistic, Political)_
+494. **Conflict-Theory** _(Philosophical, Political, Sociological)_
+495. **Systems-Theory** _(Philosophical, Scientific, Analytical)_
+496. **Chaos-Theory** _(Scientific, Mathematical, Philosophical)_
+497. **Game-Theory** _(Scientific, Mathematical, Strategic)_
+498. **Decision-Theory** _(Scientific, Mathematical, Strategic)_
+499. **Probability-Theory** _(Scientific, Mathematical, Analytical)_
+500. **Information-Theory** _(Scientific, Mathematical, Technological)_
+501. **Cybernetic** _(Scientific, Philosophical, Systems)_
+502. **Control-Theory** _(Scientific, Analytical, Mathematical)_
+503. **Signal-Processing** _(Scientific, Analytical, Technological)_
+504. **Quantum-Mechanical** _(Scientific, Philosophical, Analytical)_
+505. **Relativistic** _(Scientific, Cosmological, Analytical)_
+506. **String-Theory** _(Scientific, Cosmological, Hypothetical)_
+507. **Multiverse-Theory** _(Scientific, Philosophical, Cosmological)_
+508. **Simulation-Hypothesis** _(Philosophical, Technological, Cosmological)_
+509. **Deterministic** _(Philosophical, Scientific, Analytical)_
+510. **Indeterministic** _(Philosophical, Scientific, Analytical)_
+511. **Compatibilist** _(Philosophical, Ethical, Metaphysical)_
+512. **Libertarian-Free-Will** _(Philosophical, Ethical, Metaphysical)_
+513. **Fatalist** _(Philosophical, Metaphysical, Religious)_
+514. **Providential** _(Religious, Philosophical, Ethical)_
+515. **Theistic** _(Religious, Philosophical, Cultural)_
+516. **Monotheistic** _(Religious, Philosophical, Cultural)_
+517. **Polytheistic** _(Religious, Philosophical, Cultural)_
+518. **Pantheistic** _(Religious, Philosophical, Cosmological)_
+519. **Panentheistic** _(Religious, Philosophical, Cosmological)_
+520. **Animistic** _(Religious, Cultural, Environmental)_
+521. **Shamanic** _(Religious, Cultural, Mystical)_
+522. **Pagan** _(Religious, Cultural, Historical)_
+523. **Occult** _(Religious, Mystical, Esoteric)_
+524. **Mystical** _(Religious, Philosophical, Experiential)_
+525. **Christian** _(Religious, Cultural, Theological)_
+526. **Catholic** _(Religious, Cultural, Theological)_
+527. **Protestant** _(Religious, Cultural, Theological)_
+528. **Eastern-Orthodox** _(Religious, Cultural, Theological)_
+529. **Evangelical** _(Religious, Cultural, Theological)_
+530. **Fundamentalist-Christian** _(Religious, Cultural, Theological)_
+531. **Liberal-Christian** _(Religious, Cultural, Theological)_
+532. **Messianic-Jewish** _(Religious, Cultural, Theological)_
+533. **Jewish** _(Religious, Cultural, Theological)_
+534. **Orthodox-Jewish** _(Religious, Cultural, Theological)_
+535. **Reform-Jewish** _(Religious, Cultural, Theological)_
+536. **Hasidic-Jewish** _(Religious, Cultural, Mystical)_
+537. **Islamic** _(Religious, Cultural, Theological)_
+538. **Sunni** _(Religious, Cultural, Theological)_
+539. **Shia** _(Religious, Cultural, Theological)_
+540. **Sufi** _(Religious, Mystical, Theological)_
+541. **Quranist** _(Religious, Cultural, Theological)_
+542. **Hindu** _(Religious, Cultural, Theological)_
+543. **Vaishnavite** _(Religious, Cultural, Theological)_
+544. **Shaivite** _(Religious, Cultural, Theological)_
+545. **Shakta** _(Religious, Cultural, Theological)_
+546. **Vedantic** _(Religious, Philosophical, Theological)_
+547. **Buddhist** _(Religious, Cultural, Philosophical)_
+548. **Theravada-Buddhist** _(Religious, Cultural, Philosophical)_
+549. **Mahayana-Buddhist** _(Religious, Cultural, Philosophical)_
+550. **Zen-Buddhist** _(Religious, Cultural, Philosophical)_
+551. **Tibetan-Buddhist** _(Religious, Cultural, Philosophical)_
+552. **Pure-Land-Buddhist** _(Religious, Cultural, Philosophical)_
+553. **Daoist** _(Religious, Cultural, Philosophical)_
+554. **Confucian** _(Philosophical, Cultural, Ethical)_
+555. **Shinto** _(Religious, Cultural, Environmental)_
+556. **Zoroastrian** _(Religious, Cultural, Historical)_
+557. **Sikh** _(Religious, Cultural, Theological)_
+558. **Baháʼí** _(Religious, Cultural, Theological)_
+559. **Indigenous-Spiritual** _(Religious, Cultural, Environmental)_
+560. **New-Age** _(Religious, Mystical, Esoteric)_
+561. **Astrological** _(Mystical, Cultural, Esoteric)_
+562. **Occult-Hermetic** _(Mystical, Philosophical, Esoteric)_
+563. **Alchemy** _(Mystical, Philosophical, Esoteric)_
+564. **Gnostic** _(Religious, Mystical, Esoteric)_
+565. **Esoteric-Christian** _(Religious, Mystical, Philosophical)_
+566. **Esoteric-Islamic** _(Religious, Mystical, Philosophical)_
+567. **Esoteric-Jewish (Kabbalistic)** _(Religious, Mystical, Esoteric)_
+568. **Satanic** _(Religious, Cultural, Countercultural)_
+569. **Luciferian** _(Religious, Cultural, Philosophical)_
+570. **Atheistic** _(Philosophical, Cultural, Secular)_
+571. **Agnostic** _(Philosophical, Cultural, Secular)_
+572. **Secular-Humanist** _(Philosophical, Ethical, Secular)_
+573. **Existentialist** _(Philosophical, Ethical, Secular)_
+574. **Absurdist** _(Philosophical, Ethical, Secular)_
+575. **Nihilist** _(Philosophical, Ethical, Secular)_
+576. **Optimistic-Nihilist** _(Philosophical, Ethical, Secular)_
+577. **Stoic** _(Philosophical, Ethical, Practical)_
+578. **Epicurean** _(Philosophical, Ethical, Practical)_
+579. **Aristotelian** _(Philosophical, Ethical, Metaphysical)_
+580. **Platonic** _(Philosophical, Metaphysical, Idealist)_
+581. **Neoplatonic** _(Philosophical, Metaphysical, Mystical)_
+582. **Socratic** _(Philosophical, Dialogical, Ethical)_
+583. **Cartesian** _(Philosophical, Rationalist, Analytical)_
+584. **Kantian** _(Philosophical, Ethical, Metaphysical)_
+585. **Hegelian** _(Philosophical, Historical, Dialectical)_
+586. **Marxist** _(Philosophical, Political, Economic)_
+587. **Communist** _(Philosophical, Political, Economic)_
+588. **Socialist** _(Philosophical, Political, Economic)_
+589. **Anarchist** _(Philosophical, Political, Ethical)_
+590. **Libertarian** _(Philosophical, Political, Ethical)_
+591. **Capitalist** _(Philosophical, Political, Economic)_
+592. **Free-Market** _(Philosophical, Political, Economic)_
+593. **Neoliberal** _(Philosophical, Political, Economic)_
+594. **Conservative** _(Philosophical, Political, Cultural)_
+595. **Liberal** _(Philosophical, Political, Cultural)_
+596. **Progressive** _(Philosophical, Political, Cultural)_
+597. **Populist** _(Philosophical, Political, Cultural)_
+598. **Nationalist** _(Philosophical, Political, Cultural)_
+599. **Globalist** _(Philosophical, Political, Cultural)_
+600. **Cosmopolitan** _(Philosophical, Political, Cultural)_
+601. **Tribalist** _(Cultural, Political, Identity)_
+602. **Ethnocentric** _(Cultural, Political, Identity)_
+603. **Multiculturalist** _(Cultural, Political, Social)_
+604. **Postcolonial** _(Cultural, Political, Critical)_
+605. **Decolonial** _(Cultural, Political, Critical)_
+606. **Indigenist** _(Cultural, Political, Environmental)_
+607. **Feminist** _(Cultural, Political, Ethical)_
+608. **Ecofeminist** _(Cultural, Political, Environmental)_
+609. **Queer-Theory** _(Cultural, Political, Identity)_
+610. **Intersectional** _(Cultural, Political, Critical)_
+611. **Critical-Race** _(Cultural, Political, Critical)_
+612. **Afrocentric** _(Cultural, Political, Identity)_
+613. **Afrofuturist** _(Cultural, Artistic, Philosophical)_
+614. **Asian-Philosophical** _(Cultural, Religious, Philosophical)_
+615. **Eurocentric** _(Cultural, Historical, Identity)_
+616. **Orientalist** _(Cultural, Historical, Critical)_
+617. **Occidentalist** _(Cultural, Historical, Critical)_
+618. **Diasporic** _(Cultural, Identity, Historical)_
+619. **Immigrant** _(Cultural, Identity, Social)_
+620. **Exilic** _(Cultural, Identity, Historical)_
+621. **Nomadic** _(Cultural, Historical, Environmental)_
+622. **Urbanist** _(Cultural, Social, Environmental)_
+623. **Ruralist** _(Cultural, Social, Environmental)_
+624. **Technophile** _(Cultural, Technological, Optimistic)_
+625. **Technoskeptic** _(Cultural, Technological, Critical)_
+626. **Luddite** _(Cultural, Technological, Critical)_
+627. **Transhumanist** _(Philosophical, Technological, Futuristic)_
+628. **Posthumanist** _(Philosophical, Cultural, Futuristic)_
+629. **Cyborg** _(Cultural, Technological, Identity)_
+630. **Bioethical** _(Philosophical, Scientific, Ethical)_
+631. **Medical-Ethical** _(Philosophical, Scientific, Practical)_
+632. **Public-Health** _(Scientific, Social, Ethical)_
+633. **Psychoanalytic** _(Philosophical, Psychological, Clinical)_
+634. **Freudian** _(Psychological, Philosophical, Historical)_
+635. **Jungian** _(Psychological, Philosophical, Archetypal)_
+636. **Lacanian** _(Psychological, Philosophical, Critical)_
+637. **Behaviorist** _(Scientific, Psychological, Analytical)_
+638. **Cognitivist** _(Scientific, Psychological, Analytical)_
+639. **Gestalt** _(Psychological, Philosophical, Experiential)_
+640. **Existential-Psychology** _(Psychological, Philosophical, Clinical)_
+641. **Humanistic-Psychology** _(Psychological, Philosophical, Ethical)_
+642. **Positive-Psychology** _(Psychological, Optimistic, Practical)_
+643. **Trauma-Informed** _(Psychological, Clinical, Ethical)_
+644. **Therapeutic** _(Psychological, Clinical, Practical)_
+645. **Mindfulness-Based** _(Philosophical, Psychological, Spiritual)_
+646. **Meditative** _(Philosophical, Spiritual, Experiential)_
+647. **Contemplative** _(Philosophical, Spiritual, Experiential)_
+648. **Ascetic** _(Philosophical, Religious, Ethical)_
+649. **Monastic** _(Religious, Cultural, Ethical)_
+650. **Pilgrimage** _(Religious, Cultural, Experiential)_
+651. **Martyrdom** _(Religious, Cultural, Ethical)_
+652. **Heroic** _(Cultural, Mythological, Ethical)_
+653. **Tragic** _(Artistic, Literary, Philosophical)_
+654. **Comic** _(Artistic, Literary, Humorous)_
+655. **Romantic** _(Artistic, Philosophical, Literary)_
+656. **Gothic** _(Artistic, Literary, Cultural)_
+657. **Baroque** _(Artistic, Historical, Cultural)_
+658. **Renaissance** _(Artistic, Historical, Cultural)_
+659. **Classical** _(Artistic, Historical, Philosophical)_
+660. **Modernist** _(Artistic, Cultural, Critical)_
+661. **Postmodernist** _(Artistic, Cultural, Critical)_
+662. **Avant-Garde** _(Artistic, Cultural, Experimental)_
+663. **Dadaist** _(Artistic, Cultural, Satirical)_
+664. **Surrealist** _(Artistic, Cultural, Experimental)_
+665. **Absurdist-Art** _(Artistic, Cultural, Experimental)_
+666. **Minimalist** _(Artistic, Cultural, Philosophical)_
+667. **Maximalist** _(Artistic, Cultural, Philosophical)_
+668. **Conceptualist** _(Artistic, Cultural, Philosophical)_
+669. **Futurist-Art** _(Artistic, Cultural, Historical)_
+670. **Constructivist** _(Artistic, Cultural, Historical)_
+671. **Realist-Art** _(Artistic, Cultural, Critical)_
+672. **Naturalist-Art** _(Artistic, Cultural, Historical)_
+673. **Expressionist** _(Artistic, Cultural, Philosophical)_
+674. **Impressionist** _(Artistic, Cultural, Historical)_
+675. **Symbolist** _(Artistic, Cultural, Philosophical)_
+676. **Abstract** _(Artistic, Cultural, Philosophical)_
+677. **Cubist** _(Artistic, Cultural, Experimental)_
+678. **Primitivist** _(Artistic, Cultural, Historical)_
+679. **Art-Brut** _(Artistic, Cultural, Outsider)_
+680. **Naïve-Art** _(Artistic, Cultural, Outsider)_
+681. **Outsider-Art** _(Artistic, Cultural, Alternative)_
+682. **Street-Art** _(Artistic, Cultural, Urban)_
+683. **Graffiti** _(Artistic, Cultural, Subcultural)_
+684. **Hip-Hop** _(Cultural, Artistic, Subcultural)_
+685. **Punk** _(Cultural, Artistic, Countercultural)_
+686. **Grunge** _(Cultural, Artistic, Countercultural)_
+687. **Metalhead** _(Cultural, Artistic, Subcultural)_
+688. **Goth-Subcultural** _(Cultural, Artistic, Subcultural)_
+689. **Emo** _(Cultural, Artistic, Subcultural)_
+690. **Scene** _(Cultural, Artistic, Subcultural)_
+691. **Raver** _(Cultural, Artistic, Subcultural)_
+692. **Cyberpunk** _(Cultural, Artistic, Futuristic)_
+693. **Steampunk** _(Cultural, Artistic, Alternative)_
+694. **Dieselpunk** _(Cultural, Artistic, Alternative)_
+695. **Solarpunk** _(Cultural, Artistic, Environmental)_
+696. **Lunarpunk** _(Cultural, Artistic, Mystical)_
+697. **Mythopoeic** _(Cultural, Artistic, Literary)_
+698. **Epic** _(Artistic, Literary, Historical)_
+699. **Lyric** _(Artistic, Literary, Poetic)_
+700. **Satirical-Literary** _(Artistic, Literary, Humorous)_
+701. **Allegorical** _(Literary, Narrative, Symbolic)_
+702. **Parabolic** _(Literary, Narrative, Religious)_
+703. **Mythological** _(Narrative, Cultural, Symbolic)_
+704. **Folkloric** _(Narrative, Cultural, Oral-Tradition)_
+705. **Fable** _(Narrative, Literary, Moral)_
+706. **Fairy-Tale** _(Narrative, Literary, Mythic)_
+707. **Legendary** _(Narrative, Historical, Mythic)_
+708. **Epic-Narrative** _(Literary, Historical, Cultural)_
+709. **Saga** _(Literary, Historical, Narrative)_
+710. **Hero’s-Journey** _(Narrative, Mythic, Archetypal)_
+711. **Villain-Centric** _(Narrative, Literary, Subversive)_
+712. **Trickster** _(Narrative, Mythic, Humorous)_
+713. **Satirical-Narrative** _(Narrative, Humorous, Critical)_
+714. **Picaresque** _(Narrative, Literary, Humorous)_
+715. **Gothic-Narrative** _(Narrative, Literary, Dark)_
+716. **Romantic-Narrative** _(Narrative, Literary, Emotional)_
+717. **Tragic-Narrative** _(Narrative, Literary, Philosophical)_
+718. **Absurd-Narrative** _(Narrative, Literary, Experimental)_
+719. **Stream-of-Consciousness** _(Narrative, Literary, Experimental)_
+720. **Fragmentary** _(Narrative, Literary, Experimental)_
+721. **Epistolary** _(Narrative, Literary, Documentary)_
+722. **Oral-History** _(Narrative, Historical, Cultural)_
+723. **Documentary** _(Narrative, Journalistic, Historical)_
+724. **Journalistic** _(Discourse, Informative, Practical)_
+725. **Investigative** _(Discourse, Journalistic, Critical)_
+726. **Expository** _(Discourse, Informative, Analytical)_
+727. **Descriptive** _(Discourse, Informative, Literary)_
+728. **Persuasive** _(Discourse, Rhetorical, Practical)_
+729. **Argumentative** _(Discourse, Rhetorical, Logical)_
+730. **Dialectical** _(Philosophical, Rhetorical, Logical)_
+731. **Dialogical** _(Narrative, Rhetorical, Philosophical)_
+732. **Monological** _(Narrative, Rhetorical, Philosophical)_
+733. **Rhetorical-Questioning** _(Rhetorical, Persuasive, Analytical)_
+734. **Socratic** _(Philosophical, Rhetorical, Pedagogical)_
+735. **Didactic** _(Philosophical, Rhetorical, Educational)_
+736. **Pedagogical** _(Philosophical, Practical, Educational)_
+737. **Instructional** _(Practical, Pedagogical, Rhetorical)_
+738. **Oracular** _(Religious, Mystical, Prophetic)_
+739. **Prophetic** _(Religious, Mystical, Rhetorical)_
+740. **Homiletic** _(Religious, Rhetorical, Moral)_
+741. **Sermonic** _(Religious, Rhetorical, Moral)_
+742. **Liturgical** _(Religious, Ritualistic, Cultural)_
+743. **Mystagogical** _(Religious, Spiritual, Symbolic)_
+744. **Meditative-Narrative** _(Spiritual, Literary, Experiential)_
+745. **Visionary** _(Religious, Mystical, Symbolic)_
+746. **Apocalyptic** _(Religious, Mystical, Narrative)_
+747. **Eschatological** _(Religious, Philosophical, Mystical)_
+748. **Revelatory** _(Religious, Mystical, Prophetic)_
+749. **Mystical-Poetic** _(Religious, Literary, Symbolic)_
+750. **Chanting** _(Religious, Ritualistic, Musical)_
+751. **Litany** _(Religious, Ritualistic, Rhetorical)_
+752. **Invocation** _(Religious, Rhetorical, Symbolic)_
+753. **Incantatory** _(Religious, Mystical, Symbolic)_
+754. **Ritualistic** _(Religious, Cultural, Symbolic)_
+755. **Sacramental** _(Religious, Cultural, Mystical)_
+756. **Mythic-Archetypal** _(Religious, Literary, Symbolic)_
+757. **Alchemical** _(Mystical, Symbolic, Esoteric)_
+758. **Astrological** _(Mystical, Esoteric, Cultural)_
+759. **Occultist** _(Mystical, Esoteric, Philosophical)_
+760. **Esoteric** _(Mystical, Philosophical, Symbolic)_
+761. **Hermetic** _(Mystical, Esoteric, Religious)_
+762. **Kabbalistic** _(Religious, Mystical, Esoteric)_
+763. **Gnostic** _(Religious, Mystical, Philosophical)_
+764. **Mystery-Tradition** _(Religious, Mystical, Esoteric)_
+765. **Shamanic** _(Religious, Mystical, Cultural)_
+766. **Totemic** _(Cultural, Religious, Symbolic)_
+767. **Animistic** _(Religious, Cultural, Philosophical)_
+768. **Pagan** _(Religious, Cultural, Historical)_
+769. **Neopagan** _(Religious, Cultural, Mystical)_
+770. **Wiccan** _(Religious, Mystical, Cultural)_
+771. **Druidic** _(Religious, Mystical, Cultural)_
+772. **Heathen** _(Religious, Mystical, Cultural)_
+773. **Occult-Revivalist** _(Mystical, Religious, Cultural)_
+774. **New-Age** _(Spiritual, Mystical, Cultural)_
+775. **Channeling** _(Spiritual, Mystical, Esoteric)_
+776. **Mediumistic** _(Spiritual, Mystical, Esoteric)_
+777. **Psychic** _(Spiritual, Mystical, Experiential)_
+778. **Paranormal** _(Mystical, Cultural, Supernatural)_
+779. **Supernaturalist** _(Mystical, Religious, Symbolic)_
+780. **Ghost-Centric** _(Mystical, Narrative, Supernatural)_
+781. **Poltergeist-Focused** _(Mystical, Paranormal, Supernatural)_
+782. **Demonological** _(Religious, Mystical, Supernatural)_
+783. **Angelological** _(Religious, Mystical, Symbolic)_
+784. **Daimonic** _(Philosophical, Mystical, Symbolic)_
+785. **Hero-Worship** _(Cultural, Religious, Mythic)_
+786. **Cultic** _(Religious, Cultural, Ritualistic)_
+787. **Sectarian** _(Religious, Cultural, Political)_
+788. **Fundamentalist** _(Religious, Cultural, Political)_
+789. **Literalist** _(Religious, Philosophical, Critical)_
+790. **Allegorist** _(Religious, Philosophical, Symbolic)_
+791. **Syncretic** _(Religious, Cultural, Philosophical)_
+792. **Universalist** _(Religious, Philosophical, Ethical)_
+793. **Pluralist** _(Philosophical, Religious, Cultural)_
+794. **Exclusivist** _(Religious, Philosophical, Cultural)_
+795. **Inclusivist** _(Religious, Philosophical, Cultural)_
+796. **Comparative-Religious** _(Religious, Philosophical, Analytical)_
+797. **Phenomenological-Religious** _(Religious, Philosophical, Experiential)_
+798. **Secular-Humanist** _(Philosophical, Ethical, Cultural)_
+799. **Atheist** _(Philosophical, Secular, Critical)_
+800. **Agnostic** _(Philosophical, Secular, Skeptical)_
+801. **Digital-Native** _(Cultural, Technological, Generational)_
+802. **Analog-Nostalgic** _(Cultural, Generational, Critical)_
+803. **Techno-Optimist** _(Technological, Philosophical, Futuristic)_
+804. **Techno-Pessimist** _(Technological, Philosophical, Critical)_
+805. **Cyberpunk** _(Literary, Cultural, Futuristic)_
+806. **Solarpunk** _(Cultural, Futuristic, Optimistic)_
+807. **Biopunk** _(Cultural, Futuristic, Scientific)_
+808. **Posthumanist** _(Philosophical, Futuristic, Critical)_
+809. **Transhumanist** _(Philosophical, Technological, Futuristic)_
+810. **Cyborg-Theoretical** _(Philosophical, Feminist, Posthuman)_
+811. **AI-Centric** _(Technological, Philosophical, Analytical)_
+812. **Machine-Agency** _(Philosophical, Technological, Critical)_
+813. **Algorithmic** _(Technological, Analytical, Procedural)_
+814. **Dataist** _(Philosophical, Technological, Analytical)_
+815. **Information-Theoretic** _(Scientific, Technological, Analytical)_
+816. **Simulationist** _(Philosophical, Technological, Hypothetical)_
+817. **Gamified** _(Cultural, Technological, Experiential)_
+818. **Role-Playing** _(Narrative, Gaming, Performative)_
+819. **MMORPG-Perspective** _(Gaming, Cultural, Interactive)_
+820. **First-Person-Gaming** _(Gaming, Experiential, Narrative)_
+821. **Third-Person-Gaming** _(Gaming, Experiential, Narrative)_
+822. **Dungeon-Master** _(Gaming, Narrative, Authorial)_
+823. **Speedrunning** _(Gaming, Cultural, Technological)_
+824. **Permadeath-Focused** _(Gaming, Experiential, Risk-Oriented)_
+825. **Achievement-Hunting** _(Gaming, Cultural, Collecting)_
+826. **Grinder’s-Perspective** _(Gaming, Cultural, Labor-Oriented)_
+827. **Casual-Gaming** _(Cultural, Leisure, Experiential)_
+828. **Hardcore-Gaming** _(Cultural, Experiential, Competitive)_
+829. **Esports-Competitive** _(Cultural, Gaming, Professional)_
+830. **Twitch-Streaming** _(Cultural, Performative, Digital)_
+831. **Let’s-Play** _(Cultural, Narrative, Gaming)_
+832. **Walkthrough/Guide** _(Instructional, Gaming, Analytical)_
+833. **Modding** _(Cultural, Creative, Technological)_
+834. **Glitch-Aesthetic** _(Cultural, Artistic, Technological)_
+835. **Speedrun-Commentary** _(Cultural, Gaming, Performative)_
+836. **Meta-Gaming** _(Cultural, Analytical, Strategic)_
+837. **Ludological** _(Academic, Gaming, Analytical)_
+838. **Narratological-Gaming** _(Academic, Narrative, Gaming)_
+839. **Immersionist** _(Gaming, Experiential, Narrative)_
+840. **Power-Gamer** _(Gaming, Strategic, Competitive)_
+841. **Min-Maxer** _(Gaming, Strategic, Analytical)_
+842. **Role-Immersive** _(Gaming, Narrative, Performative)_
+843. **Sandbox-Play** _(Gaming, Creative, Experiential)_
+844. **Simulation-Gamer** _(Gaming, Analytical, Experiential)_
+845. **VR-Perspective** _(Technological, Experiential, Immersive)_
+846. **AR-Perspective** _(Technological, Experiential, Hybrid)_
+847. **Mixed-Reality** _(Technological, Experiential, Futuristic)_
+848. **Avatar-Centric** _(Gaming, Technological, Experiential)_
+849. **Streamer’s-Performance** _(Cultural, Performative, Digital)_
+850. **Meme-Ironic** _(Cultural, Humorous, Digital)_
+851. **Shitposting** _(Cultural, Humorous, Digital)_
+852. **Edgelord-Humor** _(Cultural, Humorous, Dark)_
+853. **Dank-Meme** _(Cultural, Humorous, Digital)_
+854. **Surreal-Meme** _(Cultural, Humorous, Absurd)_
+855. **Wholesome-Meme** _(Cultural, Humorous, Optimistic)_
+856. **Doomposting** _(Cultural, Humorous, Pessimistic)_
+857. **Copypasta** _(Cultural, Humorous, Digital)_
+858. **Green-Text** _(Cultural, Narrative, Digital)_
+859. **ASCII-Art** _(Cultural, Artistic, Digital)_
+860. **Emoji-Speak** _(Cultural, Digital, Expressive)_
+861. **GIF-Reactive** _(Cultural, Digital, Expressive)_
+862. **Reaction-Meme** _(Cultural, Digital, Expressive)_
+863. **Image-Macro** _(Cultural, Digital, Humorous)_
+864. **Deep-Fried-Meme** _(Cultural, Digital, Absurd)_
+865. **Layered-Meta-Meme** _(Cultural, Digital, Postmodern)_
+866. **Copium/Hopium** _(Cultural, Humorous, Emotional)_
+867. **Based/Cringe Dichotomy** _(Cultural, Humorous, Evaluative)_
+868. **Terminally-Online** _(Cultural, Digital, Self-Referential)_
+869. **Shitcoin/Hype-Culture** _(Cultural, Financial, Digital)_
+870. **NFT-Perspective** _(Cultural, Artistic, Digital)_
+871. **Crypto-Bro** _(Cultural, Financial, Digital)_
+872. **DeFi-Centric** _(Financial, Digital, Technological)_
+873. **AI-Art-Discourse** _(Technological, Artistic, Cultural)_
+874. **Prompt-Engineer** _(Technological, Creative, Analytical)_
+875. **Generative-Aesthetic** _(Artistic, Technological, Experimental)_
+876. **Glitchcore** _(Artistic, Cultural, Digital)_
+877. **Vaporwave** _(Artistic, Cultural, Nostalgic)_
+878. **Synthwave** _(Artistic, Cultural, Futuristic)_
+879. **Cottagecore** _(Cultural, Aesthetic, Nostalgic)_
+880. **Dark-Academia** _(Cultural, Aesthetic, Intellectual)_
+881. **Light-Academia** _(Cultural, Aesthetic, Optimistic)_
+882. **Weirdcore** _(Cultural, Aesthetic, Digital)_
+883. **Dreamcore** _(Cultural, Aesthetic, Surreal)_
+884. **Liminal-Space** _(Cultural, Aesthetic, Surreal)_
+885. **Backrooms-Perspective** _(Cultural, Narrative, Digital)_
+886. **ARG-Interpretation** _(Narrative, Cultural, Digital)_
+887. **Creepypasta** _(Narrative, Digital, Horror)_
+888. **Urban-Legend-Online** _(Cultural, Digital, Horror)_
+889. **Conspiracy-Meme** _(Cultural, Digital, Critical)_
+890. **QAnon-Style** _(Cultural, Digital, Political)_
+891. **Flat-Earth-Online** _(Cultural, Digital, Conspiratorial)_
+892. **Red-Pill/Blue-Pill** _(Cultural, Philosophical, Digital)_
+893. **Black-Pill** _(Cultural, Pessimistic, Digital)_
+894. **Clown-Pill** _(Cultural, Humorous, Digital)_
+895. **White-Pill** _(Cultural, Optimistic, Digital)_
+896. **Accelerationist** _(Philosophical, Political, Futuristic)_
+897. **Doomer** _(Cultural, Pessimistic, Generational)_
+898. **Bloomer** _(Cultural, Optimistic, Generational)_
+899. **Zoomer** _(Cultural, Generational, Digital)_
+900. **Boomer** _(Cultural, Generational, Critical)_
+901. **Indigenous Oral-Tradition** _(Cultural, Narrative, Historical)_
+902. **Tribal-Elder** _(Cultural, Generational, Wisdom)_
+903. **Shamanic** _(Spiritual, Cultural, Experiential)_
+904. **Animist** _(Religious, Cultural, Nature-Oriented)_
+905. **Totemic** _(Spiritual, Cultural, Symbolic)_
+906. **Ancestor-Veneration** _(Cultural, Religious, Historical)_
+907. **Confucian** _(Philosophical, Cultural, Ethical)_
+908. **Daoist** _(Philosophical, Religious, Naturalistic)_
+909. **Buddhist-Mahayana** _(Religious, Philosophical, Ethical)_
+910. **Buddhist-Theravada** _(Religious, Philosophical, Ascetic)_
+911. **Zen-Buddhist** _(Religious, Philosophical, Experiential)_
+912. **Hindu-Vedantic** _(Religious, Philosophical, Spiritual)_
+913. **Bhakti-Devotional** _(Religious, Cultural, Experiential)_
+914. **Sikh-Perspective** _(Religious, Cultural, Ethical)_
+915. **Zoroastrian** _(Religious, Cultural, Historical)_
+916. **Yoruba-Cosmology** _(Religious, Cultural, Spiritual)_
+917. **Indigenous-Australian-Dreamtime** _(Cultural, Mythic, Spiritual)_
+918. **Native-American-Spiritual** _(Cultural, Religious, Nature-Oriented)_
+919. **Sufi-Mystical** _(Religious, Spiritual, Experiential)_
+920. **Hasidic-Jewish** _(Religious, Cultural, Mystical)_
+921. **Kabbalistic** _(Religious, Mystical, Symbolic)_
+922. **Catholic-Scholastic** _(Religious, Philosophical, Historical)_
+923. **Catholic-Mystical** _(Religious, Experiential, Spiritual)_
+924. **Protestant-Reformist** _(Religious, Cultural, Critical)_
+925. **Evangelical** _(Religious, Cultural, Persuasive)_
+926. **Orthodox-Christian** _(Religious, Cultural, Traditional)_
+927. **Islamic-Sunni** _(Religious, Cultural, Traditional)_
+928. **Islamic-Shia** _(Religious, Cultural, Historical)_
+929. **Islamic-Salafi** _(Religious, Cultural, Purist)_
+930. **Islamic-Philosophical** _(Religious, Philosophical, Analytical)_
+931. **Atheist** _(Philosophical, Critical, Secular)_
+932. **Agnostic** _(Philosophical, Critical, Neutral)_
+933. **Secular-Humanist** _(Philosophical, Ethical, Secular)_
+934. **Existentialist** _(Philosophical, Ethical, Critical)_
+935. **Phenomenological** _(Philosophical, Analytical, Experiential)_
+936. **Post-Structuralist** _(Philosophical, Critical, Analytical)_
+937. **Deconstructionist** _(Philosophical, Critical, Linguistic)_
+938. **Analytic-Philosophy** _(Philosophical, Logical, Analytical)_
+939. **Continental-Philosophy** _(Philosophical, Critical, Narrative)_
+940. **Pragmatist** _(Philosophical, Practical, Analytical)_
+941. **Utilitarian** _(Philosophical, Ethical, Analytical)_
+942. **Deontological** _(Philosophical, Ethical, Analytical)_
+943. **Virtue-Ethical** _(Philosophical, Ethical, Human-Centered)_
+944. **Stoic** _(Philosophical, Ethical, Resilient)_
+945. **Epicurean** _(Philosophical, Ethical, Hedonistic)_
+946. **Cynic** _(Philosophical, Critical, Satirical)_
+947. **Skeptical** _(Philosophical, Critical, Analytical)_
+948. **Nihilist** _(Philosophical, Critical, Pessimistic)_
+949. **Absurdist** _(Philosophical, Humorous, Existential)_
+950. **Structuralist** _(Philosophical, Analytical, Linguistic)_
+951. **Semiotic** _(Philosophical, Analytical, Linguistic)_
+952. **Mythological** _(Cultural, Narrative, Symbolic)_
+953. **Archetypal-Jungian** _(Psychological, Symbolic, Narrative)_
+954. **Freudian-Psychoanalytic** _(Psychological, Analytical, Historical)_
+955. **Lacanian-Psychoanalytic** _(Psychological, Philosophical, Critical)_
+956. **Behaviorist** _(Psychological, Scientific, Analytical)_
+957. **Cognitive-Psychology** _(Scientific, Analytical, Empirical)_
+958. **Evolutionary-Psychology** _(Scientific, Analytical, Biological)_
+959. **Neuroscientific** _(Scientific, Analytical, Biological)_
+960. **Biological-Determinist** _(Scientific, Philosophical, Critical)_
+961. **Social-Constructivist** _(Philosophical, Sociological, Critical)_
+962. **Post-Colonial** _(Cultural, Philosophical, Critical)_
+963. **Decolonial** _(Cultural, Philosophical, Critical)_
+964. **Feminist-Theoretical** _(Philosophical, Political, Critical)_
+965. **Queer-Theoretical** _(Philosophical, Cultural, Critical)_
+966. **Intersectional** _(Philosophical, Cultural, Analytical)_
+967. **Critical-Race-Theory** _(Philosophical, Political, Analytical)_
+968. **Marxist** _(Philosophical, Political, Economic)_
+969. **Neo-Marxist** _(Philosophical, Political, Critical)_
+970. **Anarchist** _(Philosophical, Political, Critical)_
+971. **Communitarian** _(Philosophical, Political, Ethical)_
+972. **Libertarian** _(Philosophical, Political, Economic)_
+973. **Conservative-Traditionalist** _(Political, Cultural, Historical)_
+974. **Progressive** _(Political, Cultural, Critical)_
+975. **Populist** _(Political, Cultural, Critical)_
+976. **Technocratic** _(Political, Analytical, Administrative)_
+977. **Globalist** _(Political, Cultural, Economic)_
+978. **Nationalist** _(Political, Cultural, Critical)_
+979. **Isolationist** _(Political, Cultural, Critical)_
+980. **Militarist** _(Political, Cultural, Strategic)_
+981. **Pacifist** _(Philosophical, Ethical, Political)_
+982. **Realist-Political** _(Political, Analytical, Strategic)_
+983. **Idealist-Political** _(Political, Philosophical, Optimistic)_
+984. **Legalist** _(Analytical, Political, Ethical)_
+985. **Constitutionalist** _(Political, Legal, Historical)_
+986. **Rhetorical-Aristotelian** _(Philosophical, Linguistic, Analytical)_
+987. **Rhetorical-Sophist** _(Philosophical, Linguistic, Performative)_
+988. **Satirical** _(Humorous, Critical, Literary)_
+989. **Parodic** _(Humorous, Literary, Performative)_
+990. **Caricatural** _(Humorous, Visual, Critical)_
+991. **Slapstick** _(Humorous, Physical, Performative)_
+992. **Absurd-Humor** _(Humorous, Surreal, Critical)_
+993. **Dark-Humor** _(Humorous, Cynical, Critical)_
+994. **Blue-Humor** _(Humorous, Vulgar, Performative)_
+995. **Wit/Dry-Humor** _(Humorous, Intellectual, Critical)_
+996. **Irony** _(Humorous, Linguistic, Critical)_
+997. **Sardonic** _(Humorous, Critical, Pessimistic)_
+998. **Quirky** _(Humorous, Cultural, Expressive)_
+999. **Bizarre** _(Humorous, Surreal, Experimental)_
+1000. **Meta-Perspective** _(Philosophical, Analytical, Reflexive)_
