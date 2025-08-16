@@ -1,25 +1,23 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-# PEACE Research Program: From Framework to Oracle
+# PEACE Research Program: From Framework to Working Encoded Oracle
 
 This repository brings together three connected papers that form a single research program
 on the limits of classical proof and how to reframe intractable problems.
 
-## 1. PEACE (theory)
-Introduces the framework of **Paraconsistent Epistemic and Contextual Evaluation (PEACE)**,  
-which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
+1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
+   Introduces the framework of **PEACE**, which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
-## 2. P vs NP as Epistemic Illusion
-Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation is a *category error* of binary logic that ultimately confuses verification with discovery.
+2. **[P vs NP as Epistemic Illusion](./P_vs_NP_as_Epistemic_Illusion.pdf)**  
+   Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation  
+   is a *category error* that confuses verification with discovery.  
+   This builds on Scott Aaronson’s critique:  
+   > Scott Aaronson, *NP-complete Problems and Physical Reality*,  
+   > SIGACT News 36(1):30–52, 2005.
 
-This builds on Scott Aaronson’s critique:
-
-> Scott Aaronson, *NP-complete Problems and Physical Reality*,  
-> SIGACT News 36(1):30–52, 2005.
-
-## 3. Goldbach PEACE Oracle
-Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
-It shows why exhaustive proof is impossible (super-linear lower bounds), diagnoses the category error, and delivers a high-confidence meta-verdict that goes beyond computational limits.
+3. **[Goldbach PEACE Oracle: A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)**  
+   Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
+   It shows why exhaustive proof is impossible (super-linear lower bounds), diagnoses the category error, and delivers a high-confidence meta-verdict that goes beyond computational limits.
 
 ---
 
@@ -28,9 +26,7 @@ It shows why exhaustive proof is impossible (super-linear lower bounds), diagnos
 - **Diagnosis** → P vs NP as illusion  
 - **Demonstration** → Goldbach Oracle as a working case study  
 
-Together, these papers form a unified program: moving from theory, to diagnosis, to demonstration.
-
-Thereby showing how PEACE provides clarity where traditional proofs falter.
+Together, these papers form a unified program: moving from theory, to diagnosis, to demonstration — showing how PEACE provides clarity where traditional proofs falter.
 
 # PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
