@@ -1,52 +1,33 @@
-# PPC — Perspectivistic Paraconsistent Contextualism
-
-## Attribution & Citation
-
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
 When referencing, adapting, or building upon this work, please cite as:
 
-John A. McCain. *PPC+ — Perspectivistic Paraconsistent Contextualism: LP-first, Safety-first Reasoning Engine.*
+John A. McCain. *PEACE - Paraconsistent Epistemic And Contextual Evaluator 2025*
 
-> **TL;DR**: A production-ready reasoning engine that **actually implements a modified idea of Priest’s LP** (paraconsistent logic) and uses it to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
-
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](#)
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CCBYNC-blue.svg)](#)
-[![LP](https://img.shields.io/badge/logic-Priest's%20LP-purple)](#)
-[![Safety](https://img.shields.io/badge/focus-AI%20Safety-orange)](#)
+> **TL;DR**: A production-ready reasoning engine that **actually implements a synthesis of many real philosophical ideas** and uses them to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
 
 ---
+Contributing
+This framework addresses fundamental problems in logic and AI safety. Contributions welcome for:
+	•	Implementation optimizations
+	•	Additional paradox case studies
+	•	AI safety integration examples
+	•	Formal verification extensions
+ @article{mccain2025peace,
+  title={PEACE: Paraconsistent Epistemic And Contextual Evaluation},
+  author={McCain, John A.},
+  year={2025},
+  note={Breakthrough framework for contradiction-resilient reasoning}
+}
+**License**
+Creative Commons BY-NC 4.0
+**Contact**
+John A. McCain
+Independent AI Safety Researcher
+johnamccain.vdma@gmail.com
 
-## Why This Could Be Revolutionary
-
-PPC+ is a contradiction-resilient reasoning engine that brings Priest’s Logic of Paradox (LP) out of theory and into production.
-Unlike typical AI pipelines that collapse contradictions into errors or discard them, PPC+ preserves and reasons with “both true and false” states as first-class citizens — enabling stable, meaningful inference even under paradox, uncertainty, or conflicting data.
-
-It combines a formal LP truth-pair core with an adapter-based architecture for LLM or data source integration, reliability-weighted consensus via rolling Brier scores, adaptive contradiction thresholds, and a SafeUpdater for guarded self-modification.
-
-The result is an AI reasoning system that degrades gracefully, adapts safely, and remains epistemically aware — making it a practical foundation for high-stakes, safety-critical AI applications.
-
-### 1) Actually Implements Concepts from Priest’s LP in a New Way
-**Working paraconsistent semantics** with proper truth pairs `(t,f)` and truth-functional connectives:
-- `AND`: `(min t, max f)`  
-- `OR`: `(max t, min f)`  
-- `NOT`: `(f, t)`  
-- `IMPLIES`: `¬A ∨ B`
-
-### 2) Production-Ready Architecture
-- **Adapter pattern** for LLM integration (multiple perspectives, prompts, or models)
-- **Reliability tracking** via rolling Brier scores → sources self-calibrate
-- **Safe parameter updates** with tests + rollback (`SafeUpdater`)
-- **Comprehensive provenance** (model/meta/prompt/context hashing)
-
-### 3) Genuine AI Safety Innovation
-- **Contradiction resilience** (LP foundation, BOTH as default prior)
-- **Self-modification safety** (guarded tunables, revert on failed tests)
-- **Graceful degradation** (never “NEITHER”; fall back to **BOTH**)
-- **Reliability learning** (bounded weights, down-weight poor sources)
-
-### 4) Based on functional conclusions about P vs NP (see P vs NP as Epistemic Illusion)
-**Bottom line:** This moves from what was once an “interesting idea” to a **deployable AI safety architecture** grounded in paraconsistent logic and practical engineering.
+“The less complete the context, the harder it is to evaluate a claim correctly. PEACE provides the first formal framework to measure and handle this fundamental challenge.”
+This README positions PEACE as a serious research framework while highlighting its practical applications and theoretical rigor. It should help researchers understand both the mathematical foundations and the real-world implications.​​​​​​​​​​​​​​​​
 
 ---
 
@@ -54,25 +35,10 @@ About the Author
 
 I'm John A. McCain. I am not a professional programmer or AI researcher; I work at Walgreens. Three weeks ago I first learned about the P vs NP problem.
 
-Using only my phone I began developing a reasoning framework that blends my own philosophical work with ideas from paraconsistent logic, AI safety, computational theory, and other sources. PPC+ works in a way similar to Graham Priest’s LP, but it is not just LP. It comes from my own synthesis of many different ideas, built to preserve my philosophy of the reality of ambiguous contradiction when needed and collapse to classical truth values only when the context and perspectives justify it.
+Using only my phone I began developing a reasoning framework that blends my own philosophical work with ideas from paraconsistent logic, AI safety, computational theory, and other sources.
 
 I have not implemented real LLM adapters yet because I do not have access to large compute resources or APIs. My focus has been on creating the conceptual and logical foundation so others can plug in real models later.
 
 This project is unusual. It is an AI safety–oriented reasoning system designed on a phone, built without formal coding training, and shaped entirely by philosophical insight combined with persistence and curiosity.
 
-## Requirements
-- Python **3.7+** (recommended **3.10+**)
-- No runtime dependencies (standard library only)
-
-### Optional (dev)
-- pytest, ruff, black, mypy, hypothesis
-
-## Core Idea (Meta-Dialetheism)
-Reality presents by default as jointly true and/or false. This engine **preserves contradiction** as a first-class feature (**BOTH**), and only collapses to classical bivalence (TRUE or FALSE) with sufficient **perspectival/contextual** warrant (high consensus + high confidence).
-
 ---
-
-## Install
-```bash
-pip install -e .
-# or just vendor `ppc_plus.py` into your project
