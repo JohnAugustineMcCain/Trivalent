@@ -116,4 +116,6 @@ I have not implemented real LLM adapters yet because I do not have access to lar
 
 This project is unusual. It is an AI safety–oriented reasoning system designed on a phone, built without formal coding training, and shaped entirely by philosophical insight combined with persistence and curiosity.
 
+**I hope it brings PEACE to the wirld amid all the uncertainty**
+
 ---
