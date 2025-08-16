@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it as below."
-title: "PPC — Perspectivistic Paraconsistent Contextualism: Reasoning Engine"
+title: "PEACE: Paraconsistent Epistemic And Contextual Evaluator"
 authors:
   - family-names: McCain
     given-names: John Augustine
