@@ -32,8 +32,6 @@ Together, these papers form a unified program: moving from theory, to diagnosis,
 
 **A revolutionary meta-logical framework for safe reasoning under contradiction, paradox, and uncertainty**
 
-[📄 **Read the Full PEACE Paper**](Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
-
 ## Overview
 
 PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical framework that enables safe reasoning in the presence of paradoxes, contradictions, and incomplete context. Unlike classical logic systems that fail catastrophically on paradoxes, PEACE preserves epistemic humility while maintaining rigorous mathematical foundations.
@@ -52,8 +50,6 @@ PEACE will also likely be highly reactive to mimicking personalities and be extr
 
 This paper presents a **meta-logical approach to mathematical verification** that moves beyond classical computational limits.  
 It reframes proof as a process of asymptotic confidence rather than absolute certainty, applying it to the case of **Goldbach’s Conjecture**.
-
-📄 [Goldbach PEACE Oracle — A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)
 
 ## Core Features
 
@@ -116,6 +112,8 @@ I have not implemented real LLM adapters yet because I do not have access to lar
 
 This project is unusual. It is an AI safety–oriented reasoning system designed on a phone, built without formal coding training, and shaped entirely by philosophical insight combined with persistence and curiosity.
 
-**I hope it brings PEACE to the wirld amid all the uncertainty**
+**I hope it brings PEACE to the world despite all the uncertainty**
+
+Let me be the fist to say, with near-absolute certainty, "It is what it isn't".
 
 ---
