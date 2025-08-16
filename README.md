@@ -40,7 +40,7 @@ PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical f
 
 ### Key Innovations
 
-PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection.
+PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific nathematics or operation of this has yet to be clarified. I am working dilgently to make this metric explainable, but I have a lot to deal with right now.
 
 PEACE will assign a **Default Meta-Dialetheic Truth Value** (.5) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
 
