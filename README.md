@@ -1,13 +1,16 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-# PEACE Research Program: From Framework to Working Encoded Oracle
+# PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
-This repository brings together three connected papers that form a single research program
-on the limits of classical proof and how to reframe intractable problems.
+This repository brings together three connected papers that form a single research program on the limits of classical proof and how to reframe intractable problems.
 
 I've been working hard days and nights to produce something I think is genuinely valuable, and I've done a lot of foundational work to arrive at my conclusions.
 
-it all started out just over a month before I produced this repository with my earliest publication that I thought was worth sharing itself: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+It all started snowballing just over a month before I produced this repository with my earliest publication that I thought was worth sharing itself: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+
+I can't accurately determine if my paper made a difference, or I just started being able to notice connections between other's thinking.
+
+More recently, I published 
 
 However, if you want to just [skip all the reading and just look at the prototype oracle coding?](prototype_peace_math_oracle.py)
 
