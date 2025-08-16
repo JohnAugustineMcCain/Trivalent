@@ -8,7 +8,7 @@ on the limits of classical proof and how to reframe intractable problems.
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
    Introduces the framework of **PEACE**, which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
-2. **[P vs NP as Epistemic Illusion](Foundational Documents/P_vs_NP_as_Epistemic_Illusion.md)**  
+2. **[P vs NP as Epistemic Illusion](Foundational%20Documents/P_vs_NP_as_Epistemic_Illusion.md)**
    Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation  
    is a *category error* that confuses verification with discovery.  
    This builds on Scott Aaronson’s critique:  
