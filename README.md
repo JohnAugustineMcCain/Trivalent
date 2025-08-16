@@ -1,11 +1,44 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-When referencing, adapting, or building upon this work, please cite as:
-
-John A. McCain. *PEACE - Paraconsistent Epistemic And Contextual Evaluator 2025*
-
 > **TL;DR**: A production-ready reasoning engine that **actually implements a synthesis of many real philosophical ideas** and uses them to make LLMs more **contradiction-resilient, reliability-aware, and safely self-modifying**. Default prior is **BOTH** (dialetheic), with TRUE/FALSE emerging only via perspectival/contextual collapse.
-
+Where I_P constrains vocabulary and κ_P provides verdicts.
+3. Context Completeness
+Quantifies missing context: lower Cc → more perspectives admissible → higher verdict instability.
+4. Category Error Detection
+Systematic identification of classical logic failures:
+	•	Self-reference enabling diagonalization
+	•	Vague predicates and indexicals
+	•	Normative/pragmatic load
+	•	Strong conflicting evidence
+## Major Applications ##
+**Paradox Resolution**
+	•	Liar Paradox: “This statement is false” → B (stable resolution)
+	•	Russell’s Paradox: Context-dependent evaluation prevents explosion
+	•	Sorites Paradox: Vagueness handled through perspective multiplicity
+AI Safety
+	•	Contradiction-Resilient Training: Safe learning from contradictory data
+	•	Uncertainty Preservation: Maintains epistemic humility under ambiguity
+	•	Safe Self-Modification: Systematic evaluation of system changes
+	•	Value Alignment: Handles conflicting human preferences gracefully
+Mathematical Foundations
+	•	P vs NP Category Error: Formal proof that classical NP strips decisive context
+	•	Goldbach Verification: Ω(N log N) lower bounds explain finite evidence limits
+	•	Computational Complexity: Context completeness analysis of formal abstractions
+Implementation
+Core Engine
+	•	perspectival_engine.py - Complete epistemic evaluation system
+	•	Temporal decay with asymmetric half-lives (TRUE more stable than FALSE)
+	•	Conservative learning with evidence fusion
+	•	Dynamic perspective management
+Theoretical Results
+Proven Theorems
+	•	Non-explosion: A, ¬A ⊭ B for arbitrary B
+	•	Neutral fixed point: Liar paradox yields stable B value
+	•	Classical preservation: B-free fragments maintain classical entailment
+	•	Conservativity: Non-load-bearing perspectives preserve truth values
+Computational Bounds
+	•	Goldbach verification: Ω(N log N) lower bound for finite verification
+	•	Context stripping: Formal analysis of abstraction-induced category errors
 ---
 Contributing
 This framework addresses fundamental problems in logic and AI safety. Contributions welcome for:
@@ -13,14 +46,15 @@ This framework addresses fundamental problems in logic and AI safety. Contributi
 	•	Additional paradox case studies
 	•	AI safety integration examples
 	•	Formal verification extensions
+
+ When referencing, adapting, or building upon this work, please cite as:
  @article{mccain2025peace,
   title={PEACE: Paraconsistent Epistemic And Contextual Evaluation},
   author={McCain, John A.},
   year={2025},
   note={Breakthrough framework for contradiction-resilient reasoning}
 }
-**License**
-Creative Commons BY-NC 4.0
+
 **Contact**
 John A. McCain
 Independent AI Safety Researcher
