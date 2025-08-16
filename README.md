@@ -10,9 +10,9 @@ It all started snowballing just over a month before I produced this repository w
 
 I can't accurately determine if my paper made a difference, or I just started being able to notice connections between other's thinking.
 
-More recently, I published 
+More recently, I published an earlier form of [this paper](P_vs_NP_Proven_Unprovable.pdf) that I had titled "P ≠ NP: Semantic Context as a Computational Barrier, and I was overjoyed when I saw an announcement on a reddit post about information coming out of some Springer Publishing identifying a "Semantic Barrier" in P vs NP. I was pretty devastated when I saw it was a chinese team who came to the exact same conclusion. I was pretty irked when I saw that they didn't really prove anything in the papers they mentioned, and it seemed to me like they were just rapidly reframing what they had previously written. I don't understand how the academic world operates, but I was relieved to think they couldn't just post-hoc justify older work. Also, by that time I had already moved on to bigger things.
 
-However, if you want to just [skip all the reading and just look at the prototype oracle coding?](prototype_peace_math_oracle.py)
+If you want to just [skip all the reading and just look at the prototype oracle coding](prototype_peace_math_oracle.py), I won't hold it against you.
 
 **From Paradox to PEACE: My Papers**
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
