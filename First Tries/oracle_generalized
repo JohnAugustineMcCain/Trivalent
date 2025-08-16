@@ -1,0 +1,557 @@
+from **future** import annotations
+from dataclasses import dataclass
+from typing import Dict, List, Tuple, Optional, Any, Union, Callable, Generic, TypeVar
+from abc import ABC, abstractmethod
+from enum import Enum, auto
+import math
+import random
+
+# ===== CORE PEACE FRAMEWORK =====
+
+class TV(Enum):
+T = auto()  # True only
+F = auto()  # False only
+B = auto()  # Both true and false (meta-dialetheic)
+
+@dataclass
+class Evidence:
+positive: float = 0.0
+negative: float = 0.0
+computational_bound: int = 0
+verification_cost: float = 0.0
+
+```
+def strength(self) -> float:
+    return self.positive - self.negative + math.log(max(1, self.computational_bound)) / 50.0
+```
+
+@dataclass
+class Context:
+name: str
+completeness: float  # C_c ∈ [0,1] - how well-specified the context is
+scope: str          # “local”, “global”, “infinite”
+complexity: int     # Problem complexity score
+meta: Dict[str, Any] = None
+
+@dataclass
+class OracleResult:
+verdict: TV
+confidence: float
+method: str
+details: Dict[str, Any]
+reasoning: str
+
+# ===== ABSTRACT MATHEMATICAL PROBLEM =====
+
+ProblemType = TypeVar(‘ProblemType’)
+
+class MathematicalProblem(ABC, Generic[ProblemType]):
+“”“Abstract base class for mathematical problems that can be evaluated by PEACE Oracle”””
+
+```
+@abstractmethod
+def describe(self) -> str:
+    """Human-readable description of the problem"""
+    pass
+
+@abstractmethod
+def complexity_score(self) -> int:
+    """Estimate problem complexity (0-10 scale)"""
+    pass
+
+@abstractmethod
+def computational_bound(self) -> int:
+    """Maximum feasible direct computation scale"""
+    pass
+
+@abstractmethod
+def verify_instance(self, instance: ProblemType) -> bool:
+    """Direct verification for specific instance (if computationally feasible)"""
+    pass
+
+@abstractmethod
+def estimate_difficulty(self, instance: ProblemType) -> float:
+    """Estimate difficulty of specific instance"""
+    pass
+```
+
+# ===== PERSPECTIVE FRAMEWORK =====
+
+class PEACEPerspective(ABC):
+“”“Abstract base class for PEACE perspectives”””
+
+```
+def __init__(self, name: str):
+    self.name = name
+
+@abstractmethod
+def is_admissible(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    """Determine if this perspective applies to the problem"""
+    pass
+
+@abstractmethod
+def is_load_bearing(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    """Determine if this perspective significantly affects the verdict"""
+    pass
+
+@abstractmethod
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, evidence: Evidence) -> OracleResult:
+    """Provide perspective-specific evaluation"""
+    pass
+```
+
+class ComputationalPerspective(PEACEPerspective):
+“”“Perspective based on direct computational verification”””
+
+```
+def __init__(self):
+    super().__init__("computational")
+
+def is_admissible(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    difficulty = problem.estimate_difficulty(instance)
+    bound = problem.computational_bound()
+    is_feasible = difficulty <= bound
+    return is_feasible, f"computationally {'feasible' if is_feasible else 'infeasible'}"
+
+def is_load_bearing(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    admissible, _ = self.is_admissible(problem, instance, context)
+    return admissible and context.scope == "local", "direct verification available"
+
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, evidence: Evidence) -> OracleResult:
+    try:
+        result = problem.verify_instance(instance)
+        verdict = TV.T if result else TV.F
+        confidence = 1.0
+        method = "direct_verification"
+        reasoning = f"Directly computed result: {result}"
+    except Exception as e:
+        verdict = TV.B
+        confidence = 0.0
+        method = "computation_failed"
+        reasoning = f"Direct computation failed: {str(e)}"
+    
+    return OracleResult(verdict, confidence, method, {}, reasoning)
+```
+
+class HeuristicPerspective(PEACEPerspective):
+“”“Perspective based on mathematical heuristics and asymptotic analysis”””
+
+```
+def __init__(self, heuristic_functions: Dict[str, Callable]):
+    super().__init__("heuristic")
+    self.heuristics = heuristic_functions
+
+def is_admissible(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    problem_type = type(problem).__name__
+    has_heuristic = problem_type in self.heuristics
+    return has_heuristic, f"heuristic {'available' if has_heuristic else 'unavailable'}"
+
+def is_load_bearing(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    admissible, _ = self.is_admissible(problem, instance, context)
+    large_scale = problem.estimate_difficulty(instance) > problem.computational_bound()
+    return admissible and large_scale, "heuristic analysis needed for large scale"
+
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, evidence: Evidence) -> OracleResult:
+    problem_type = type(problem).__name__
+    if problem_type not in self.heuristics:
+        return OracleResult(TV.B, 0.5, "no_heuristic", {}, "No heuristic available")
+    
+    heuristic_func = self.heuristics[problem_type]
+    confidence, details = heuristic_func(instance, evidence)
+    
+    verdict = TV.T if confidence > 0.7 else TV.B
+    reasoning = f"Heuristic analysis yields {confidence:.3f} confidence"
+    
+    return OracleResult(verdict, confidence, "heuristic_analysis", details, reasoning)
+```
+
+class PatternPerspective(PEACEPerspective):
+“”“Perspective based on learned patterns from verified cases”””
+
+```
+def __init__(self):
+    super().__init__("pattern")
+    self.learned_patterns = {}
+    self.observations = []
+
+def add_observation(self, problem_type: str, instance: Any, result: bool, metadata: Dict = None):
+    """Learn from verified cases"""
+    self.observations.append({
+        'problem_type': problem_type,
+        'instance': instance, 
+        'result': result,
+        'metadata': metadata or {}
+    })
+    self._update_patterns(problem_type)
+
+def _update_patterns(self, problem_type: str):
+    """Update learned patterns for problem type"""
+    relevant_obs = [obs for obs in self.observations if obs['problem_type'] == problem_type]
+    if len(relevant_obs) < 10:
+        return
+    
+    # Simple pattern: success rate in recent observations
+    recent = relevant_obs[-50:]
+    success_rate = sum(1 for obs in recent if obs['result']) / len(recent)
+    
+    self.learned_patterns[problem_type] = {
+        'success_rate': success_rate,
+        'observation_count': len(relevant_obs),
+        'confidence_multiplier': min(1.0, len(relevant_obs) / 100.0)
+    }
+
+def is_admissible(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    problem_type = type(problem).__name__
+    has_patterns = problem_type in self.learned_patterns
+    return has_patterns, f"patterns {'available' if has_patterns else 'unavailable'}"
+
+def is_load_bearing(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    admissible, _ = self.is_admissible(problem, instance, context)
+    sufficient_data = len(self.observations) > 20
+    return admissible and sufficient_data, "sufficient pattern data available"
+
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, evidence: Evidence) -> OracleResult:
+    problem_type = type(problem).__name__
+    if problem_type not in self.learned_patterns:
+        return OracleResult(TV.B, 0.5, "insufficient_patterns", {}, "Insufficient pattern data")
+    
+    patterns = self.learned_patterns[problem_type]
+    base_confidence = patterns['success_rate']
+    confidence_mult = patterns['confidence_multiplier']
+    
+    final_confidence = base_confidence * confidence_mult
+    verdict = TV.T if final_confidence > 0.7 else TV.B
+    
+    reasoning = f"Pattern analysis: {patterns['observation_count']} observations, " \
+               f"{base_confidence:.3f} success rate"
+    
+    return OracleResult(verdict, final_confidence, "pattern_extrapolation", patterns, reasoning)
+```
+
+class CategoryErrorPerspective(PEACEPerspective):
+“”“Perspective that identifies category errors in problem formulation”””
+
+```
+def __init__(self):
+    super().__init__("category_error")
+
+def is_admissible(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    return True, "category analysis always applicable"
+
+def is_load_bearing(self, problem: MathematicalProblem, instance: Any, context: Context) -> Tuple[bool, str]:
+    # Load bearing when problem involves potential category errors
+    high_complexity = problem.complexity_score() >= 7
+    infinite_scope = context.scope == "infinite"
+    low_completeness = context.completeness < 0.3
+    
+    triggers_analysis = high_complexity or infinite_scope or low_completeness
+    return triggers_analysis, f"category error {'possible' if triggers_analysis else 'unlikely'}"
+
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, evidence: Evidence) -> OracleResult:
+    # Analyze for category errors
+    difficulty = problem.estimate_difficulty(instance)
+    bound = problem.computational_bound()
+    
+    category_error_score = 0.0
+    details = {}
+    
+    # Check for computational impossibility
+    if difficulty > bound * 1000:
+        category_error_score += 0.4
+        details['computational_impossibility'] = True
+    
+    # Check for infinite domain with finite resources
+    if context.scope == "infinite" and context.completeness < 0.5:
+        category_error_score += 0.3
+        details['infinite_finite_mismatch'] = True
+    
+    # Check for high complexity with low context
+    if problem.complexity_score() >= 8 and context.completeness < 0.4:
+        category_error_score += 0.3
+        details['complexity_context_mismatch'] = True
+    
+    # PEACE verdict: B for category errors
+    verdict = TV.B
+    confidence = min(0.95, 0.5 + category_error_score)
+    
+    reasoning = f"Category error analysis: score {category_error_score:.2f}, " \
+               f"indicates structural problem with classical evaluation"
+    
+    return OracleResult(verdict, confidence, "category_error_analysis", details, reasoning)
+```
+
+# ===== GENERALIZED PEACE ORACLE =====
+
+class GeneralizedPEACEOracle:
+“”“Main PEACE Oracle that can handle any mathematical problem”””
+
+```
+def __init__(self, perspectives: List[PEACEPerspective] = None):
+    self.perspectives = perspectives or [
+        ComputationalPerspective(),
+        HeuristicPerspective({}),
+        PatternPerspective(),
+        CategoryErrorPerspective()
+    ]
+    self.evaluation_history = []
+
+def add_perspective(self, perspective: PEACEPerspective):
+    """Add a new perspective to the oracle"""
+    self.perspectives.append(perspective)
+
+def register_heuristic(self, problem_type: str, heuristic_func: Callable):
+    """Register a heuristic function for a specific problem type"""
+    for perspective in self.perspectives:
+        if isinstance(perspective, HeuristicPerspective):
+            perspective.heuristics[problem_type] = heuristic_func
+            break
+
+def learn_from_verification(self, problem: MathematicalProblem, instance: Any, result: bool, metadata: Dict = None):
+    """Learn from a verified case"""
+    for perspective in self.perspectives:
+        if isinstance(perspective, PatternPerspective):
+            perspective.add_observation(type(problem).__name__, instance, result, metadata)
+            break
+
+def evaluate(self, problem: MathematicalProblem, instance: Any, context: Context, 
+            evidence: Evidence = None, relevance_order: List[str] = None) -> OracleResult:
+    """Main evaluation method"""
+    
+    evidence = evidence or Evidence()
+    
+    # Default relevance order based on context
+    if relevance_order is None:
+        if context.scope == "local":
+            relevance_order = ["computational", "pattern", "heuristic", "category_error"]
+        elif context.complexity >= 7:
+            relevance_order = ["category_error", "heuristic", "pattern", "computational"]
+        else:
+            relevance_order = ["heuristic", "pattern", "computational", "category_error"]
+    
+    # Evaluate all perspectives
+    perspective_results = {}
+    influential_perspectives = {}
+    
+    for perspective in self.perspectives:
+        result = perspective.evaluate(problem, instance, context, evidence)
+        perspective_results[perspective.name] = result
+        
+        # Check if perspective is admissible and load-bearing
+        admissible, _ = perspective.is_admissible(problem, instance, context)
+        load_bearing, _ = perspective.is_load_bearing(problem, instance, context)
+        
+        if admissible and load_bearing:
+            influential_perspectives[perspective.name] = result
+    
+    # Select final verdict based on relevance order
+    final_result = None
+    for perspective_name in relevance_order:
+        if perspective_name in influential_perspectives:
+            final_result = influential_perspectives[perspective_name]
+            final_result.details['selected_perspective'] = perspective_name
+            final_result.details['all_perspectives'] = {
+                name: {'verdict': str(result.verdict), 'confidence': result.confidence}
+                for name, result in perspective_results.items()
+            }
+            break
+    
+    # Fallback if no perspectives are influential
+    if final_result is None:
+        final_result = OracleResult(
+            TV.B, 0.5, "no_influential_perspectives", 
+            {'all_perspectives': perspective_results}, 
+            "No perspectives were both admissible and load-bearing"
+        )
+    
+    # Record evaluation
+    self.evaluation_history.append({
+        'problem': type(problem).__name__,
+        'instance': str(instance)[:100],  # Truncated string representation
+        'context': context.name,
+        'result': final_result
+    })
+    
+    return final_result
+
+def get_statistics(self) -> Dict[str, Any]:
+    """Get oracle usage statistics"""
+    if not self.evaluation_history:
+        return {}
+    
+    total_evaluations = len(self.evaluation_history)
+    verdict_counts = {'T': 0, 'F': 0, 'B': 0}
+    
+    for entry in self.evaluation_history:
+        verdict_counts[entry['result'].verdict.name] += 1
+    
+    return {
+        'total_evaluations': total_evaluations,
+        'verdict_distribution': {k: v/total_evaluations for k, v in verdict_counts.items()},
+        'average_confidence': sum(entry['result'].confidence for entry in self.evaluation_history) / total_evaluations
+    }
+```
+
+# ===== EXAMPLE PROBLEM IMPLEMENTATIONS =====
+
+class GoldbachProblem(MathematicalProblem[int]):
+“”“Goldbach Conjecture: Every even number > 2 is sum of two primes”””
+
+```
+def describe(self) -> str:
+    return "Goldbach Conjecture: Every even integer > 2 can be expressed as sum of two primes"
+
+def complexity_score(self) -> int:
+    return 6  # High complexity due to prime distribution analysis
+
+def computational_bound(self) -> int:
+    return 10**8  # Practical limit for direct verification
+
+def verify_instance(self, n: int) -> bool:
+    if n < 4 or n % 2 != 0:
+        return False
+    
+    # Simple verification - find prime pairs
+    for p in range(2, n//2 + 1):
+        if self._is_prime(p) and self._is_prime(n - p):
+            return True
+    return False
+
+def estimate_difficulty(self, n: int) -> float:
+    return float(n)  # Difficulty scales with number size
+
+def _is_prime(self, n: int) -> bool:
+    if n < 2: return False
+    if n == 2: return True
+    if n % 2 == 0: return False
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0: return False
+    return True
+```
+
+class TwinPrimeProblem(MathematicalProblem[int]):
+“”“Twin Prime Conjecture: Infinitely many primes p such that p+2 is also prime”””
+
+```
+def describe(self) -> str:
+    return "Twin Prime Conjecture: Infinitely many prime pairs (p, p+2)"
+
+def complexity_score(self) -> int:
+    return 8  # Very high complexity - infinite conjecture
+
+def computational_bound(self) -> int:
+    return 10**6  # Can verify twin primes up to reasonable limit
+
+def verify_instance(self, n: int) -> bool:
+    # Verify if n and n+2 are both prime
+    return self._is_prime(n) and self._is_prime(n + 2)
+
+def estimate_difficulty(self, n: int) -> float:
+    return float(n)
+
+def _is_prime(self, n: int) -> bool:
+    if n < 2: return False
+    if n == 2: return True
+    if n % 2 == 0: return False
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0: return False
+    return True
+```
+
+# ===== HEURISTIC FUNCTIONS =====
+
+def goldbach_heuristic(n: int, evidence: Evidence) -> Tuple[float, Dict]:
+“”“Hardy-Littlewood heuristic for Goldbach conjecture”””
+log_n = math.log(n)
+expected_reps = n / (log_n * log_n)
+
+```
+prime_density = 1 / log_n
+search_space = math.sqrt(n / log_n)
+success_prob = 1 - (1 - prime_density**2)**search_space
+
+# Modular boost
+modular_boost = 0.0
+if n % 6 != 2: modular_boost += 0.1
+if n % 30 != 2: modular_boost += 0.05
+
+confidence = min(0.98, success_prob + modular_boost)
+if expected_reps > 100: confidence += 0.1
+
+details = {
+    'expected_representations': expected_reps,
+    'prime_density': prime_density,
+    'success_probability': success_prob,
+    'modular_boost': modular_boost
+}
+
+return confidence, details
+```
+
+def twin_prime_heuristic(n: int, evidence: Evidence) -> Tuple[float, Dict]:
+“”“Heuristic for twin prime conjecture based on Hardy-Littlewood constants”””
+log_n = math.log(n)
+
+```
+# Twin prime constant approximation
+twin_prime_density = 1.32 / (log_n**2)
+probability = min(0.9, twin_prime_density * 10)
+
+details = {
+    'twin_prime_density': twin_prime_density,
+    'log_n': log_n
+}
+
+return probability, details
+```
+
+# ===== DEMONSTRATION =====
+
+def demonstrate_generalized_oracle():
+“”“Demonstrate the generalized PEACE Oracle on different problems”””
+
+```
+# Initialize oracle
+oracle = GeneralizedPEACEOracle()
+
+# Register heuristics
+oracle.register_heuristic('GoldbachProblem', goldbach_heuristic)
+oracle.register_heuristic('TwinPrimeProblem', twin_prime_heuristic)
+
+# Create problems
+goldbach = GoldbachProblem()
+twin_prime = TwinPrimeProblem()
+
+# Test cases
+test_cases = [
+    (goldbach, 100, Context("small_goldbach", 0.8, "local", 3)),
+    (goldbach, 10**20, Context("large_goldbach", 0.3, "infinite", 8)),
+    (twin_prime, 17, Context("small_twin", 0.9, "local", 2)),
+    (twin_prime, 10**15, Context("large_twin", 0.2, "infinite", 9))
+]
+
+print("=== Generalized PEACE Oracle Demonstration ===\n")
+
+for problem, instance, context in test_cases:
+    print(f"Problem: {problem.describe()}")
+    print(f"Instance: {instance}")
+    print(f"Context: {context.name} (completeness: {context.completeness}, scope: {context.scope})")
+    
+    # Evaluate
+    result = oracle.evaluate(problem, instance, context)
+    
+    print(f"Oracle Verdict: {result.verdict.name}")
+    print(f"Confidence: {result.confidence:.4f}")
+    print(f"Method: {result.method}")
+    print(f"Reasoning: {result.reasoning}")
+    print("-" * 60)
+
+# Show statistics
+stats = oracle.get_statistics()
+print(f"\nOracle Statistics:")
+print(f"Total evaluations: {stats['total_evaluations']}")
+print(f"Verdict distribution: {stats['verdict_distribution']}")
+print(f"Average confidence: {stats['average_confidence']:.4f}")
+```
+
+if **name** == “**main**”:
+demonstrate_generalized_oracle()
