@@ -7,6 +7,7 @@ on the limits of classical proof and how to reframe intractable problems.
 
 I've been working hard days and nights to produce something I think is genuinely valuable, and I've done a lot of foundational work to arrive at my conclusions, but do you want to just [skip all the reading and just look at the prototype oracle coding?](prototype_peace_math_oracle.py)
 
+**From Paradox to PEACE: My Papers**
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
    Introduces the framework of **PEACE**, which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
