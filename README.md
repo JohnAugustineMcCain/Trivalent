@@ -128,6 +128,6 @@ This project is unusual. It is an AI safety–oriented reasoning system designed
 
 **I hope it brings PEACE to the world despite all the uncertainty.**
 
-Let me be the fist to say, with near-absolute certainty, "It is what it isn't".
+Let me be the first to say, with near-absolute certainty, "It is what it isn't". An intentionally unprovable proof.
 
 ---
