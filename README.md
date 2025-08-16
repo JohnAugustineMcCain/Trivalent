@@ -11,9 +11,11 @@ on the limits of classical proof and how to reframe intractable problems.
 2. **[P vs NP as Epistemic Illusion](Foundational%20Documents/P_vs_NP_as_Epistemic_Illusion.md)**
    Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation  
    is a *category error* that confuses verification with discovery.  
-   This builds on Scott Aaronson’s critique:  
+   I realized later that this builds on Scott Aaronson’s critique:  
    > Scott Aaronson, *NP-complete Problems and Physical Reality*,  
    > SIGACT News 36(1):30–52, 2005.
+
+**Note:** Seeing for the first time how Scott Aaronson understood the fundamental concepts of the problems with P vs NP so early on, I think it's explicitly clear why his work with OpenAI has been so revolutionary for producing AI that so impressively seems to actually think and reason. I think his achievements should be highlighted and he should be rewarded accordingly.
 
 3. **[Goldbach PEACE Oracle: A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)**  
    Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
