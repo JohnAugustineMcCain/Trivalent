@@ -5,7 +5,11 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 This repository brings together three connected papers that form a single research program
 on the limits of classical proof and how to reframe intractable problems.
 
-I've been working hard days and nights to produce something I think is genuinely valuable, and I've done a lot of foundational work to arrive at my conclusions, but do you want to just [skip all the reading and just look at the prototype oracle coding?](prototype_peace_math_oracle.py)
+I've been working hard days and nights to produce something I think is genuinely valuable, and I've done a lot of foundational work to arrive at my conclusions.
+
+it all started out just over a month before I produced this repository with my earliest publication that I thought was worth sharing itself: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+
+However, if you want to just [skip all the reading and just look at the prototype oracle coding?](prototype_peace_math_oracle.py)
 
 **From Paradox to PEACE: My Papers**
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
