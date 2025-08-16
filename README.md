@@ -5,6 +5,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 This repository brings together three connected papers that form a single research program
 on the limits of classical proof and how to reframe intractable problems.
 
+[Skip all the reading and just look at the prototype coding?](prototype_peace_math_oracle.py)
+
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
    Introduces the framework of **PEACE**, which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
@@ -15,7 +17,7 @@ on the limits of classical proof and how to reframe intractable problems.
    > Scott Aaronson, *NP-complete Problems and Physical Reality*,  
    > SIGACT News 36(1):30–52, 2005.
 
-**Note:** Seeing for the first time how Scott Aaronson understood the fundamental concepts of the problems with P vs NP so early on, I think it's explicitly clear why his work with OpenAI has been so revolutionary for producing AI that so impressively seems to actually think and reason. I think his achievements should be highlighted and he should be rewarded accordingly.
+**Note:** Seeing for the first time how Scott Aaronson understood the fundamental concepts of the problems with P vs NP so early on, I think it's explicitly clear why his work with OpenAI has been so revolutionary for producing AI that so impressively seems to actually think and reason. I think his achievements should be highlighted and he should be rewarded accordingly. He knew what was going on with P vs NP all along; he had the proof, but we crucially lacked the tools to verify it.
 
 3. **[Goldbach PEACE Oracle: A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)**  
    Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
