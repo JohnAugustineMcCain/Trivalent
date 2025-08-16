@@ -6,9 +6,6 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 [📄 **Read the Full PEACE Paper**](Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
 
-[📄 **Read the Oracle Paper**]
-(Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf
-
 ## Overview
 
 PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical framework that enables safe reasoning in the presence of paradoxes, contradictions, and incomplete context. Unlike classical logic systems that fail catastrophically on paradoxes, PEACE preserves epistemic humility while maintaining rigorous mathematical foundations.
@@ -22,6 +19,13 @@ PEACE will assign a **Default Meta-Dialetheic Truth Value** (.5) to all perspect
 PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying code implementations to optimize functionality and adapt to new problems without hallucination.
 
 PEACE will also likely be highly reactive to mimicking personalities and be extremely modifiable as long as a dynamic perspective database is managed effectively.
+
+## Goldbach PEACE Oracle
+
+This paper presents a **meta-logical approach to mathematical verification** that moves beyond classical computational limits.  
+It reframes proof as a process of asymptotic confidence rather than absolute certainty, applying it to the case of **Goldbach’s Conjecture**.
+
+📄 [Goldbach PEACE Oracle — A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)
 
 ## Core Features
 
