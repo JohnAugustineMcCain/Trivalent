@@ -7,12 +7,11 @@ on the limits of classical proof and how to reframe intractable problems.
 
 ## 1. PEACE (theory)
 Introduces the framework of **Paraconsistent Epistemic and Contextual Evaluation (PEACE)**,  
-which uses trivalent logic, context, and category-error detection to handle problems  
-that resist binary closure.
+which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
 ## 2. P vs NP as Epistemic Illusion
-Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation  
-is a *category error* that confuses verification with discovery.  
+Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation is a *category error* of binary logic that ultimately confuses verification with discovery.
+
 This builds on Scott Aaronson’s critique:
 
 > Scott Aaronson, *NP-complete Problems and Physical Reality*,  
@@ -20,9 +19,7 @@ This builds on Scott Aaronson’s critique:
 
 ## 3. Goldbach PEACE Oracle
 Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
-It shows why exhaustive proof is impossible (super-linear lower bounds),  
-diagnoses the category error, and delivers a high-confidence meta-verdict  
-that goes beyond computational limits.
+It shows why exhaustive proof is impossible (super-linear lower bounds), diagnoses the category error, and delivers a high-confidence meta-verdict that goes beyond computational limits.
 
 ---
 
@@ -31,8 +28,9 @@ that goes beyond computational limits.
 - **Diagnosis** → P vs NP as illusion  
 - **Demonstration** → Goldbach Oracle as a working case study  
 
-Together, these papers form a unified program: moving from theory, to diagnosis,  
-to demonstration — showing how PEACE provides clarity where traditional proofs falter.
+Together, these papers form a unified program: moving from theory, to diagnosis, to demonstration.
+
+Thereby showing how PEACE provides clarity where traditional proofs falter.
 
 # PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
