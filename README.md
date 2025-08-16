@@ -6,6 +6,9 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 [📄 **Read the Full PEACE Paper**](Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
 
+[📄 **Read the Oracle Paper**]
+(Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf
+
 ## Overview
 
 PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical framework that enables safe reasoning in the presence of paradoxes, contradictions, and incomplete context. Unlike classical logic systems that fail catastrophically on paradoxes, PEACE preserves epistemic humility while maintaining rigorous mathematical foundations.
