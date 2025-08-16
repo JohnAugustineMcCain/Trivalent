@@ -59,7 +59,7 @@ V = {T, F, B}
 
 ## Research Impact
 
-PEACE represents a paradigm shift from contradiction-avoidance to contradiction-resilience in formal reasoning. By providing the first systematic framework for context completeness analysis, it offers new tools for Logic, AI Safety, Mathematics, and Philosophy.
+PEACE represents a paradigm shift from contradiction-avoidance to contradiction-guidance in formal reasoning. By providing the first systematic framework for context completeness analysis, it offers new tools for Logic, AI Safety, Mathematics, and Philosophy.
 
 ## Contact
 
