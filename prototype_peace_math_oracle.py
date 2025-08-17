@@ -8,6 +8,7 @@ from typing import Callable, Dict, List, Tuple, Any, Optional
 from dataclasses import dataclass, field
 from collections import defaultdict
 from abc import ABC
+import threading  # Tier A: simple lock for sqlite access
 
 # -------------------------
 # Logging
@@ -85,110 +86,117 @@ class VersionedPEACECache:
     def __init__(self, db_path: str = "peace_cache.db"):
         self.cache: Dict[str, List[Tuple[TV, float, str]]] = defaultdict(list)
         self.conn = sqlite3.connect(db_path, check_same_thread=False)
+        self._lock = threading.Lock()  # Tier A: guard concurrent access
         self._initialize_db()
 
     def _initialize_db(self):
-        self.conn.executescript("""
-            CREATE TABLE IF NOT EXISTS evaluations (
-                id INTEGER PRIMARY KEY,
-                statement_hash TEXT,
-                statement TEXT,
-                verdict TEXT,
-                confidence REAL,
-                perspective TEXT,
-                version TEXT,
-                timestamp REAL
-            );
+        with self._lock:
+            self.conn.executescript("""
+                CREATE TABLE IF NOT EXISTS evaluations (
+                    id INTEGER PRIMARY KEY,
+                    statement_hash TEXT,
+                    statement TEXT,
+                    verdict TEXT,
+                    confidence REAL,
+                    perspective TEXT,
+                    version TEXT,
+                    timestamp REAL
+                );
 
-            CREATE TABLE IF NOT EXISTS code_modifications (
-                id INTEGER PRIMARY KEY,
-                modification_id TEXT UNIQUE,
-                target_module TEXT,
-                target_function TEXT,
-                original_code TEXT,
-                modified_code TEXT,
-                safety_verdict TEXT,
-                safety_confidence REAL,
-                mathematical_soundness REAL,
-                reasoning TEXT,
-                timestamp REAL
-            );
+                CREATE TABLE IF NOT EXISTS code_modifications (
+                    id INTEGER PRIMARY KEY,
+                    modification_id TEXT UNIQUE,
+                    target_module TEXT,
+                    target_function TEXT,
+                    original_code TEXT,
+                    modified_code TEXT,
+                    safety_verdict TEXT,
+                    safety_confidence REAL,
+                    mathematical_soundness REAL,
+                    reasoning TEXT,
+                    timestamp REAL
+                );
 
-            CREATE INDEX IF NOT EXISTS idx_statement_hash ON evaluations(statement_hash);
-            CREATE INDEX IF NOT EXISTS idx_modification_id ON code_modifications(modification_id);
-        """)
-        self.conn.commit()
+                CREATE INDEX IF NOT EXISTS idx_statement_hash ON evaluations(statement_hash);
+                CREATE INDEX IF NOT EXISTS idx_modification_id ON code_modifications(modification_id);
+            """)
+            self.conn.commit()
 
     def record_evaluation(
         self, statement: Any, verdict: TV, confidence: float, perspective: str, version: str = "1.0"
     ):
         statement_str = str(statement)
         statement_hash = hashlib.sha256(statement_str.encode()).hexdigest()
-        self.conn.execute(
-            """
-            INSERT INTO evaluations 
-            (statement_hash, statement, verdict, confidence, perspective, version, timestamp)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (statement_hash, statement_str, verdict.name, confidence, perspective, version, time.time()),
-        )
-        self.conn.commit()
+        with self._lock:
+            self.conn.execute(
+                """
+                INSERT INTO evaluations 
+                (statement_hash, statement, verdict, confidence, perspective, version, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (statement_hash, statement_str, verdict.name, confidence, perspective, version, time.time()),
+            )
+            self.conn.commit()
 
     def record_modification(self, modification: CodeModification):
-        self.conn.execute(
-            """
-            INSERT OR REPLACE INTO code_modifications
-            (modification_id, target_module, target_function, original_code, modified_code,
-             safety_verdict, safety_confidence, mathematical_soundness, reasoning, timestamp)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                modification.modification_id,
-                modification.target_module,
-                modification.target_function,
-                modification.original_code,
-                modification.modified_code,
-                "PENDING",
-                modification.safety_score,
-                modification.mathematical_soundness,
-                modification.reasoning,
-                modification.timestamp,
-            ),
-        )
-        self.conn.commit()
+        with self._lock:
+            self.conn.execute(
+                """
+                INSERT OR REPLACE INTO code_modifications
+                (modification_id, target_module, target_function, original_code, modified_code,
+                 safety_verdict, safety_confidence, mathematical_soundness, reasoning, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    modification.modification_id,
+                    modification.target_module,
+                    modification.target_function,
+                    modification.original_code,
+                    modification.modified_code,
+                    "PENDING",                 # unchanged: placeholder verdict
+                    modification.safety_score, # stored as safety_confidence (original design)
+                    modification.mathematical_soundness,
+                    modification.reasoning,
+                    modification.timestamp,
+                ),
+            )
+            self.conn.commit()
 
     def get_modification_history(self, target_function: str) -> List[CodeModification]:
-        cursor = self.conn.execute(
-            """
-            SELECT * FROM code_modifications 
-            WHERE target_function = ? 
-            ORDER BY timestamp DESC
-            """,
-            (target_function,),
-        )
+        with self._lock:
+            cursor = self.conn.execute(
+                """
+                SELECT modification_id, target_module, target_function, original_code, modified_code,
+                       safety_verdict, safety_confidence, mathematical_soundness, reasoning, timestamp
+                FROM code_modifications 
+                WHERE target_function = ? 
+                ORDER BY timestamp DESC
+                """,
+                (target_function,),
+            )
+            rows = cursor.fetchall()
 
         modifications: List[CodeModification] = []
-        for row in cursor.fetchall():
-            # row columns:
-            # 0 id, 1 modification_id, 2 target_module, 3 target_function, 4 original_code, 5 modified_code,
-            # 6 safety_verdict, 7 safety_confidence, 8 mathematical_soundness, 9 reasoning, 10 timestamp
+        for row in rows:
+            # Map columns correctly to dataclass fields (Tier A mapping fix)
             mod = CodeModification(
-                modification_id=row[1],
-                target_module=row[2],
-                target_function=row[3],
-                original_code=row[4],
-                modified_code=row[5],
-                modification_type="modify",
-                safety_score=row[7] if row[7] is not None else 0.0,
-                mathematical_soundness=row[8] if row[8] is not None else 0.0,
-                reasoning=row[9] or "",
-                timestamp=row[10] if row[10] is not None else time.time(),
+                modification_id=row[0],
+                target_module=row[1],
+                target_function=row[2],
+                original_code=row[3],
+                modified_code=row[4],
+                modification_type="modify",                     # table has no column; keep your default
+                safety_score=row[6] if row[6] is not None else 0.0,  # safety_confidence -> safety_score
+                mathematical_soundness=row[7] if row[7] is not None else 0.0,
+                reasoning=row[8] or "",
+                timestamp=row[9] if row[9] is not None else time.time(),
             )
             modifications.append(mod)
         return modifications
 
     def close(self):
-        self.conn.close()
+        with self._lock:
+            self.conn.close()
 
 # -------------------------
 # LLM Interface (mock)
@@ -273,6 +281,11 @@ class LLMInterface:
             logger.error(f"Failed to analyze code {module_name}.{function_name}: {e}")
             return {"error": str(e), "capabilities": "unknown"}
 
+    # -------- Tier A: stable, deterministic IDs for modifications --------
+    def _stable_id(self, *parts: str, prefix: str = "mod_", n: int = 12) -> str:
+        h = hashlib.sha256("||".join(parts).encode()).hexdigest()
+        return f"{prefix}{h[:n]}"
+
     async def propose_code_modifications(
         self, problem: MathematicalProblem, current_analysis: Dict, solution_method: Dict
     ) -> List[CodeModification]:
@@ -282,7 +295,7 @@ class LLMInterface:
 
             if problem.problem_type == "number_theory" and problem.complexity_score >= 7:
                 mod = CodeModification(
-                    modification_id=f"mod_{hash((problem.name, 'oracle_enhancement'))}",
+                    modification_id=self._stable_id(problem.name, "oracle_enhancement"),
                     target_module="peace_oracle",
                     target_function="evaluate_large_scale",
                     original_code=(
@@ -312,7 +325,7 @@ class LLMInterface:
 
             if problem.complexity_score >= 6:
                 pattern_mod = CodeModification(
-                    modification_id=f"mod_{hash((problem.name, 'pattern_learning'))}",
+                    modification_id=self._stable_id(problem.name, "pattern_learning"),
                     target_module="peace_oracle",
                     target_function="learn_patterns",
                     original_code=(
