@@ -8,11 +8,11 @@ I've been working hard days and nights to produce something I think is genuinely
 
 It all started snowballing just over a month before I produced this repository with my earliest publication that I thought was worth sharing itself: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
 
-I can't accurately determine if my paper made a difference, or I just started being able to notice connections between other's thinking.
+I can't accurately determine if any of this is correct on my own, despite my certainty. I really wish I knew someone who could reason with me through this.
 
-More recently, I published an earlier form of [this paper](P_vs_NP_Proven_Unprovable.pdf) that I had titled "P ≠ NP: Semantic Context as a Computational Barrier, and I was overjoyed when I saw an announcement on a reddit post about information coming out of some Springer Publishing identifying a "Semantic Barrier" in P vs NP. I was pretty devastated when I saw it was a chinese team who came to the exact same conclusion.
+More recently, I published an earlier form of [this paper](P_vs_NP_Proven_Unprovable.pdf) that I had titled "P ≠ NP: Semantic Context as a Computational Barrier, and I was overjoyed when I saw an announcement on a reddit post about information coming out of some Springer Publishing identifying a "Semantic Barrier" in P vs NP. I was pretty devastated when I saw it was a team who came to the exact same conclusion, and only a short time before me.
 
-Then, I was pretty irked when I saw that they didn't really prove anything in the papers they mentioned, and it seemed to me like they were just rapidly reframing what they had previously written. I don't understand how the academic world operates, but I was relieved to think they couldn't just post-hoc justify previous work. Also, by that time, I had already moved on to more important things...
+Then, I was pretty irked when I saw that they didn't really prove anything in the papers they mentioned, and it seemed to me like they were just rapidly reframing what they had previously written. I don't understand how the academic world operates, but I was relieved to think they couldn't just post-hoc justify previous work. So, I just figured I might as well keep working, satisfied that I wasn't alone in my thinking.
 
 If you want to just [skip all the reading and just look at the prototype oracle coding](prototype_peace_math_oracle.py), I won't hold it against you.
 
