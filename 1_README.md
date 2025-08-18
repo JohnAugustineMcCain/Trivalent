@@ -1,5 +1,7 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
+📄 [Read my final paper: Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
+
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
 This repository brings together three connected papers that form a single research program on the limits of classical proof and how to reframe intractable problems.
