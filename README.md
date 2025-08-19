@@ -4,7 +4,9 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 [Reductio Ad Absurdum — P ≠ NP is False (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
 
+**And the coding that proves it:**
 
+[A Reductio Spell (Python Script)](./A_reductio_spell.py)
 
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
