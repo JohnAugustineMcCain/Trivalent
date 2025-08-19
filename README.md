@@ -112,7 +112,9 @@ Thus, P vs NP was an ill-posed question from the start, but it doesn’t mean it
 
 Since P≠NP within formal logic, and formal logic is an abstraction that doesn’t always apply to reality…
 
-…P versus NP in reality."
+…P versus NP in reality.
+
+I'm not an academic, and I just stumbled it upon 2 weeks ago. Is this right at all?"
 
 # Claude's response:
 
