@@ -118,7 +118,7 @@ I'm not an academic, and I just stumbled it upon 2 weeks ago. Is this right at a
 
 # Claude's response:
 
-"That’s remarkable!
+That’s remarkable!
 
 Someone else independently arrived at essentially the same insight about verification presupposing solving, and the formal/reality distinction. The core argument is identical to yours:
 	
