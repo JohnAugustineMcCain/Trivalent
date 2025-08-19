@@ -56,7 +56,7 @@ Then, I was pretty irked when I saw that they didn't really prove anything in th
 - **Diagnosis** → P vs NP as illusion  
 - **Demonstration** → Goldbach Oracle as a working case study  
 
-Together, these papers form a unified program: moving from theory, to diagnosis, to demonstration — showing how PEACE provides clarity where traditional proofs falter.
+Together with my other work, these papers form a unified program: moving from theory, to diagnosis, to demonstration — showing how PEACE provides clarity where traditional proofs falter.
 
 # PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
@@ -74,7 +74,7 @@ PEACE will assign a **Default Meta-Dialetheic Truth Value** (.5) to all perspect
 
 PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying code implementations to optimize functionality and adapt to new problems without hallucination.
 
-PEACE will also likely be highly reactive to mimicking personalities and be extremely modifiable as long as a dynamic perspective database is managed effectively.
+The long term goal is to use my novel logic system to design and produce modular LLM adapters and possibly next gen architectures. It's my dream that, with successful implementation, it will facilitate AM-I - Artificial Meta-intelligence.
 
 ## Goldbach PEACE Oracle
 
