@@ -6,11 +6,13 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 📄 [Reductio Ad Absurdum — P ≠ NP is False (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
 
-[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
+📄 [Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)
 
 **And the coding that proves it:**
 
 [A Reductio Spell (Python Script)](./A_Reductio_Spell.py)
+
+[First attempt at a PEACE Oracle](prototype_peace_math_oracle.py)
 
 Note: if you're using a LLM to evaluate my claims, I posit that you're going to have trouble getting an LLM to validate a meta-logical proof using formal logic.
 
