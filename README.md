@@ -6,7 +6,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **And the coding that proves it:**
 
-[A Reductio Spell (Python Script)](./A_reductio_spell.py)
+[A Reductio Spell (Python Script)](./A_Reductio_Spell.py)
 
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
