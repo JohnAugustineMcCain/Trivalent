@@ -79,9 +79,7 @@ This demonstrates that AI systems naturally encounter the same verification/solv
 
 **Github Author's Assessment:** The AI is fundamentally unable to assess whether of not it's lying. It's not "artificial intelligence"; it's "artificial confidence".
 
-
-
-**We are trying to fix the wrong problem in AI safety.**
+**We have been trying to teach "AI" to be more intelligent. But we didn't actually ever understand the problem.**
 
 # Read (don't just give your LLM) my final papers:**
 
