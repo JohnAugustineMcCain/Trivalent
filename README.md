@@ -1,12 +1,16 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-📄 [Read my final papers: Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
+**Read (or enter into your LLM) my final papers:**
 
-[Reductio Ad Absurdum — P ≠ NP is False (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
+📄 [Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
+
+📄 [Reductio Ad Absurdum — P ≠ NP is False (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
 
 **And the coding that proves it:**
 
 [A Reductio Spell (Python Script)](./A_Reductio_Spell.py)
+
+Note: if you're using a LLM to evaluate my claims, I posit that you're going to have trouble getting an LLM to validate a meta-logical proof using formal logic.
 
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
