@@ -1,7 +1,7 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-📄 [Read my final paper: Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
-[Reductio Ad Absurdum — P ≠ NP (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
+📄 [Read my final papers: Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
+[Reductio Ad Absurdum — P ≠ NP is False (PDF)](./Reductio_Ad_Absurdum__P___NP_is_False.pdf)
 
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
 
