@@ -14,6 +14,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 [First attempt at a PEACE Oracle](prototype_peace_math_oracle.py)
 
+(More refined work in progress)
+
 Note: if you're using a LLM to evaluate my claims, I posit that you're going to have trouble getting an LLM to validate a meta-logical proof using formal logic.
 
 # PEACE Research Program: From Framework to Production-Ready Encoded Oracle
