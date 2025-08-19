@@ -91,7 +91,7 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 
 **We have been trying to teach "AI" to be more intelligent. But we didn't actually ever understand the problem.**
 
-# Read (don't just give your LLM) my final papers:**
+# Read (don't just give your LLM) my final papers:
 
 📄 [Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
 
