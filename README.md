@@ -1,6 +1,6 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
-**Read (or enter into your LLM) my final papers:**
+**Read (or give your LLM) my final papers:**
 
 📄 [Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
 
