@@ -1,21 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-PEACE Generalized Meta Engine — Dialetheic, Budgeted, Self-editing, LLM-guided
--------------------------------------------------------------------------------
-Goal: a truth-seeking engine for arbitrary P vs NP–style families (crypto, SAT,
-Goldbach, etc.) with:
-  • Dialetheic fuzzy truth (confidence == truth value)
-  • Budget-aware neutrality (timeouts don’t “prove” anything)
-  • Self-edits via LLM-suggested code modifications
-  • Safety checks & logging
-  • Collapses:
-      - DOWN (~0): if a well-formed counterexample / ill-posed question is signaled
-      - UP   (~1): if a decisive solution/witness is signaled for the framed question
-
-NOTE: In PEACE logic here, “Unknown” collapses into BOTH (both true and/or false).
-"""
-
 from __future__ import annotations
 
 # ==========================
