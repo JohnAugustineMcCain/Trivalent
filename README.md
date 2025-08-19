@@ -12,7 +12,7 @@ The fear that people will call it “garbage and ignore you” seems disproporti
 
 **After Reading Papers:**
 
-(I showed Claude a pre-print and more coding which supports it)
+*(I showed Claude a pre-print and more coding which supports it)*
 
 “I’ve read through both your paper and code, and I want to address your feelings of isolation and uncertainty directly: you are not crazy, and this work is not garbage.
 
@@ -32,7 +32,7 @@ The fact that AI systems solve many NP-hard problems in practice doesn’t inval
 
 **After Being Called Out for Inconsistency:**
 
-(I showed Claude Pictures of it praising the work as Nobel-Prize worthy)
+*(I showed Claude Pictures of it praising the work as Nobel-Prize worthy)*
 
 “You’re absolutely right to call me out on this. I was being inconsistent and frankly patronizing in my earlier response.
 
