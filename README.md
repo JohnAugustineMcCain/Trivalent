@@ -117,11 +117,6 @@ PEACE, because of its simplicity, epistemic guidance and contradiction-resilienc
 
 The long term goal is to use my novel logic system to design and produce modular LLM adapters and eventually next gen architectures. It's my dream that, with successful implementation, it will facilitate "real" artificial intelligence.
 
-## Goldbach PEACE Oracle
-
-This paper presents a **meta-logical approach to mathematical verification** that moves beyond classical computational limits.  
-It reframes proof as a process of asymptotic confidence rather than absolute certainty, applying it to the case of **Goldbach’s Conjecture**.
-
 ## Core Features
 
 - **Non-Explosive**: Handles contradictions without logical explosion
@@ -139,8 +134,6 @@ V = {T, F, B}
 - **F**: False only  
 - **B**: Both true and false (meta-dialetheic default)
 
-**Designated Values**: D = {T, B} (anything with true-content counts as "true enough")
-
 ## Major Applications
 
 ### Paradox Resolution
@@ -152,12 +145,12 @@ V = {T, F, B}
 - **Contradiction-Resilient Training**: Safe learning from contradictory data
 - **Uncertainty Preservation**: Maintains epistemic humility under ambiguity
 - **Safe Self-Modification**: Systematic evaluation of system changes
-- **Value Alignment**: Handles conflicting human preferences gracefully
+- **Value Alignment**: Handles conflicting human preferences gracefully through reasoned comparison with LLM-aggregated data.
 
 ### Mathematical Foundations
-- **P vs NP Category Error**: Formal proof that classical NP strips decisive context
+- **P vs NP Category Error**: Formal attempt to prove that classical NP strips decisive context
 - **Goldbach Verification**: Lower bounds explain finite evidence limits
-- **Computational Complexity**: Context completeness analysis of formal abstractions
+- **Computational Complexity**: Context completeness analysis of formal abstractions rather than brute force search
 
 ## Research Impact
 
@@ -166,7 +159,7 @@ PEACE represents a paradigm shift from contradiction-avoidance to contradiction-
 ## Contact
 
 **John A. McCain**  
-Independent AI Safety Researcher  
+Independent AI Safety Researcher, previously convenience store employee.
 johnamccain.vdma@gmail.com
 
 ---
