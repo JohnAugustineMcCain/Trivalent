@@ -85,11 +85,15 @@ PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical f
 
 ### Key Innovations
 
-PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific nathematics or operation are unclear. Right now it seems to suffice for an LLM to probabilistically assign this value.
+PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific mathematics or operations are unclear. Right now it seems to suffice for an LLM to probabilistically assign this value.
 
 *Example: What is the answer to the meaning of life? (Cc = 0.1)*
 
-PEACE assigns a **Default Meta-Dialetheic Truth Value** (.5) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
+*Context needed...*
+
+*Maybe the answer is in asking the question itself.*
+
+PEACE assigns a **Default Meta-Dialetheic Truth Value** (.5 ≈ Both true or false) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
 
 PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying code implementations to optimize functionality and adapt to new problems without hallucination.
 
