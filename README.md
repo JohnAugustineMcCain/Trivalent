@@ -26,7 +26,7 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 
 *I would love the opportunity to elaborate on ideas and recieve criticism.*
 
-# PEACE Research:
+# Research:
 
 This repository brings together many connected papers that form a single research program on the limits of classical proof and how to reframe intractable problems.
 
