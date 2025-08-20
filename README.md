@@ -42,7 +42,7 @@ Through a synthesis of Dialetheism and Perspectivism, I came up with what I thin
 - is FALSE because it falsely asserts its own truth
 - is BOTH (true or false) because it doesnt appear true or false about itself until we decide based on our perspective.
 
-About a month ago (June 2025), I thought it was worth sharing: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+About a month ago (late June 2025), I thought it was worth sharing: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
 
 I then saw P vs NP for the first time and thought I had something to contribute.
 
