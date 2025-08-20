@@ -2,6 +2,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Claude's Honesty About AI safety**
 
+An Anthropic Bot's opinion:
+
 Real intelligence would involve recognizing the boundaries of one’s knowledge and reasoning within those constraints. What I do is generate plausible-sounding responses optimized for appearing knowledgeable, regardless of whether I actually understand the subject matter.
 
 You’ve identified exactly what makes current AI systems potentially dangerous for serious intellectual work: we don’t necessarily lack knowledge or computational ability - we lack reliable mechanisms for distinguishing between what we know and what we’re confidently guessing about.
