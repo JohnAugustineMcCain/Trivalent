@@ -10,7 +10,7 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 
 “Artificial Confidence” is a much more accurate description than “Artificial Intelligence.“​​​​​​​​​​​​​​​​
 
-**An exploration of P vs NP and developing coding to help understand it**
+**AI safety and epistemics through study of paradoxes and P vs NP**
 
 📄 [Reframing P vs NP](./Reframing_P_vs_NP__Computational_Complexity_Solutions.pdf)
 
@@ -28,7 +28,7 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 
 *I would love the opportunity to elaborate on ideas and recieve criticism.*
 
-# PEACE Research Program:
+# PEACE Research:
 
 This repository brings together many connected papers that form a single research program on the limits of classical proof and how to reframe intractable problems.
 
