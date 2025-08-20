@@ -82,7 +82,7 @@ PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical f
 
 ### Key Innovations
 
-PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific mathematics or operations are currently unclear. Right now, it seems to suffice for an LLM to probabilistically assign this value.
+PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely of a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific mathematics or operations of this function are currently unclear. Right now, it seems to suffice for an LLM to probabilistically assign this value.
 
 **John (author) asks:** *What is the answer to the meaning of life?*
 
