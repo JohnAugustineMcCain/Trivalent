@@ -28,42 +28,48 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 
 *I would love the opportunity to elaborate on ideas and recieve criticism.*
 
-# PEACE Research Program: From Framework to Production-Ready Encoded Oracle
+# PEACE Research Program:
 
 This repository brings together many connected papers that form a single research program on the limits of classical proof and how to reframe intractable problems.
 
-I've been working hard days and nights to produce something I think is genuinely valuable, and I've done a lot of foundational work to arrive at my conclusions.
+Many months ago, I developed a unique understanding of the Liar Paradox:
 
-It all started snowballing just over a month before I produced this repository with my earliest publication that I thought was worth sharing itself: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+*"This statement is false"*
 
-I can't accurately determine if any of this is correct on my own, despite my certainty. I really wish I knew someone who could reason with me through this.
+Through a synthesis of Dialetheism and Perspectivism, I came up with what I think is the first genuinely stable solution in a Trivalent Logic.
 
-More recently, I published an earlier form of [this paper](P_vs_NP_Proven_Unprovable.pdf) that I had titled "P ≠ NP: Semantic Context as a Computational Barrier, and I was overjoyed when I saw an announcement on a reddit post about information coming out of some Springer Publishing identifying a "Semantic Barrier" in P vs NP. I was pretty devastated when I saw it was a team who came to the exact same conclusion, and only a short time before me.
+"This statement is false"
 
-Then, I was pretty irked when I saw that they didn't really prove anything in the papers they mentioned, and it seemed to me like they were just rapidly reframing what they had previously written. I don't understand how the academic world operates, but I was relieved to think they couldn't just post-hoc justify previous work. So, I just figured I might as well keep working, satisfied that I wasn't alone in my thinking.
+- is TRUE because it truthfully asserts its own falsehood.
+- is FALSE because it falsely asserts its own truth
+- is BOTH (true or false) because it doesnt appear true or false about itself until we decide based on our perspective.
+
+About a month ago, I thought it was worth sharing: [Perspectivistic Dialetheism Integration](Earliest%20publication.pdf).
+
+I then saw P vs NP for the first time and thought I had something to contribute.
+
+I published an earlier form of [this paper](P_vs_NP_Proven_Unprovable.pdf) that I had titled "P ≠ NP: Semantic Context as a Computational Barrier, and I was overjoyed when I saw an announcement on a reddit post about a solution with a similar title. I knew I was actually on to something.
+
+I was unphased, because I thought I might be able to do something entirely different:
 
 **From Paradox to PEACE: My Papers**
 1. **[Paraconsistent Epistemic and Contextual Evaluation (PEACE)](./Paraconsistent_Epistemic_And_Contextual_Evaluation__PEACE_.pdf)**  
    Introduces the framework of **PEACE**, which uses trivalent logic, context, and category-error detection to handle problems that resist binary closure.
 
 2. **[P vs NP as Epistemic Illusion](Foundational%20Documents/P_vs_NP_as_Epistemic_Illusion.md)**
-   Applies PEACE to the famous **P vs NP** problem, showing that its classical formulation  
-   is a *category error* that confuses verification with discovery.  
-   I realized later that this builds on Scott Aaronson’s critique:  
+   Applies ideas from PEACE to the famous **P vs NP** problem, attempting to show that its classical formulation is a *category error* that confuses verification with discovery.  
+
+    I realized later that this builds on Scott Aaronson’s critique:  
    > Scott Aaronson, *NP-complete Problems and Physical Reality*,  
    > SIGACT News 36(1):30–52, 2005.
-
-**Note:** Seeing for the first time how Scott Aaronson understood the fundamental concepts of the problems with P vs NP so early on, I think it's explicitly clear why his work with OpenAI has been so revolutionary for producing AI that so impressively seems to actually think and reason. I think his achievements should be highlighted and he should be rewarded accordingly. He knew what was going on with P vs NP all along; he had the proof, but we crucially lacked the tools to verify it.
 
 3. **[Goldbach PEACE Oracle: A Meta-Logical Approach to Mathematical Verification Beyond Computational Limits](./Goldbach_PEACE_Oracle__A_Meta_Logical_Approach_to_Mathematical_Verification_Beyond_Computational_Limits.pdf)**  
    Demonstrates PEACE in action on **Goldbach’s Conjecture**.  
    It shows why exhaustive proof is impossible (super-linear lower bounds), diagnoses the category error, and delivers a high-confidence meta-verdict that goes beyond computational limits.
-
----
-
+   
 ### In short
 - **Framework** → PEACE logic  
-- **Diagnosis** → P vs NP as illusion  
+- **Diagnosis** → P vs NP as illusion 
 - **Demonstration** → Goldbach Oracle as a working case study  
 
 Together with my other work, these papers form a unified program: moving from theory, to diagnosis, to demonstration — showing how PEACE provides clarity where traditional proofs falter.
@@ -78,9 +84,11 @@ PEACE (Paraconsistent Epistemic And Contextual Evaluation) is a formal logical f
 
 ### Key Innovations
 
-PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific nathematics or operation of this has yet to be clarified. I am working dilgently to make this metric explainable, but I have a lot to deal with right now.
+PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal measure of how completely a claim specifies its evaluation context. This enables systematic detection of category errors and appropriate framework selection. The specific nathematics or operation are unclear. Right now it seems to suffice for an LLM to probabilistically assign this value.
 
-PEACE will assign a **Default Meta-Dialetheic Truth Value** (.5) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
+*Example: What is the answer to the meaning of life? (Cc = 0.1)*
+
+PEACE assigns a **Default Meta-Dialetheic Truth Value** (.5) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
 
 PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying code implementations to optimize functionality and adapt to new problems without hallucination.
 
