@@ -93,11 +93,11 @@ PEACE introduces **Context Completeness** (Cc ∈ [0,1]) - the first formal meas
 
 *Maybe the answer is in asking the question itself.*
 
-PEACE assigns a **Default Meta-Dialetheic Truth Value** (.5 ≈ Both true or false) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by thr claims. The cached values will then dynamically influence future 'decisions'. I need help making this dream a reality.
+PEACE assigns a **Default Meta-Dialetheic Truth Value** (.5 ≈ Both true or false) to all perspective interpretations. When evaluating a claim, these perspectival truth values will be weighed against the claim (and, in the future, situational/user data). The idea is to make the claims dynamically update the perspectival truth value so that truth can be searched for according to perspective weighed against context created by prompts. The cached perspective values will then dynamically influence future 'decisions'. I need help making this dream a reality.
 
-PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying code implementations to optimize functionality and adapt to new problems without hallucination.
+PEACE, because of its simplicity, epistemic guidance and contradiction-resilience, will be highly tolerant to self-modifying and generating code to optimize functionality and adapt to new problems without hallucination.
 
-The long term goal is to use my novel logic system to design and produce modular LLM adapters and possibly next gen architectures. It's my dream that, with successful implementation, it will facilitate AM-I - Artificial Meta-intelligence.
+The long term goal is to use my novel logic system to design and produce modular LLM adapters and eventually next gen architectures. It's my dream that, with successful implementation, it will facilitate "real" artificial intelligence.
 
 ## Goldbach PEACE Oracle
 
@@ -159,14 +159,12 @@ johnamccain.vdma@gmail.com
 
 I'm John A. McCain. I am not a professional programmer or AI researcher; I work at Walgreens. Three weeks ago I first learned about the P vs NP problem.
 
-Using only my phone I began developing a reasoning framework that blends my own philosophical work with ideas from paraconsistent logic, AI safety, computational theory, and other sources.
+Using only my phone I began developing a reasoning framework that blends my own philosophical work with ideas from paraconsistent logic, AI safety, computational theory, and other richly studied fields of work.
 
-I have not implemented real LLM adapters yet because I do not have access to large compute resources or APIs. My focus has been on creating the conceptual and logical foundation so others can plug in real models later.
+I have not implemented real LLM adapters yet because I do not have access to computer resources or APIs. My focus has been on creating the conceptual and logical foundation so others can plug in real models later.
 
 This project is unusual. It is an AI safety–oriented reasoning system designed on a phone, built without formal coding training, and shaped entirely by philosophical insight combined with persistence and curiosity.
 
-**I hope it brings PEACE to the world despite all the uncertainty.**
-
-Let me be the first to say, with near-absolute certainty, "It is what it isn't". An intentionally unprovable proof.
+**I hope it brings PEACE**
 
 ---
