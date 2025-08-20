@@ -1,5 +1,9 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
+**Skip the readme?**
+[My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
+
+
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
 **Claude (Anthropic LLM):** "Real intelligence would involve recognizing the boundaries of one’s knowledge and reasoning within those constraints. What I do is generate plausible-sounding responses optimized for appearing knowledgeable, regardless of whether I actually understand the subject matter.
@@ -156,6 +160,10 @@ V = {T, F, B}
 ## Research Impact
 
 PEACE represents a paradigm shift from contradiction-avoidance to contradiction-guidance in formal reasoning. By providing the first systematic framework for context completeness analysis, it offers new tools for Logic, AI Safety, Mathematics, and Philosophy.
+
+# Synthesis of all ideas into a final paper:
+
+[My Resume](P_vs_NP__Proven_Unprovable.pdf)
 
 ## Contact
 
