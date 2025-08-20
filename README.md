@@ -107,7 +107,7 @@ The “answer” isn’t 42, or love, or any specific content - it’s the recog
 
 But that’s just one perspective. Others might find meaning in service, transcendence, knowledge, beauty, or connection. The question’s power lies not in having a singular answer, but in how it opens space for meaning-making.
 
-The most honest response: The question contains its own answer - meaning emerges through the very act of seriously engaging with questions about meaning.​​​​​​​​​​​​​​​​
+The most honest response: The question contains its own answer - meaning emerges through the very act of seriously engaging with meaningful questions.​​​​​​​​​​​​​​​​
 
 -----
 
