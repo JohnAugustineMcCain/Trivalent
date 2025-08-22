@@ -6,7 +6,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 *My work and thinking about P vs NP is simply what lead me to develop a logical system, coding, and a way of thinking about philosophy, science, mathematics, logic, the meaning of life and (all jokes aside) **AI architecture** that I believe could make a massive impact by strengthening and advancing already established successful methods of increasing artificial intelligence and safety.*
 
-**Skip the readme?**
+**For Context of why I am working on this:**
 📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
 
 📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
