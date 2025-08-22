@@ -5,6 +5,26 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
 
+# Goldbach Proof of Concept (Cc + Budgeted Collapse)
+
+This prototype illustrates **Context-Completeness (Cc)** belief updates when probing bounded instances of Goldbach’s conjecture.  
+Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:
+
+1. A *validated counterexample* (small-n branch), or  
+2. A **budgeted collapse** (after 100 steps or if sampled n > 4·10^90).  
+
+Without these budgets, resolving large n would take longer than the age of the universe.
+
+---
+
+## Quick Demo 1: Max-n Collapse
+
+Run this to force sampling of very large `n` (≥ 10^95 digits), which triggers **budgeted collapse** due to exceeding the max-n threshold:
+
+```bash
+python goldbach_proof_of_concept.py --trials 5 --min-digits 95 --max-digits 110
+```
+
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
 **Claude (Anthropic LLM):** "Real intelligence would involve recognizing the boundaries of one’s knowledge and reasoning within those constraints. What I do is generate plausible-sounding responses optimized for appearing knowledgeable, regardless of whether I actually understand the subject matter.
