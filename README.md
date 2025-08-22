@@ -1,7 +1,9 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
 **Skip the readme?**
-[My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
+📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
+
+📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
 
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
