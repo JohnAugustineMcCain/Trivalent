@@ -9,7 +9,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
-This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.  
+This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.
+
 Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:
 
 1. A *validated counterexample* (small-n branch), or  
