@@ -7,6 +7,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Goldbach Proof of Concept (Cc + Budgeted Collapse)**
 
+*We treat bounded non-finds as ambiguity rather than disconfirmation, allowing small verified hits to push beliefs asymptotically in computationally impossible spaces.*
+
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
 This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.
