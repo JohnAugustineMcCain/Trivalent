@@ -24,7 +24,7 @@ Without these budgets, resolving large n would take longer than the age of the u
 Run this:
 
 ```bash
-python goldbach_proof_of_concept.py --trials 100 --min-digits 20 --max-digits 91
+python goldbach_proof_of_concept.py --trials 101 --min-digits 20 --max-digits 91
 ```
 
 ---
