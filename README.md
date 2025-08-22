@@ -25,6 +25,8 @@ Run this:
 python goldbach_proof_of_concept.py --trials 100 --min-digits 20 --max-digits 91
 ```
 
+---
+
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
 **Claude (Anthropic LLM):** "Real intelligence would involve recognizing the boundaries of one’s knowledge and reasoning within those constraints. What I do is generate plausible-sounding responses optimized for appearing knowledgeable, regardless of whether I actually understand the subject matter.
