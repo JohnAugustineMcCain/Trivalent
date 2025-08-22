@@ -102,7 +102,7 @@ The system basically introduces a new metric called **context-completeness (Cc)*
   Result: True or false depending on time of day, weather, tinted lenses, etc → `Cc ≈ 0.5`
 
 - **Prompt:** *“The sky is a color”*  
-  Result: Depends almost entirely on context/intent of the question → `Cc ≈ 0.0`
+  Result: Depends almost entirely on context/intent  → `Cc ≈ 0.0`
 
 ---
 
