@@ -9,6 +9,38 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
+**Goldbach Tiny-Budget Sampler**
+
+A lightweight Monte Carlo engine for probing the **Goldbach Conjecture** at huge scales.
+
+Instead of exhaustive checking, it uses a tiny budget (small subtractors, limited offsets, fast Miller–Rabin checks) to ratchet confidence that even numbers decompose into primes.
+
+---
+
+**Usage**
+
+Run with Python 3:
+
+```bash
+# 500 random 28-digit evens
+python goldbach_sampler.py --mode EXACT --digits 28 --steps 500
+
+# 5000 random 30-digit evens
+python goldbach_sampler.py --mode EXACT --digits 30 --steps 5000
+
+# Sample 1000 numbers across 24–30 digits
+python goldbach_sampler.py --mode RANGE --min-digits 24 --max-digits 30 --steps 1000
+
+# Compare hit-rates across sweep (12–30 digits, from CONFIG)
+python goldbach_sampler.py --mode SWEEP_DIGITS --steps 200
+
+# Slower confidence growth with smaller epsilon
+python goldbach_sampler.py --mode EXACT --digits 28 --steps 2000 --epsilon 0.0005
+
+# Reproducibility with fixed RNG seed
+python goldbach_sampler.py --mode EXACT --digits 28 --steps 500 --seed 12345
+```
+
 This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.
 
 Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:  
