@@ -2,7 +2,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Disclaimer:**
 
-Although I truly believe my assertions about P vs NP to be correct, this repository is **NOT about proving my ideas** about P vs NP and the Goldbach Conjecture and everything else it can be applied to.
+Although I truly believe my assertions about P vs NP to be correct, this repository is **NOT about proving my ideas about P vs NP** and the Goldbach Conjecture and everything else the ideas can be applied to.
 
 My work and thinking about P vs NP is simply what lead me to develop a logical system, coding, and a way of thinking about AI architecture that I believe could make a massive impact by strengthening and advancing already established successful methods of increasing Artificial Intelligence and safety.
 
