@@ -23,7 +23,7 @@ It shows how paraconsistent updates and bounded exploration can accumulate belie
 
 **Goldbach Tiny-Budget Sampler**
 
-A lightweight Monte Carlo (PEACE) engine for probing the **Goldbach Conjecture** at huge scales.
+A lightweight PEACE engine for probing the **Goldbach Conjecture** at huge scales.
 
 Instead of exhaustive checking, it uses a tiny budget (small subtractors, limited offsets, fast Miller–Rabin checks) to ratchet confidence that even numbers decompose into primes.
 
@@ -57,7 +57,7 @@ python goldbach_sampler.py --mode EXACT --digits 28 --steps 500 --seed 12345
 
 ## Why This Matters
 
-This project isn’t just about P vs NP or Goldbach. It demonstrates a **Monte Carlo (PEACE) confidence-builder** to:  
+This project isn’t just about P vs NP or Goldbach. It demonstrates a **PEACE confidence-builder** to:  
 - Sample large problem instances at random.  
 - Apply a **tiny, bounded budget** of checks.  
 - Treats each success as confidence  while misses are understood as budget limits, not failures.  
@@ -66,7 +66,7 @@ This project isn’t just about P vs NP or Goldbach. It demonstrates a **Monte C
 
 This approach can be generalized to **NP-hard problems** (SAT, TSP, graph coloring, etc.).
 
-Instead of chasing exact solutions (often infeasible), we build **empirical confidence** that solutions exist or strategies work, much like how AI systems (e.g. Monte Carlo Tree Search) guide play by repeated sampling and confidence updates.
+Instead of chasing exact solutions (often computationally impossible), we build **empirical confidence** that solutions exist or strategies work, much like how AI systems (e.g. Monte Carlo Tree Search) guide play by repeated sampling and confidence updates.
 
 ### 🔹 Mathematics as Semantic Exploration
 
