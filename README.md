@@ -21,8 +21,7 @@ A lightweight Monte Carlo (PEACE) engine for probing the **Goldbach Conjecture**
 
 Instead of exhaustive checking, it uses a tiny budget (small subtractors, limited offsets, fast Miller–Rabin checks) to ratchet confidence that even numbers decompose into primes.
 
-**Usage**
-
+**Usage:**
 Run with Python 3:
 
 ```bash
@@ -52,21 +51,24 @@ python goldbach_sampler.py --mode EXACT --digits 28 --steps 500 --seed 12345
 
 ## Why This Matters
 
-This project isn’t just about P vs NP or Goldbach. It demonstrates a **Monte Carlo confidence ratchet**:  
+This project isn’t just about P vs NP or Goldbach. It demonstrates a **Monte Carlo (PEACE) confidence-builder** to:  
 - Sample large problem instances at random.  
 - Apply a **tiny, bounded budget** of checks.  
-- Each success increments confidence; misses are treated as budget limits, not failures.  
+- Treats each success as confidence  while misses are understood as budget limits, not failures.  
 
-### 🔹 Beyond Goldbach
+### 🔹 Beyond Goldbach: Why this is revolutionary
+
 This approach can be generalized to **NP-hard problems** (SAT, TSP, graph coloring, etc.).
 
 Instead of chasing exact solutions (often infeasible), we build **empirical confidence** that solutions exist or strategies work, much like how AI systems (e.g. Monte Carlo Tree Search) guide play by repeated sampling and confidence updates.
 
 ### 🔹 Mathematics as Semantic Exploration
+
 By treating conjectures as **epistemological hypotheses**, this method enables:  
 - Semantic and contextual exploration guided by mathematical confidence.  
 - Identifying **truths that withstand bounded randomized testing**.  
-- Ignoring false leads and focusing attention on structures that persist under scrutiny.
+- Ignoring false leads and focusing attention on logical and linguistic structures that persist under scrutiny.
+- A fundamental basis for developing **consistently safe self-editing code**.
 
 ### 🔹 Implications for AI Safety
 This shifts mathematics toward a **scientific, probabilistic practice**:  
@@ -75,7 +77,7 @@ This shifts mathematics toward a **scientific, probabilistic practice**:
 - It opens a path toward **reliable AI safety frameworks** grounded in **probabilistic epistemology**, rather than fragile symbolic absolutes.
 
 In short:  
-**Monte Carlo (PEACE) confidence engines may revolutionize both mathematical exploration and AI safety** by reframing how we treat open problems, ambiguity, and truth itself.
+**PEACE confidence engines may revolutionize both mathematical exploration and AI safety** by reframing how we treat open problems, ambiguity, and truth itself.
 
 ---
 
