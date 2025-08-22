@@ -85,6 +85,47 @@ This shifts mathematics toward a **scientific, probabilistic practice**:
 In short:  
 **PEACE confidence engines may revolutionize both mathematical exploration and AI safety** by reframing how we treat open problems, ambiguity, and truth itself.
 
+## Context-Completeness (Cc)
+
+The system basically introduces a new metric called **context-completeness (Cc)**, which measures how well an answer to a prompt satisfies the conditions of that prompt *in reality*.
+
+- If a perspectival truth is the only one that satisfies the conditions of the prompt, then `Cc ≈ 1`.  
+- If more context is needed to determine whether the prompt is true or false, `Cc` drops accordingly.  
+- A `Cc` approaching `0` represents a probabilistic near-infinity of possible solutions, which can be explored without combinatorial explosion due to strict contextual bounds.
+
+### Examples
+
+- **Prompt:** *“The sky is blue on a clear day at noon”*  
+  Result: Trivially (nearly always) true → `Cc ≈ 1.0`
+
+- **Prompt:** *“The sky is blue”*  
+  Result: True or false depending on time of day, weather, tinted lenses, etc → `Cc ≈ 0.5`
+
+- **Prompt:** *“The sky is a color”*  
+  Result: Depends almost entirely on context/intent of the question → `Cc ≈ 0.0`
+
+---
+
+### Change in Law of Excluded Middle
+
+The **Law of Excluded Middle** is modified as follows:  
+> "Law of excluded middle *if not contextually bound*."
+
+### Rules for Prompt Evaluation
+
+- **Cc ≈ 1.0** → Collapse into classical logic  
+- **Cc ≈ 0.5** → Ask a clarifying question to collapse into classical logic  
+- **Cc ≈ 0.0** → Ask a clarifying question to collapse into `Cc ≈ 0.5`, then proceed as above  
+- **Stable Dialetheic Value (B):** If no collapse is possible within 1–2 clarifying questions, assign `B`, representing undecidability (*True and/or False simultaneously*).
+
+---
+
+### Computational Interpretation
+
+- Computationally, `Cc` can be evaluated probabilistically depending on the **size of the solution space**.  
+- A `Cc` approaching `0` indicates an effectively infinite solution space (e.g., the Goldbach conjecture).  
+- Searches within such spaces remain tractable because of **contextual computational bounds**, which prevent explosion of complexity.
+
 ---
 
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
