@@ -7,6 +7,8 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Goldbach Proof of Concept (Cc + Budgeted Collapse)**
 
+[Goldbach Proof of Concept](https://github.com/<username>/<repo>/blob/main/goldbach_proof_of_concept.py)
+
 This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.  
 Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:
 
