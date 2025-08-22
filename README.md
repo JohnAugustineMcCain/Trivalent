@@ -13,10 +13,10 @@ This prototype illustrates *Context-Completeness (Cc)* belief updates when probi
 
 Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:
 
-1. A *validated counterexample* (small-n branch), or  
+1. A *validated counterexample* (computationally impossible), or  
 2. A *budgeted collapse* (after 499 steps or if sampled n > 4·10^90).  
 
-Without these budgets, resolving large n would take longer than the age of the universe.
+Without these budgets, verification or counter-example proof would take longer than the age of the universe.
 
 ---
 
