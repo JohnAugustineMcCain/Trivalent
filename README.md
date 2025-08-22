@@ -2,9 +2,9 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Disclaimer:**
 
-Although I truly believe my assertions about P vs NP to be correct, this repository is **NOT about proving my ideas about P vs NP** and the Goldbach Conjecture and everything else the ideas can be applied to.
+*Although I truly believe my assertions about P vs NP to be correct, this repository is **NOT about proving my ideas about P vs NP** and the Goldbach Conjecture and everything else the ideas can be applied to.*
 
-My work and thinking about P vs NP is simply what lead me to develop a logical system, coding, and a way of thinking about philosophy, science, mathematics, logic, the meaning of life and (all jokes aside) **AI architecture** that I believe could make a massive impact by strengthening and advancing already established successful methods of increasing artificial intelligence and safety.
+*My work and thinking about P vs NP is simply what lead me to develop a logical system, coding, and a way of thinking about philosophy, science, mathematics, logic, the meaning of life and (all jokes aside) **AI architecture** that I believe could make a massive impact by strengthening and advancing already established successful methods of increasing artificial intelligence and safety.*
 
 **Skip the readme?**
 📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
