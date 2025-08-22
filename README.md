@@ -5,7 +5,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
 
-**Goldbach Proof of Concept (Cc + Budgeted Collapse)**
+**Goldbach Proof of Concept using "context completeness"**
 
 *We treat bounded non-finds as ambiguity rather than disconfirmation, allowing small verified hits to push beliefs asymptotically in computationally impossible spaces.*
 
