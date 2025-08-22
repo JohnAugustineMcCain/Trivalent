@@ -1,11 +1,17 @@
 This work is © John A. McCain and licensed for non-commercial use under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
 
+**Disclaimer:**
+
+Although I truly believe my assertions about P vs NP to be correct, this repository is **NOT about proving my ideas** about P vs NP and the Goldbach Conjecture and etc.
+
+My work and thinking about P vs NP is simply what lead me to develop a logical system, coding, and a way of thinking about AI architecture that I believe could make a massive impact by strengthening and advancing already established successful methods of increasing Artificial Intelligence and safety.
+
 **Skip the readme?**
 📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
 
 📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
 
-**Goldbach Proof of Concept (using "context completeness" from my PEACE logic system)**
+## PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
@@ -46,29 +52,31 @@ python goldbach_sampler.py --mode EXACT --digits 28 --steps 500 --seed 12345
 
 ## Why This Matters
 
-This project isn’t just about Goldbach. It demonstrates a **Monte Carlo confidence ratchet**:  
+This project isn’t just about P vs NP or Goldbach. It demonstrates a **Monte Carlo confidence ratchet**:  
 - Sample large problem instances at random.  
 - Apply a **tiny, bounded budget** of checks.  
 - Each success increments confidence; misses are treated as budget limits, not failures.  
 
 ### 🔹 Beyond Goldbach
-This approach can be generalized to **NP-hard problems** (SAT, TSP, graph coloring, etc.).  
+This approach can be generalized to **NP-hard problems** (SAT, TSP, graph coloring, etc.).
+
 Instead of chasing exact solutions (often infeasible), we build **empirical confidence** that solutions exist or strategies work, much like how AI systems (e.g. Monte Carlo Tree Search) guide play by repeated sampling and confidence updates.
 
 ### 🔹 Mathematics as Semantic Exploration
 By treating conjectures as **epistemological hypotheses**, this method enables:  
-- Semantic and contextual exploration of mathematics.  
+- Semantic and contextual exploration guided by mathematical confidence.  
 - Identifying **truths that withstand bounded randomized testing**.  
 - Ignoring false leads and focusing attention on structures that persist under scrutiny.
 
 ### 🔹 Implications for AI Safety
 This shifts mathematics toward a **scientific, probabilistic practice**:  
-- AI can learn which patterns to trust by confidence accumulation, not brittle proofs.  
+- AI can learn which patterns to trust by confidence accumulation, not brittle deterministic proofs in increasingly complex solution spaces. 
 - This creates systems that **identify robust truths while discarding falsehoods**, crucial for safe reasoning under uncertainty.  
-- It opens a path toward **reliable AI safety frameworks** grounded in probabilistic epistemology, rather than fragile symbolic absolutes.
+- It opens a path toward **reliable AI safety frameworks** grounded in **probabilistic epistemology**, rather than fragile symbolic absolutes.
 
 In short:  
 **Monte Carlo (PEACE) confidence engines may revolutionize both mathematical exploration and AI safety** by reframing how we treat open problems, ambiguity, and truth itself.
+
 ---
 
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
