@@ -1,33 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-goldbach_proof_of_concept.py  —  Minimal PoC
-
-Claim illustrated:
-We can treat ambiguity as a core feature of reality/computation and still reason
-asymptotically about computationally impossible spaces by using:
-Tiny, bounded verification (no exhaustive search),
-Asymmetric belief updates (successes nudge up; bounded failures don’t penalize).
-
-Mechanics (very small, on purpose):
-- Sample an even n by digit-length (e.g., 19..100 digits ~ 4e18..1e100).
-- Try to find n = p + q with a fixed set of subtractor primes p.
-- If that fails, try a few nearby even numbers (± small offsets) with the same tiny set.
-- If a (p,q) is found, increment belief Cc by epsilon (clamped to ≤ 1).
-- If not found within the tiny budget, do nothing (bounded ignorance ≠ evidence against).
-
-Note:
-At these magnitudes, exhaustive resolution would take longer than the age of the universe.
-"""
-
 from __future__ import annotations
-import argparse, random
+import argparse, random, hashlib
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-# --- tiny Miller–Rabin (probabilistic) ---------------------------------
+# --- small primes via sieve (for fast trial division) -------------------
 
-_SMALL = [2,3,5,7,11,13,17,19,23,29,31,37]
+def _primes_upto(n: int) -> List[int]:
+    if n < 2: return []
+    sieve = [True]*(n+1)
+    sieve[0] = sieve[1] = False
+    for p in range(2, int(n**0.5)+1):
+        if sieve[p]:
+            step = p
+            start = p*p
+            sieve[start:n+1:step] = [False]*(((n - start)//step)+1)
+    return [i for i, ok in enumerate(sieve) if ok]
+
+_SMALL_TRIAL = _primes_upto(1000)  # primes ≤ 1000 for quick elimination
+
+# --- stats ---------------------------------------------------------------
+
+@dataclass
+class Stats:
+    primality_tests_attempted: int = 0
+    trial_div_composite_rejects: int = 0
+    mr_calls: int = 0
+    mr_composite_rejects: int = 0
+    mr_rounds_total: int = 0
+    probable_primes: int = 0
+
+# --- tiny Miller–Rabin (probabilistic) ----------------------------------
 
 def _dec(n: int) -> Tuple[int,int]:
     d, s = n - 1, 0
@@ -43,52 +47,71 @@ def _mr_witness(a: int, d: int, n: int, s: int) -> bool:
         if x == n-1: return False
     return True
 
-def is_probable_prime(n: int, rounds: int, rng: random.Random) -> bool:
-    if n < 2: return False
-    for p in _SMALL:
-        if n == p: return True
-        if n % p == 0: return False
+def is_probable_prime(n: int, rounds: int, rng: random.Random, stats: Optional[Stats]=None) -> bool:
+    if stats: stats.primality_tests_attempted += 1
+    if n < 2:
+        return False
+    # trial division first
+    for p in _SMALL_TRIAL:
+        if n == p:
+            if stats: stats.probable_primes += 1
+            return True
+        if n % p == 0:
+            if stats: stats.trial_div_composite_rejects += 1
+            return False
     d,s = _dec(n)
+    if stats: stats.mr_calls += 1
     for _ in range(rounds):
         a = rng.randrange(2, n-1)
-        if _mr_witness(a, d, n, s): return False
+        if _mr_witness(a, d, n, s):
+            if stats: stats.mr_composite_rejects += 1
+            return False
+    if stats:
+        stats.probable_primes += 1
+        stats.mr_rounds_total += rounds
     return True
 
-def mr(n: int, rng: random.Random) -> bool:
-    # small, fixed rounds; we are just demoing
+def mr(n: int, rng: random.Random, stats: Optional[Stats]=None) -> bool:
     digits = len(str(n))
-    rounds = 8 if digits <= 18 else (6 if digits <= 30 else 4)
-    return is_probable_prime(n, rounds, rng)
+    if digits <= 18: rounds = 8
+    elif digits <= 40: rounds = 10
+    elif digits <= 80: rounds = 12
+    else: rounds = 14
+    return is_probable_prime(n, rounds, rng, stats)
 
 # --- sampling & tiny Goldbach checks -----------------------------------
 
 def random_even_with_digits(rng: random.Random, d: int) -> int:
     if d < 1: raise ValueError("digits must be >= 1")
+    if d == 1:
+        return rng.choice([2,4,6,8])
     first = rng.randint(1,9)
-    rest = [rng.randint(0,9) for _ in range(d-1)]
-    n = int(str(first) + "".join(map(str, rest)))
-    return n if n % 2 == 0 else n + 1
+    middle = [rng.randint(0,9) for _ in range(d-2)]
+    last = rng.choice([0,2,4,6,8])
+    n = int(str(first) + "".join(map(str, middle)) + str(last))
+    if n % 2 == 1:
+        n -= 1
+    if len(str(n)) != d:
+        return random_even_with_digits(rng, d)
+    return max(n, 2)
 
 def sample_even_in_digit_range(rng: random.Random, dmin: int, dmax: int) -> int:
     return random_even_with_digits(rng, rng.randint(dmin, dmax))
 
-SUBTRACTORS = [3,5,7,11,13,17,19,23,29]                 # tiny, fixed set
-OFFSETS     = [-22,-14,-6,-2,0,2,6,14,22]               # small even neighborhood
+SUBTRACTORS = [3,5,7,11,13,17,19,23,29]
+OFFSETS     = [-22,-14,-6,-2,2,6,14,22]  # removed 0
 
-def try_goldbach_with_tiny_budget(n: int, rng: random.Random) -> Optional[Tuple[int,int,int]]:
-    """Return (m,p,q) if found with tiny budget; else None. m==n or nearby even."""
-    # exact n first
+def try_goldbach_with_tiny_budget(n: int, rng: random.Random, stats: Stats) -> Optional[Tuple[int,int,int]]:
     for p in SUBTRACTORS:
         q = n - p
-        if q > 1 and mr(q, rng):
+        if q > 1 and mr(q, rng, stats):
             return (n, p, q)
-    # then nearby even m
     for d in OFFSETS:
         m = n + d
         if m < 4 or m % 2: continue
         for p in SUBTRACTORS:
             q = m - p
-            if q > 1 and mr(q, rng):
+            if q > 1 and mr(q, rng, stats):
                 return (m, p, q)
     return None
 
@@ -100,43 +123,55 @@ class Cc:
     def bump(self, eps: float) -> None:
         self.value = min(1.0, self.value + eps)
 
+# --- helpers ------------------------------------------------------------
+
+def short_tag(*ints: int) -> str:
+    h = hashlib.sha256(".".join(map(str,ints)).encode()).hexdigest()
+    return h[:12]
+
 # --- main loop ----------------------------------------------------------
 
 def run(steps: int, dmin: int, dmax: int, epsilon: float, seed: int) -> None:
     rng = random.Random(seed)
     cc  = Cc(0.0)
     hits = 0
-    examples: List[Tuple[int,int,int,int]] = []  # (k, m, p, q_head)
+    examples: List[Tuple[int,int,int,str,int]] = []
+    total_stats = Stats()
 
     for k in range(steps):
         n = sample_even_in_digit_range(rng, dmin, dmax)
-        found = try_goldbach_with_tiny_budget(n, rng)
+        found = try_goldbach_with_tiny_budget(n, rng, total_stats)
         if found:
             m, p, q = found
             hits += 1
             cc.bump(epsilon)
             if len(examples) < 8:
-                # only show head of q to keep logs tidy
-                q_head = int(str(q)[:16])
-                examples.append((k, m, p, q_head))
+                tag = short_tag(m, p, q)
+                examples.append((k, m, p, tag, len(str(q))))
 
-    # Summary for papers: short, clear, asymmetric update emphasized
-    print("=== Minimal PoC Summary ===")
-    print(f"steps: {steps}   digits: [{dmin}, {dmax}]   epsilon: {epsilon}")
-    print(f"tiny-budget Goldbach hits: {hits}")
+    print("=== Minimal PoC Summary (Updated) ===")
+    print(f"steps: {steps}   digits: [{dmin}, {dmax}]   epsilon: {epsilon}   seed: {seed}")
+    print(f"tiny-budget Goldbach hits: {hits}  (hit rate: {hits/steps:.3f})")
     print(f"final Cc: {cc.value:.6f}  (only increases on witnessed hits; bounded misses unpenalized)")
+    print("\n--- Search exposure ---")
+    print(f"primality tests attempted: {total_stats.primality_tests_attempted}")
+    print(f"  trial-division rejects:  {total_stats.trial_div_composite_rejects}")
+    print(f"  Miller–Rabin calls:      {total_stats.mr_calls}")
+    print(f"  MR composite rejects:    {total_stats.mr_composite_rejects}")
+    print(f"  MR rounds total:         {total_stats.mr_rounds_total}")
+    print(f"  probable primes seen:    {total_stats.probable_primes}")
     if examples:
-        print("\nexample hits (k, m, p, q_head):")
+        print("\nexample hits (k, m, p, tag, digits(q))  # tag = sha256(m.p.q)[:12] for audit")
         for rec in examples:
             print(rec)
 
 # --- CLI ----------------------------------------------------------------
 
 def parse_args() -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Minimal PoC: asymmetric belief under tiny bounded Goldbach checks.")
-    ap.add_argument("--steps", type=int, default=200, help="number of sampled n")
-    ap.add_argument("--min-digits", type=int, default=19, help="min digits for n (19 ~ 4e18)")
-    ap.add_argument("--max-digits", type=int, default=100, help="max digits for n (up to 1e100)")
+    ap = argparse.ArgumentParser(description="Minimal PoC (updated): asymmetric belief under tiny bounded Goldbach checks.")
+    ap.add_argument("--steps", type=int, default=60, help="number of sampled n")
+    ap.add_argument("--min-digits", type=int, default=19, help="min digits for n")
+    ap.add_argument("--max-digits", type=int, default=30, help="max digits for n")
     ap.add_argument("--epsilon", type=float, default=0.002, help="Cc bump per witnessed hit")
     ap.add_argument("--seed", type=int, default=2025, help="PRNG seed")
     return ap.parse_args()
