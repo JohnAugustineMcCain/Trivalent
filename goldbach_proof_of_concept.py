@@ -11,13 +11,7 @@ This operationalizes the Verification Asymmetry:
 - Only a VALIDATED counterexample (deterministic small-n branch) collapses belief to ~0.
 - Additionally, we perform a **budgeted collapse** when either:
   (A) the sampled n ever exceeds 4 * 10^90, or
-  (B) after 100 steps have completed (by default).
-
-**Tweaks implemented for clarity:**
-- Defaults now make movement visible in demos:
-  --epsilon 0.002, --Pmax 2000000, --samples 20000
-- Defaults now allow max-n collapse to trigger:
-  --max-digits 100 (so n can exceed 4*10^90 in practice)
+  (B) after a fixed number of steps have completed (default: 499).
 
 IMPORTANT NOTE:
 If the collapse weren’t budgeted, completing exhaustive search or finding a true
@@ -324,26 +318,45 @@ def run_probes(trials: int,
 # ---------------------------------------------------------------------
 
 def parse_args(argv: List[str]) -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Context-Completeness (Cc) + Bounded Goldbach Probe (PoC) with budgeted collapse.")
-    ap.add_argument("--trials", type=int, default=120, help="number of independent n samples (steps)")
-    ap.add_argument("--min-digits", type=int, default=20, help="min digits for n")
-    ap.add_argument("--max-digits", type=int, default=100, help="max digits for n")  # tweak for potential max-n collapse
-    ap.add_argument("--Pmax", type=int, default=2_000_000, help="max p to sample (random odd <= Pmax)")  # tweak (bigger)
-    ap.add_argument("--samples", type=int, default=20000, help="random p samples per m")  # tweak (bigger)
-    ap.add_argument("--epsilon", type=float, default=0.002, help="Cc bump on bounded success")  # tweak (bigger)
-    ap.add_argument("--small-n-limit", type=int, default=2_000_000, help="deterministic small-n counterexample ceiling")
-    ap.add_argument("--mr-rounds", type=int, default=12, help="Miller–Rabin rounds for probable primality")
-    ap.add_argument("--seed", type=int, default=2025, help="PRNG seed")
-    ap.add_argument("--out", type=str, default="cc_goldbach_probes.csv", help="CSV output path")
-    # Budgeted collapse controls (defaults per request)
-    ap.add_argument("--max-n-collapse", type=int, default=4 * (10 ** 90), help="collapse immediately if n > this")
-    ap.add_argument("--max-steps-collapse", type=int, default=100, help="collapse after this many completed steps")
-    ap.add_argument("--collapse-value", type=float, default=1e-9, help="belief value when collapsed")
+    ap = argparse.ArgumentParser(
+        description="Context-Completeness (Cc) + Bounded Goldbach Probe (PoC) with budgeted collapse."
+    )
+    # Defaults updated per request
+    ap.add_argument("--trials", type=int, default=500,
+        help="number of independent n samples (steps) [default: 500]")
+    ap.add_argument("--min-digits", type=int, default=20,
+        help="min digits for n")
+    ap.add_argument("--max-digits", type=int, default=100,
+        help="max digits for n")
+    ap.add_argument("--Pmax", type=int, default=2_000_000,
+        help="max p to sample (random odd <= Pmax)")
+    ap.add_argument("--samples", type=int, default=20000,
+        help="random p samples per m")
+    ap.add_argument("--epsilon", type=float, default=0.002,
+        help="Cc bump on bounded success")
+    ap.add_argument("--small-n-limit", type=int, default=2_000_000,
+        help="deterministic small-n counterexample ceiling")
+    ap.add_argument("--mr-rounds", type=int, default=12,
+        help="Miller–Rabin rounds for probable primality")
+    ap.add_argument("--seed", type=int, default=2025,
+        help="PRNG seed")
+    ap.add_argument("--out", type=str, default="cc_goldbach_probes.csv",
+        help="CSV output path")
+    # Budgeted collapse controls
+    ap.add_argument("--max-n-collapse", type=int, default=4 * (10 ** 90),
+        help="collapse immediately if n > this")
+    ap.add_argument("--max-steps-collapse", type=int, default=499,
+        help="collapse after this many completed steps [default: 499]")
+    ap.add_argument("--collapse-value", type=float, default=1e-9,
+        help="belief value when collapsed")
     return ap.parse_args(argv)
 
 def main(argv: List[str]) -> int:
     args = parse_args(argv)
-    offsets = [-1, +1, -3, +3, -7, +7, -11, +11, -13, +13, -17, +17, -19, +19]
+
+    # FIXED OFFSETS: even only (±2, ±6, ±14, ±22, plus 0)
+    offsets = [-22, -14, -6, -2, 0, 2, 6, 14, 22]
+
     res = run_probes(
         trials=args.trials,
         min_digits=args.min_digits,
