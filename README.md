@@ -9,11 +9,11 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 ## Preface:
 
-My goal here is to prove that honesty (not proof) is universally mathematically optimal in the face of increasing complexity for reasoning and solving.
+My goal here is to prove that honesty (not proof) is universally mathematically optimal in the face of increasing complexity for logic and reasoning.
 
 I developed the foundations of this over the course of *two weeks* while working in my profession: Convenience store employee
 
-It is my humble belief that combination of these ideas and their historical roots + working code + practical applications makes this work essentially unassailable.​​​​​​​​​​​​​​​​
+It is my humble and peaceful belief that combination of these ideas and their historical roots + working code + practical applications makes this work essentially unassailable.​​​​​​​​​​​​​​​​
 
 **For Context of why I am working on this:**
 📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
