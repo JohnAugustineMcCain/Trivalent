@@ -7,15 +7,15 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Goldbach Proof of Concept using "context completeness"**
 
-*We treat bounded non-finds as ambiguity rather than disconfirmation, allowing small verified hits to push beliefs asymptotically in computationally impossible spaces.*
-
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
 This prototype illustrates *Context-Completeness (Cc)* belief updates when probing bounded instances of Goldbach’s conjecture.
 
 Belief increments slightly on bounded successes, is unaffected by bounded failures, and collapses only under:  
 
-Without these budgets, verification of every even number (or attempt to create counter-example proof) would likely take longer than the age of the universe.
+The stats tracking shows exactly how little computational work is needed to find evidence for even enormous numbers, while proving the negative would be impossible.
+
+The goal of this demo code is to turn an abstract epistemological argument into runnable code that demonstrates the principle in real time.
 
 ---
 
