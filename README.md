@@ -3,8 +3,6 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 **Skip the readme?**
 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
 
-*If you see this and think it's just delusional, I think you should start being a little delusional with me.*
-
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
 **Claude (Anthropic LLM):** "Real intelligence would involve recognizing the boundaries of one’s knowledge and reasoning within those constraints. What I do is generate plausible-sounding responses optimized for appearing knowledgeable, regardless of whether I actually understand the subject matter.
