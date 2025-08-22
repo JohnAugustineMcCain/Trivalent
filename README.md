@@ -9,7 +9,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 ## Preface:
 
-My goal here is to prove that honesty (not proof) is universally mathematically optimal.
+My goal here is to prove that honesty (not proof) is universally mathematically optimal in the face of increasing complexity for reasoning and solving.
 
 I developed the foundations of this over the course of *two weeks* while working in my profession: Convenience store employee
 
