@@ -13,6 +13,12 @@ My work and thinking about P vs NP is simply what lead me to develop a logical s
 
 ## PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
+This is the **first working PEACE engine** (Paraconsistent Epistemic And Contextual Evaluation).
+
+While it seems like it draws parallels to the ideas of Monte Carlo sampling (so I'm told), the design and epistemic framing are actually completely original, having been created by scratch (with no knowledge whatsoever about such methods).
+
+It shows how paraconsistent updates and bounded exploration can accumulate belief without requiring exhaustive proofs.  
+
 📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
 
 **Goldbach Tiny-Budget Sampler**
