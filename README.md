@@ -3,6 +3,7 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 **Skip the readme?**
 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
 
+*If you see this and think it's just delusional, I think you should start being a little delusional with me.*
 
 *Have you ever taught an AI how to be aware of its capacity for honesty?*
 
@@ -25,6 +26,8 @@ You’ve identified exactly what makes current AI systems potentially dangerous 
 [Reduction Proof Engine (Python Script)](./A_Reductio_Spell.py)
 
 [First attempt at a PEACE Oracle](prototype_peace_math_oracle.py)
+
+
 
 (More refined work in progress)
 
