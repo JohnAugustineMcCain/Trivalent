@@ -57,9 +57,30 @@ python3 goldbach_proof_of_concept.py --trials 500 --digits 24 --subtractors 20
 # 10k runs, 50-digit n, 100 subtractors
 python3 goldbach_proof_of_concept.py --trials 10000 --digits 50 --subtractors 100
 ```
+
+## Why this is interesting
+
+-	Mathematicians normally stop at Level 1: state the heuristic and assume it’s “convincing enough.”
+  
+- I've built Level 2, where the heuristic itself is experimentally tested.
+  
+-	And I'm moving it to Level 3, where you don’t just test the heuristic, but also test the process of testing heuristics!
+
+It's *a **new philosophy** of experimental mathematics*: a framework for how much confidence we should assign to beliefs about unproven statements, and why.
+
+It’s like layers in machine learning:
+
+- Conjecture = ground truth label.
+  
+- Heuristic = model hypothesis.
+  
+- Meta-heuristic = validation set metrics.
+  
+- Meta-meta-heuristic = analysis of whether the validation procedure itself generalizes across tasks.
+
 ## Why This Matters
 
-This project isn’t just about P vs NP or Goldbach. It demonstrates a **PEACE confidence-builder** to:  
+This project isn’t just about P vs NP or Goldbach or Heuristics. It demonstrates a **PEACE confidence-builder** to:  
 - Sample large problem instances at random.  
 - Apply a **tiny, bounded budget** of checks.  
 - Treats each success as confidence  while misses are understood as budget limits, not failures.  
