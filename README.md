@@ -37,33 +37,17 @@ A lightweight PEACE engine for probing the **Goldbach Conjecture** at huge scale
 Instead of exhaustive checking, it uses a tiny budget (small subtractors, limited offsets, fast Miller–Rabin checks) to ratchet confidence that even numbers decompose into primes.
 
 **Usage:**
-Run with Python 3:
+
+Run with Python 3. Adjustable samples provided below.
 
 ```bash
-# 500 random 28-digit evens
-python goldbach_sampler.py --mode EXACT --digits 28 --steps 500
+# 500 runs, 24-digit n, 20 subtractors
+python3 goldbach_proof_of_concept.py --trials 500 --digits 24 --subtractors 20
 ```
 ```bash
-# 5000 random 30-digit evens
-python goldbach_sampler.py --mode EXACT --digits 30 --steps 5000
+# 10k runs, 50-digit n, 100 subtractors
+python3 goldbach_proof_of_concept.py --trials 10000 --digits 50 --subtractors 100
 ```
-```bash
-# Sample 1000 numbers across 24–30 digits
-python goldbach_sampler.py --mode RANGE --min-digits 24 --max-digits 30 --steps 1000
-```
-```bash
-# Compare hit-rates across sweep (12–30 digits, from CONFIG)
-python goldbach_sampler.py --mode SWEEP_DIGITS --steps 200
-```
-```bash
-# Slower confidence growth with smaller epsilon
-python goldbach_sampler.py --mode EXACT --digits 28 --steps 2000 --epsilon 0.0005
-```
-```bash
-# Reproducibility with fixed RNG seed
-python goldbach_sampler.py --mode EXACT --digits 28 --steps 500 --seed 12345
-```
-
 ## Why This Matters
 
 This project isn’t just about P vs NP or Goldbach. It demonstrates a **PEACE confidence-builder** to:  
