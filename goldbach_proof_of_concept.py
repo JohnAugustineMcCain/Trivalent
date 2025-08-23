@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse, random, time, math, sys
-from typing import List
+from typing import List, Tuple, Set, Dict
 
 # ---------------- Primes utilities ----------------
 
@@ -20,9 +20,7 @@ def sieve_upto(n: int) -> List[int]:
     return [i for i, is_p in enumerate(sieve) if is_p]
 
 def first_k_odd_primes(k: int) -> List[int]:
-    # crude overestimates to find enough primes without external deps
     if k <= 0: return []
-    # Use p_n ~ k (log k + log log k) for n-th prime; multiply a bit for headroom
     if k < 6:
         limit = 100
     else:
@@ -76,23 +74,38 @@ def random_even_with_digits(rng: random.Random, d: int) -> int:
     last = rng.choice("02468")
     return int(str(first) + middle + last)
 
-def goldbach_hit(n: int, subtractors: List[int], mr_rounds: int, rng: random.Random) -> bool:
+def goldbach_decomps(n: int, subtractors: List[int], mr_rounds: int, rng: random.Random,
+                     cap_per_n: int | None = None) -> List[Tuple[int,int]]:
+    """Return all unordered Goldbach decompositions found via the subtractor scan.
+       Deduplicates by unordered pair. If cap_per_n is set, record at most that many (still scans all p)."""
     if n % 2: n -= 1
+    seen: Set[Tuple[int,int]] = set()
+    recorded: List[Tuple[int,int]] = []
     for p in subtractors:
         q = n - p
-        if q > 1 and (q % 2 == 1 or q == 2) and is_probable_prime(q, rounds=mr_rounds, rng=rng):
-            return True
-    return False
+        if q < 2: continue
+        # parity: with p odd and n even, q is odd (or 2)
+        if q != 2 and (q & 1) == 0:  # even > 2 ⇒ composite
+            continue
+        if is_probable_prime(q, rounds=mr_rounds, rng=rng):
+            a, b = (p, q) if p <= q else (q, p)
+            if (a, b) not in seen:
+                seen.add((a, b))
+                if cap_per_n is None or len(recorded) < cap_per_n:
+                    recorded.append((a, b))
+    return recorded
 
 # ---------------- CLI & main ----------------
 
 def parse_args() -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Goldbach PoC: adjustable trials, digits, and # subtractor primes (10..100).")
+    ap = argparse.ArgumentParser(description="Goldbach PoC: collect multiple decomps per n without early stopping.")
     ap.add_argument("--trials", type=int, default=1000, help="number of random tests to run (default: 1000)")
     ap.add_argument("--digits", type=int, default=30, help="number of digits in n (even numbers only; default: 30)")
     ap.add_argument("--subtractors", type=int, default=40, help="how many odd primes to subtract (10..100; default: 40)")
     ap.add_argument("--seed", type=int, default=2025, help="RNG seed (default: 2025)")
     ap.add_argument("--mr-rounds", type=int, default=12, help="Miller–Rabin rounds per candidate (default: 12)")
+    ap.add_argument("--max-per-n", type=int, default=None, help="cap on how many decomps to record per n (scan still runs fully)")
+    ap.add_argument("--print-examples", type=int, default=0, help="print up to K example decomps for the first few n with any hits")
     return ap.parse_args()
 
 def main() -> None:
@@ -103,25 +116,56 @@ def main() -> None:
     if args.digits < 1:
         print(f"error: --digits must be >= 1 (got {args.digits})", file=sys.stderr)
         sys.exit(2)
+
     rng = random.Random(args.seed)
     subtractor_primes = first_k_odd_primes(args.subtractors)
-    hits = 0
+
     t0 = time.time()
+    total_hits = 0
+    total_decomps = 0
+    per_n_counts: List[int] = []
+    example_counter = 0
+    example_limit = max(0, int(args.print-examples)) if isinstance(args.print_examples, int) else 0  # guard
+
+    # We will store up to 'print-examples' example entries (n, decomps list)
+    examples: List[Tuple[int, List[Tuple[int,int]]]] = []
+
     for _ in range(args.trials):
         n = random_even_with_digits(rng, args.digits)
-        if goldbach_hit(n, subtractor_primes, args.mr_rounds, rng):
-            hits += 1
+        decomps = goldbach_decomps(n, subtractor_primes, args.mr_rounds, rng, cap_per_n=args.max_per_n)
+        c = len(decomps)
+        if c > 0:
+            total_hits += 1
+            total_decomps += c
+            per_n_counts.append(c)
+            if example_counter < example_limit:
+                examples.append((n, decomps))
+                example_counter += 1
+        else:
+            per_n_counts.append(0)
+
     elapsed = time.time() - t0
     per_n = elapsed / args.trials if args.trials else float('nan')
-    hit_rate = hits / args.trials if args.trials else float('nan')
+    hit_rate = total_hits / args.trials if args.trials else float('nan')
+    mean_decomps = (total_decomps / total_hits) if total_hits else 0.0
+    max_decomps = max(per_n_counts) if per_n_counts else 0
+    min_decomps = min(per_n_counts) if per_n_counts else 0
 
     # Report
-    print("=== Goldbach Proof of Concept ===")
+    print("=== Goldbach Proof of Concept (multi-decomp) ===")
     print(f"trials: {args.trials}   digits(n): {args.digits}   subtractors: {args.subtractors} odd primes")
-    print(f"mr_rounds: {args.mr_rounds}   seed: {args.seed}")
+    print(f"mr_rounds: {args.mr_rounds}   seed: {args.seed}   max_per_n: {args.max_per_n}")
     print(f"elapsed: {elapsed:.6f} s   per_n: {per_n*1000:.3f} ms")
-    print(f"hits: {hits}   hit_rate: {hit_rate:.3f}")
+    print(f"n with ≥1 decomp: {total_hits}   hit_rate: {hit_rate:.3f}")
+    print(f"total decomps recorded: {total_decomps}")
+    print(f"per-hit mean decomps: {mean_decomps:.3f}   per-n min/max (over all n): {min_decomps}/{max_decomps}")
     print(f"first few subtractors: {subtractor_primes[:10]} ...")
+
+    if examples:
+        print("\n--- example decomps (n → up to first K unordered pairs (p,q)) ---")
+        for n, ds in examples:
+            shown = ", ".join(f\"({p},{q})\" for p,q in ds)
+            print(f\"{n} → {shown}\")
 
 if __name__ == '__main__':
     main()
