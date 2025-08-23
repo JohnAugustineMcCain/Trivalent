@@ -80,7 +80,7 @@ It’s like layers in machine learning:
 
 ## This method can be axiomatically applied to:
 
-[Collatz Meta Heuristic Prototype](https://github.com/your-username/collatz-meta-analysis/blob/main/collatz_meta_all_in_one.py)
+[**collatz_meta_all_in_one.py**](https://github.com/<your-username>/<your-repo>/blob/main/collatz_meta_all_in_one.py)
 
 ```bash
 python3 collatz_meta_all_in_one.py \
