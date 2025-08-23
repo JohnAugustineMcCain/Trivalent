@@ -43,6 +43,8 @@ gap between finite verification and asymptotic prediction, and provides
 meta-mathematical evidence that the Goldbach Conjecture is effectively
 resolved.
 
+[📄 Empirical Evidence for Hardy–Littlewood Beyond Classical Verification](Empirical_Evidence_for_Hardy_Littlewood_Beyond_Classical_Verification.pdf)
+
 **Usage:**
 
 Run with Python 3. Adjustable samples provided below.
