@@ -80,7 +80,20 @@ It’s like layers in machine learning:
 
 ## This method can be axiomatically applied to:
 
-Everything. Twin Primes, Collatz, Reimann... just everything. 
+[Collatz Meta Heuristic Prototype](https://github.com/your-username/collatz-meta-analysis/blob/main/collatz_meta_all_in_one.py)
+
+```bash
+python3 collatz_meta_all_in_one.py \
+  --outdir collatz_meta_out \
+  --bits 256 512 1024 \
+  --samples 3000 5000 8000 \
+  --maxsteps 8000 8000 12000 \
+  --seeds 3 1 2 \
+  --bins 12
+```
+I'm just going to say it:
+
+Everything. It can be applied to everything. Twin Primes, Collatz, Reimann... just everything. This isn't about just math though... 
 
 ## Why This Matters
 
