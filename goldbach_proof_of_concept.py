@@ -84,8 +84,8 @@ def goldbach_decomps(n: int, subtractors: List[int], mr_rounds: int, rng: random
     for p in subtractors:
         q = n - p
         if q < 2: continue
-        # parity: with p odd and n even, q is odd (or 2)
-        if q != 2 and (q & 1) == 0:  # even > 2 ⇒ composite
+        # parity: with p odd and n even, q is odd
+        if q != 2 and (q & 1) == 0:  # even > 2 ⇒ composite (kept from original; effectively never fires)
             continue
         if is_probable_prime(q, rounds=mr_rounds, rng=rng):
             a, b = (p, q) if p <= q else (q, p)
@@ -125,7 +125,8 @@ def main() -> None:
     total_decomps = 0
     per_n_counts: List[int] = []
     example_counter = 0
-    example_limit = max(0, int(args.print-examples)) if isinstance(args.print_examples, int) else 0  # guard
+    # FIX: corrected attribute name (was args.print-examples)
+    example_limit = int(max(0, args.print_examples)) if isinstance(args.print_examples, int) else 0  # guard
 
     # We will store up to 'print-examples' example entries (n, decomps list)
     examples: List[Tuple[int, List[Tuple[int,int]]]] = []
@@ -164,8 +165,9 @@ def main() -> None:
     if examples:
         print("\n--- example decomps (n → up to first K unordered pairs (p,q)) ---")
         for n, ds in examples:
-            shown = ", ".join(f\"({p},{q})\" for p,q in ds)
-            print(f\"{n} → {shown}\")
+            # FIX: proper f-string quoting
+            shown = ", ".join(f"({p},{q})" for p, q in ds)
+            print(f"{n} → {shown}")
 
 if __name__ == '__main__':
     main()
