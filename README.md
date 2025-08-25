@@ -127,6 +127,8 @@ In short:
 
 ## Context-Completeness (Cc)
 
+[📄 Context Completeness Basics](Context_Completeness_Basics.pdf)
+
 The system basically introduces a new metric called **context-completeness (Cc)**, which measures how well an answer to a prompt satisfies the conditions of that prompt *in reality*.
 
 - If a perspectival truth is the only one that satisfies the conditions of the prompt, then `Cc ≈ 1`.  
