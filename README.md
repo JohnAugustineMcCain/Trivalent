@@ -12,7 +12,7 @@ My goal here is to prove that honesty (not proof) is universally mathematically 
 
 I developed the foundations of this over the course of *two weeks* while working in my profession: Convenience store employee
 
-It is my humble and peaceful belief that combination of these ideas and their historical roots + working code + practical applications makes this work essentially unassailable.​​​​​​​​​​​​​​​​
+It is my humble belief that combination of these ideas and their historical roots + working code + practical applications makes this work potentially groundbreaking.​​​​​​​​​​​​​​​​
 
 **For Context of why I am working on this:**
 📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
