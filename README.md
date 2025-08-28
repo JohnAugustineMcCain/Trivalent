@@ -2,22 +2,21 @@ This work is © John A. McCain and licensed for non-commercial use under the [Cr
 
 **Disclaimer:**
 
+Everything I'm about to say is worthless if my ideas aren't effectively explained by the reading of this document:
+
+[📄 PEACE: Paraconsistent Epistemic And Contextual Evaluation](PEACE__Paraconsistent_Epistemic_And_Contextual_Evaluation.pdf)
+
 *This repository is **NOT about proving my ideas about P vs NP** and the Goldbach Conjecture and everything else the ideas can be applied to.*
 
 *Studying P vs NP with a new perspective is just what led me to develop my ideas and logical system, one I think might change our methods of designing safe, contradiction-resilient AI.*
 
 ## Preface:
 
-My goal here is to prove that honesty (not proof) is universally mathematically optimal in the face of increasing complexity for logic and reasoning.
+My goal here is to prove that honesty (not proof) is universally mathematically optimal and safe in the face of increasing complexity for logic and reasoning.
 
-I developed the foundations of this over the course of *two weeks* while working in my profession: Convenience store employee
+I developed the foundations of this over the course of just *two weeks* while working in my profession: Convenience store employee
 
 It is my humble belief that combination of these ideas and their historical roots + working code + practical applications makes this work potentially groundbreaking.​​​​​​​​​​​​​​​​
-
-**For Context of why I am working on this:**
-📄 [My final work (so far)](P_vs_NP__Proven_Unprovable.pdf)
-
-📄 [And / Or the summary and defense of it](https://github.com/<username>/<repo>/blob/main/The_Verification_Asymmetry.pdf)
 
 ## PEACE: Paraconsistent Epistemic And Contextual Evaluation
 
