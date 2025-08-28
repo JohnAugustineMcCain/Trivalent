@@ -7,7 +7,14 @@ import math
 import random
 import sys
 import time
-from typing import List, Tuple, Set, Dict
+from typing import List, Tuple, Set, Dict, Optional
+
+# Try to enable BPSW/ECPP via SymPy if available
+try:
+    from sympy import isprime as _sympy_isprime  # BPSW + extras under the hood
+    _HAVE_SYMPY = True
+except Exception:
+    _HAVE_SYMPY = False
 
 # ---------------- Utilities & small primes ----------------
 
@@ -59,7 +66,8 @@ def _mr_witness(a: int, d: int, n: int, s: int) -> bool:
             return False
     return True
 
-def is_probable_prime(n: int, rounds: int = 6, rng: random.Random | None = None) -> bool:
+def is_probable_prime_mr(n: int, rounds: int = 6, rng: Optional[random.Random] = None) -> bool:
+    """Your original MR (random bases). Probabilistic."""
     if n < 2:
         return False
     # quick trial division by small primes up to 97
@@ -71,11 +79,50 @@ def is_probable_prime(n: int, rounds: int = 6, rng: random.Random | None = None)
     d, s = _dec(n)
     if rng is None:
         rng = random.Random(2025)
+    # Note: for huge n, using fixed good bases is often faster; we keep random here by design.
     for _ in range(rounds):
         a = rng.randrange(2, n - 1)
         if _mr_witness(a, d, n, s):
             return False
     return True
+
+def is_probable_prime_mr_fixed(n: int) -> bool:
+    """
+    Miller–Rabin with a fixed small set of bases — a strong screen when SymPy isn't available.
+    For large n this is still probabilistic, but very reliable in practice.
+    """
+    if n < 2:
+        return False
+    # Small primes
+    small_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+    for p in small_primes:
+        if n == p:
+            return True
+        if n % p == 0:
+            return False
+    d, s = _dec(n)
+    for a in (2, 3, 5, 7, 11, 13, 17, 19):  # a modest fixed set
+        if a % n == 0:
+            return True
+        if _mr_witness(a, d, n, s):
+            return False
+    return True
+
+# ---------------- Baillie–PSW (via SymPy when available) ----------------
+
+def is_probable_prime_bpsw(n: int) -> bool:
+    """
+    Baillie–PSW path:
+      - If SymPy is present, delegate to sympy.isprime (BPSW and, when needed, ECPP),
+        which is extremely reliable and often *proves* primality.
+      - If SymPy is not present, fall back to a strong MR screen with fixed bases.
+    """
+    if n < 2:
+        return False
+    if _HAVE_SYMPY:
+        return bool(_sympy_isprime(n))
+    # Fallback (no SymPy): MR with fixed bases as a high-quality probabilistic screen.
+    return is_probable_prime_mr_fixed(n)
 
 # ---------------- Sampling ----------------
 
@@ -94,9 +141,10 @@ def random_even_with_digits(rng: random.Random, d: int) -> int:
 def goldbach_subtractor_scan(
     n: int,
     subtractors: List[int],
+    primality: str,
     mr_rounds: int,
     rng: random.Random,
-    cap_per_n: int | None = None,
+    cap_per_n: Optional[int] = None,
 ) -> List[Tuple[int, int]]:
     """
     Return up to cap_per_n unordered decompositions found by scanning fixed subtractor primes.
@@ -106,6 +154,17 @@ def goldbach_subtractor_scan(
         n -= 1
     seen: Set[Tuple[int, int]] = set()
     recorded: List[Tuple[int, int]] = []
+
+    # choose primality test
+    if primality == "bpsw":
+        def isprime(q: int) -> bool:
+            return is_probable_prime_bpsw(q)
+    elif primality == "mr":
+        def isprime(q: int) -> bool:
+            return is_probable_prime_mr(q, rounds=mr_rounds, rng=rng)
+    else:
+        raise ValueError(f"unknown primality mode: {primality}")
+
     for p in subtractors:
         q = n - p
         if q < 2:
@@ -113,7 +172,7 @@ def goldbach_subtractor_scan(
         # parity: q is odd unless q == 2; skip even q > 2 quickly
         if q != 2 and (q & 1) == 0:
             continue
-        if is_probable_prime(q, rounds=mr_rounds, rng=rng):
+        if isprime(q):
             a, b = (p, q) if p <= q else (q, p)
             if (a, b) not in seen:
                 seen.add((a, b))
@@ -180,6 +239,14 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--cap-per-n", type=int, default=1, help="max decomps to record per n in scan (default: 1)")
     ap.add_argument("--eps", type=float, default=0.002, help="Cc bump per agreement (default: 0.002)")
     ap.add_argument("--print-examples", type=int, default=0, help="show up to K example n with results")
+
+    # NEW: choose primality test
+    ap.add_argument(
+        "--primality",
+        choices=["bpsw", "mr"],
+        default="bpsw",
+        help="primality test for confirming q: 'bpsw' (SymPy isprime if available; fallback MR) or 'mr' (your MR). Default: bpsw"
+    )
     return ap.parse_args()
 
 def main() -> None:
@@ -191,6 +258,9 @@ def main() -> None:
     if args.digits < 1:
         print(f"error: --digits must be >= 1 (got {args.digits})", file=sys.stderr)
         sys.exit(2)
+
+    if args.primality == "bpsw" and not _HAVE_SYMPY:
+        print("[note] SymPy not found; using a strong Miller–Rabin fallback for BPSW mode.", file=sys.stderr)
 
     rng = random.Random(args.seed)
     subtractor_primes = first_k_odd_primes(args.subtractors)
@@ -234,7 +304,12 @@ def main() -> None:
         # Verification / hybrid
         if args.mode in ("verify", "hybrid"):
             decomps = goldbach_subtractor_scan(
-                n, subtractor_primes, args.mr_rounds, rng, cap_per_n=args.cap_per_n
+                n,
+                subtractor_primes,
+                args.primality,
+                args.mr_rounds,
+                rng,
+                cap_per_n=args.cap_per_n
             )
             c = len(decomps)
             per_n_counts.append(c)
@@ -266,6 +341,7 @@ def main() -> None:
     print(f"mode: {args.mode}   trials: {trials}   digits(n): {args.digits}")
     print(f"subtractors: {args.subtractors}   mr_rounds: {args.mr_rounds}   cap_per_n: {args.cap_per_n}")
     print(f"seed: {args.seed}")
+    print(f"primality: {args.primality}{' (SymPy isprime)' if args.primality=='bpsw' and _HAVE_SYMPY else ''}")
     print(f"elapsed: {elapsed:.6f} s   per_n: {per_n_time*1000:.3f} ms")
 
     if args.mode in ("heuristic", "hybrid"):
