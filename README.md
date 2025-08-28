@@ -27,7 +27,7 @@ While it seems like it draws parallels to the ideas of Monte Carlo sampling (so 
 
 It shows how paraconsistent updates and bounded exploration can accumulate belief without requiring exhaustive proofs.  
 
-📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_proof_of_concept.py)
+📄 [Goldbach Proof of Concept](https://github.com/JohnAugustineMcCain/Trivalent/blob/main/goldbach_meta.py)
 
 **Goldbach Tiny-Budget Sampler**
 
