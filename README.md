@@ -49,12 +49,13 @@ resolved.
 Run with Python 3. Adjustable samples provided below.
 
 ```bash
-# 500 runs, 24-digit n, 20 subtractors
-python3 goldbach_proof_of_concept.py --trials 500 --digits 24 --subtractors 20
+python goldbach_meta.py --mode hybrid --digits 30 --trials 200 --primality mr
 ```
+
+Or, with SymPy imported for better prime verification:
+
 ```bash
-# 10k runs, 50-digit n, 100 subtractors
-python3 goldbach_proof_of_concept.py --trials 10000 --digits 50 --subtractors 100
+python goldbach_meta.py --mode hybrid --digits 30 --trials 200 --primality bpsw
 ```
 
 ## Why this is interesting
